@@ -1,0 +1,6 @@
+framework module Pods_SocketTest_walkieTalkie {
+  umbrella header "Pods-SocketTest_walkieTalkie-umbrella.h"
+
+  export *
+  module * { export * }
+}

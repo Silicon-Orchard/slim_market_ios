@@ -1,0 +1,31 @@
+
+//
+//  walkieTalkie.pch
+//  SocketTest_walkieTalkie
+//
+//  Created by salahuddin yousuf on 4/27/16.
+//  Copyright © 2016 salahuddin yousuf. All rights reserved.
+//
+
+#ifndef walkieTalkie_pch
+#define walkieTalkie_pch
+
+
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#import "Constants.h"
+#import "Channel.h"
+#import "User.h"
+#import "asyncUDPConnectionHandler.h"
+#import "MessageData.h"
+#import "MessageHandler.h"
+#import "ChannelHandler.h"
+#import "AudioFileHandler.h"
+#import "asyncTCPConnectionHandler.h"
+#import "VoiceStreamHandler.h"
+#import "AudioRecorderTest.h"
+#import "AudioRecorderTest_StreamPlayer.h"
+
+#endif /* walkieTalkie_pch */

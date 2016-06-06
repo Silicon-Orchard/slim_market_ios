@@ -1,0 +1,718 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		5C12E1591CE2FDD600F0EE61 /* asyncTCPConnectionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C12E1581CE2FDD600F0EE61 /* asyncTCPConnectionHandler.m */; };
+		5C12E1681CE4368800F0EE61 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C12E1671CE4368800F0EE61 /* main.m */; };
+		5C12E16B1CE4368800F0EE61 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C12E16A1CE4368800F0EE61 /* AppDelegate.m */; };
+		5C12E16E1CE4368800F0EE61 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C12E16D1CE4368800F0EE61 /* ViewController.m */; };
+		5C12E1711CE4368800F0EE61 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5C12E16F1CE4368800F0EE61 /* Main.storyboard */; };
+		5C12E1731CE4368800F0EE61 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C12E1721CE4368800F0EE61 /* Assets.xcassets */; };
+		5C12E1761CE4368800F0EE61 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5C12E1741CE4368800F0EE61 /* LaunchScreen.storyboard */; };
+		5C2079EF1CCF7DB0007A5F21 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C2079EE1CCF7DB0007A5F21 /* main.m */; };
+		5C2079F21CCF7DB0007A5F21 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C2079F11CCF7DB0007A5F21 /* AppDelegate.m */; };
+		5C2079F51CCF7DB0007A5F21 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C2079F41CCF7DB0007A5F21 /* ViewController.m */; };
+		5C2079F81CCF7DB0007A5F21 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5C2079F61CCF7DB0007A5F21 /* Main.storyboard */; };
+		5C2079FA1CCF7DB0007A5F21 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C2079F91CCF7DB0007A5F21 /* Assets.xcassets */; };
+		5C2079FD1CCF7DB0007A5F21 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5C2079FB1CCF7DB0007A5F21 /* LaunchScreen.storyboard */; };
+		5C207A061CCF8048007A5F21 /* CocoaAsyncSocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C207A041CCF7DDA007A5F21 /* CocoaAsyncSocket.framework */; };
+		5C5B624F1CFC447800989CD7 /* AudioRecorderTest_StreamPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5B624E1CFC447800989CD7 /* AudioRecorderTest_StreamPlayer.m */; };
+		5C5B62521CFC510400989CD7 /* AudioPlayerTest2.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5B62511CFC510400989CD7 /* AudioPlayerTest2.m */; };
+		5C7360381CF42014008DD6B5 /* VoiceStreamHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C7360371CF42014008DD6B5 /* VoiceStreamHandler.m */; };
+		5C73603B1CF43CD2008DD6B5 /* VoiceStreamPlayerHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C73603A1CF43CD2008DD6B5 /* VoiceStreamPlayerHandler.m */; };
+		5C73603E1CF47553008DD6B5 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C73603C1CF47553008DD6B5 /* CoreAudio.framework */; };
+		5C73603F1CF47553008DD6B5 /* CoreAudioKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C73603D1CF47553008DD6B5 /* CoreAudioKit.framework */; };
+		5C7360421CF4770A008DD6B5 /* AudioRecorderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C7360411CF4770A008DD6B5 /* AudioRecorderTest.m */; };
+		5C8CE33B1CD0BE1F00EE532F /* asyncUDPConnectionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8CE33A1CD0BE1F00EE532F /* asyncUDPConnectionHandler.m */; };
+		5C8CE33E1CD0BE4500EE532F /* ChannelHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8CE33D1CD0BE4500EE532F /* ChannelHandler.m */; };
+		5C8CE3411CD0BEA900EE532F /* ChatHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8CE3401CD0BEA900EE532F /* ChatHandler.m */; };
+		5C8CE3441CD0BFD200EE532F /* MessageHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8CE3431CD0BFD200EE532F /* MessageHandler.m */; };
+		5C8CE34C1CD0C8A000EE532F /* WalkieTalkieViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8CE34B1CD0C8A000EE532F /* WalkieTalkieViewController.m */; };
+		5C8CE34F1CD0CFBE00EE532F /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8CE34E1CD0CFBE00EE532F /* User.m */; };
+		5C8CE3521CD0D08000EE532F /* Channel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8CE3511CD0D08000EE532F /* Channel.m */; };
+		5C8CE3551CD0EE2200EE532F /* MessageData.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8CE3541CD0EE2200EE532F /* MessageData.m */; };
+		5C8CE3581CD2157B00EE532F /* CreateChannelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8CE3571CD2157B00EE532F /* CreateChannelViewController.m */; };
+		5C8CE35B1CD2159700EE532F /* JoinChannelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8CE35A1CD2159700EE532F /* JoinChannelViewController.m */; };
+		5C8CE35E1CD215B000EE532F /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8CE35D1CD215B000EE532F /* ChatViewController.m */; };
+		5C8CE3611CD21AE100EE532F /* StartPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8CE3601CD21AE100EE532F /* StartPageViewController.m */; };
+		5C8CE3671CD38ECF00EE532F /* ic_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C8CE3621CD38ECF00EE532F /* ic_back.png */; };
+		5C8CE3681CD38ECF00EE532F /* ic_channel_create.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C8CE3631CD38ECF00EE532F /* ic_channel_create.png */; };
+		5C8CE3691CD38ECF00EE532F /* ic_channel_join.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C8CE3641CD38ECF00EE532F /* ic_channel_join.png */; };
+		5C8CE36A1CD38ECF00EE532F /* ic_info.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C8CE3651CD38ECF00EE532F /* ic_info.png */; };
+		5C8CE36B1CD38ECF00EE532F /* ic_public_channel.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C8CE3661CD38ECF00EE532F /* ic_public_channel.png */; };
+		5C8CE3701CDB13DB00EE532F /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C8CE36F1CDB13DB00EE532F /* AVFoundation.framework */; };
+		5C8CE3731CDB36D400EE532F /* AudioFileHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8CE3721CDB36D400EE532F /* AudioFileHandler.m */; };
+		5C8CE3751CDB8CD400EE532F /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C8CE3741CDB8CD300EE532F /* AudioToolbox.framework */; };
+		5C8CE3781CDC612200EE532F /* RecordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8CE3771CDC612200EE532F /* RecordViewController.m */; };
+		A596D4E8BF31DBC4183CC413 /* Pods_SocketTest_walkieTalkie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AF322D7CC7055B4FE84F5E3 /* Pods_SocketTest_walkieTalkie.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		5C207A081CCF8048007A5F21 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		2AF322D7CC7055B4FE84F5E3 /* Pods_SocketTest_walkieTalkie.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SocketTest_walkieTalkie.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5C12E1571CE2FDD600F0EE61 /* asyncTCPConnectionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = asyncTCPConnectionHandler.h; path = SocketTest_walkieTalkie/TCPConnectionHandler/asyncTCPConnectionHandler.h; sourceTree = "<group>"; };
+		5C12E1581CE2FDD600F0EE61 /* asyncTCPConnectionHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = asyncTCPConnectionHandler.m; path = SocketTest_walkieTalkie/TCPConnectionHandler/asyncTCPConnectionHandler.m; sourceTree = "<group>"; };
+		5C12E1641CE4368800F0EE61 /* Wallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wallet.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5C12E1671CE4368800F0EE61 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		5C12E1691CE4368800F0EE61 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		5C12E16A1CE4368800F0EE61 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		5C12E16C1CE4368800F0EE61 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		5C12E16D1CE4368800F0EE61 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		5C12E1701CE4368800F0EE61 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		5C12E1721CE4368800F0EE61 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		5C12E1751CE4368800F0EE61 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		5C12E1771CE4368800F0EE61 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5C2079EA1CCF7DB0007A5F21 /* SocketTest_walkieTalkie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SocketTest_walkieTalkie.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5C2079EE1CCF7DB0007A5F21 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		5C2079F01CCF7DB0007A5F21 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		5C2079F11CCF7DB0007A5F21 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		5C2079F31CCF7DB0007A5F21 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		5C2079F41CCF7DB0007A5F21 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		5C2079F71CCF7DB0007A5F21 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		5C2079F91CCF7DB0007A5F21 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		5C2079FC1CCF7DB0007A5F21 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		5C2079FE1CCF7DB0007A5F21 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5C207A041CCF7DDA007A5F21 /* CocoaAsyncSocket.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaAsyncSocket.framework; path = "/Users/salahuddin_siliconOrchard/OnGoing Projects/WalkieTalkie_iOS/SocketTest_walkieTalkie/SocketTest_walkieTalkie/AsyncSocket/CocoaAsyncSocket.framework"; sourceTree = "<absolute>"; };
+		5C5B624D1CFC447800989CD7 /* AudioRecorderTest_StreamPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioRecorderTest_StreamPlayer.h; path = SocketTest_walkieTalkie/AudioStreamRecorderTest/AudioRecorderTest_StreamPlayer.h; sourceTree = "<group>"; };
+		5C5B624E1CFC447800989CD7 /* AudioRecorderTest_StreamPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AudioRecorderTest_StreamPlayer.m; path = SocketTest_walkieTalkie/AudioStreamRecorderTest/AudioRecorderTest_StreamPlayer.m; sourceTree = "<group>"; };
+		5C5B62501CFC510400989CD7 /* AudioPlayerTest2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioPlayerTest2.h; path = SocketTest_walkieTalkie/AudioStreamRecorderTest/AudioPlayerTest2.h; sourceTree = "<group>"; };
+		5C5B62511CFC510400989CD7 /* AudioPlayerTest2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AudioPlayerTest2.m; path = SocketTest_walkieTalkie/AudioStreamRecorderTest/AudioPlayerTest2.m; sourceTree = "<group>"; };
+		5C7360361CF42014008DD6B5 /* VoiceStreamHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VoiceStreamHandler.h; path = SocketTest_walkieTalkie/VoiceStreamHandler/VoiceStreamHandler.h; sourceTree = "<group>"; };
+		5C7360371CF42014008DD6B5 /* VoiceStreamHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VoiceStreamHandler.m; path = SocketTest_walkieTalkie/VoiceStreamHandler/VoiceStreamHandler.m; sourceTree = "<group>"; };
+		5C7360391CF43CD2008DD6B5 /* VoiceStreamPlayerHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VoiceStreamPlayerHandler.h; path = SocketTest_walkieTalkie/VoiceStreamHandler/VoiceStreamPlayerHandler.h; sourceTree = "<group>"; };
+		5C73603A1CF43CD2008DD6B5 /* VoiceStreamPlayerHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VoiceStreamPlayerHandler.m; path = SocketTest_walkieTalkie/VoiceStreamHandler/VoiceStreamPlayerHandler.m; sourceTree = "<group>"; };
+		5C73603C1CF47553008DD6B5 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		5C73603D1CF47553008DD6B5 /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = System/Library/Frameworks/CoreAudioKit.framework; sourceTree = SDKROOT; };
+		5C7360401CF4770A008DD6B5 /* AudioRecorderTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioRecorderTest.h; path = SocketTest_walkieTalkie/AudioStreamRecorderTest/AudioRecorderTest.h; sourceTree = "<group>"; };
+		5C7360411CF4770A008DD6B5 /* AudioRecorderTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AudioRecorderTest.m; path = SocketTest_walkieTalkie/AudioStreamRecorderTest/AudioRecorderTest.m; sourceTree = "<group>"; };
+		5C8CE3391CD0BE1F00EE532F /* asyncUDPConnectionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = asyncUDPConnectionHandler.h; path = "UDP ConnectionHandler/asyncUDPConnectionHandler.h"; sourceTree = "<group>"; };
+		5C8CE33A1CD0BE1F00EE532F /* asyncUDPConnectionHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = asyncUDPConnectionHandler.m; path = "UDP ConnectionHandler/asyncUDPConnectionHandler.m"; sourceTree = "<group>"; };
+		5C8CE33C1CD0BE4500EE532F /* ChannelHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ChannelHandler.h; path = ChannelHandler/ChannelHandler.h; sourceTree = "<group>"; };
+		5C8CE33D1CD0BE4500EE532F /* ChannelHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ChannelHandler.m; path = ChannelHandler/ChannelHandler.m; sourceTree = "<group>"; };
+		5C8CE33F1CD0BEA900EE532F /* ChatHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ChatHandler.h; path = ChatHandler/ChatHandler.h; sourceTree = "<group>"; };
+		5C8CE3401CD0BEA900EE532F /* ChatHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ChatHandler.m; path = ChatHandler/ChatHandler.m; sourceTree = "<group>"; };
+		5C8CE3421CD0BFD200EE532F /* MessageHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MessageHandler.h; path = MessageHandler/MessageHandler.h; sourceTree = "<group>"; };
+		5C8CE3431CD0BFD200EE532F /* MessageHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MessageHandler.m; path = MessageHandler/MessageHandler.m; sourceTree = "<group>"; };
+		5C8CE3451CD0C1C900EE532F /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		5C8CE3461CD0C1E100EE532F /* walkieTalkie.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = walkieTalkie.pch; sourceTree = "<group>"; };
+		5C8CE34A1CD0C8A000EE532F /* WalkieTalkieViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WalkieTalkieViewController.h; path = SocketTest_walkieTalkie/ViewControllers/walkieTalkieViewController/WalkieTalkieViewController.h; sourceTree = "<group>"; };
+		5C8CE34B1CD0C8A000EE532F /* WalkieTalkieViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WalkieTalkieViewController.m; path = SocketTest_walkieTalkie/ViewControllers/walkieTalkieViewController/WalkieTalkieViewController.m; sourceTree = "<group>"; };
+		5C8CE34D1CD0CFBE00EE532F /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = User.h; path = SocketTest_walkieTalkie/ClientDataModel/User.h; sourceTree = "<group>"; };
+		5C8CE34E1CD0CFBE00EE532F /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = User.m; path = SocketTest_walkieTalkie/ClientDataModel/User.m; sourceTree = "<group>"; };
+		5C8CE3501CD0D08000EE532F /* Channel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Channel.h; path = SocketTest_walkieTalkie/ClientDataModel/Channel.h; sourceTree = "<group>"; };
+		5C8CE3511CD0D08000EE532F /* Channel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Channel.m; path = SocketTest_walkieTalkie/ClientDataModel/Channel.m; sourceTree = "<group>"; };
+		5C8CE3531CD0EE2200EE532F /* MessageData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MessageData.h; path = SocketTest_walkieTalkie/ClientDataModel/MessageData.h; sourceTree = "<group>"; };
+		5C8CE3541CD0EE2200EE532F /* MessageData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MessageData.m; path = SocketTest_walkieTalkie/ClientDataModel/MessageData.m; sourceTree = "<group>"; };
+		5C8CE3561CD2157B00EE532F /* CreateChannelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CreateChannelViewController.h; path = ViewControllers/CreateChannelViewController/CreateChannelViewController.h; sourceTree = "<group>"; };
+		5C8CE3571CD2157B00EE532F /* CreateChannelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CreateChannelViewController.m; path = ViewControllers/CreateChannelViewController/CreateChannelViewController.m; sourceTree = "<group>"; };
+		5C8CE3591CD2159700EE532F /* JoinChannelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JoinChannelViewController.h; path = ViewControllers/JoinChannelViewController/JoinChannelViewController.h; sourceTree = "<group>"; };
+		5C8CE35A1CD2159700EE532F /* JoinChannelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JoinChannelViewController.m; path = ViewControllers/JoinChannelViewController/JoinChannelViewController.m; sourceTree = "<group>"; };
+		5C8CE35C1CD215B000EE532F /* ChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ChatViewController.h; path = ViewControllers/ChatViewController/ChatViewController.h; sourceTree = "<group>"; };
+		5C8CE35D1CD215B000EE532F /* ChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ChatViewController.m; path = ViewControllers/ChatViewController/ChatViewController.m; sourceTree = "<group>"; };
+		5C8CE35F1CD21AE100EE532F /* StartPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StartPageViewController.h; path = ViewControllers/StartpageViewController/StartPageViewController.h; sourceTree = "<group>"; };
+		5C8CE3601CD21AE100EE532F /* StartPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StartPageViewController.m; path = ViewControllers/StartpageViewController/StartPageViewController.m; sourceTree = "<group>"; };
+		5C8CE3621CD38ECF00EE532F /* ic_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_back.png; path = SocketTest_walkieTalkie/Graphics/ic_back.png; sourceTree = "<group>"; };
+		5C8CE3631CD38ECF00EE532F /* ic_channel_create.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_channel_create.png; path = SocketTest_walkieTalkie/Graphics/ic_channel_create.png; sourceTree = "<group>"; };
+		5C8CE3641CD38ECF00EE532F /* ic_channel_join.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_channel_join.png; path = SocketTest_walkieTalkie/Graphics/ic_channel_join.png; sourceTree = "<group>"; };
+		5C8CE3651CD38ECF00EE532F /* ic_info.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_info.png; path = SocketTest_walkieTalkie/Graphics/ic_info.png; sourceTree = "<group>"; };
+		5C8CE3661CD38ECF00EE532F /* ic_public_channel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_public_channel.png; path = SocketTest_walkieTalkie/Graphics/ic_public_channel.png; sourceTree = "<group>"; };
+		5C8CE36F1CDB13DB00EE532F /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		5C8CE3711CDB36D400EE532F /* AudioFileHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioFileHandler.h; path = SocketTest_walkieTalkie/AudioFileHandler/AudioFileHandler.h; sourceTree = "<group>"; };
+		5C8CE3721CDB36D400EE532F /* AudioFileHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AudioFileHandler.m; path = SocketTest_walkieTalkie/AudioFileHandler/AudioFileHandler.m; sourceTree = "<group>"; };
+		5C8CE3741CDB8CD300EE532F /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		5C8CE3761CDC612200EE532F /* RecordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RecordViewController.h; path = SocketTest_walkieTalkie/ViewControllers/RecordViewController/RecordViewController.h; sourceTree = "<group>"; };
+		5C8CE3771CDC612200EE532F /* RecordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RecordViewController.m; path = SocketTest_walkieTalkie/ViewControllers/RecordViewController/RecordViewController.m; sourceTree = "<group>"; };
+		C4EFF460277EBE1426537B4F /* Pods-SocketTest_walkieTalkie.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SocketTest_walkieTalkie.release.xcconfig"; path = "Pods/Target Support Files/Pods-SocketTest_walkieTalkie/Pods-SocketTest_walkieTalkie.release.xcconfig"; sourceTree = "<group>"; };
+		FDE5C871A6A380334B15EF9D /* Pods-SocketTest_walkieTalkie.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SocketTest_walkieTalkie.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SocketTest_walkieTalkie/Pods-SocketTest_walkieTalkie.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		5C12E1611CE4368800F0EE61 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5C2079E71CCF7DB0007A5F21 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5C73603E1CF47553008DD6B5 /* CoreAudio.framework in Frameworks */,
+				5C73603F1CF47553008DD6B5 /* CoreAudioKit.framework in Frameworks */,
+				5C8CE3751CDB8CD400EE532F /* AudioToolbox.framework in Frameworks */,
+				5C8CE3701CDB13DB00EE532F /* AVFoundation.framework in Frameworks */,
+				5C207A061CCF8048007A5F21 /* CocoaAsyncSocket.framework in Frameworks */,
+				A596D4E8BF31DBC4183CC413 /* Pods_SocketTest_walkieTalkie.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		098949612D42FF573319961B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5C73603C1CF47553008DD6B5 /* CoreAudio.framework */,
+				5C73603D1CF47553008DD6B5 /* CoreAudioKit.framework */,
+				5C8CE3741CDB8CD300EE532F /* AudioToolbox.framework */,
+				5C8CE36F1CDB13DB00EE532F /* AVFoundation.framework */,
+				2AF322D7CC7055B4FE84F5E3 /* Pods_SocketTest_walkieTalkie.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5C12E1651CE4368800F0EE61 /* Wallet */ = {
+			isa = PBXGroup;
+			children = (
+				5C12E1691CE4368800F0EE61 /* AppDelegate.h */,
+				5C12E16A1CE4368800F0EE61 /* AppDelegate.m */,
+				5C12E16C1CE4368800F0EE61 /* ViewController.h */,
+				5C12E16D1CE4368800F0EE61 /* ViewController.m */,
+				5C12E16F1CE4368800F0EE61 /* Main.storyboard */,
+				5C12E1721CE4368800F0EE61 /* Assets.xcassets */,
+				5C12E1741CE4368800F0EE61 /* LaunchScreen.storyboard */,
+				5C12E1771CE4368800F0EE61 /* Info.plist */,
+				5C12E1661CE4368800F0EE61 /* Supporting Files */,
+			);
+			path = Wallet;
+			sourceTree = "<group>";
+		};
+		5C12E1661CE4368800F0EE61 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				5C12E1671CE4368800F0EE61 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		5C2079E11CCF7DB0007A5F21 = {
+			isa = PBXGroup;
+			children = (
+				5C5B62501CFC510400989CD7 /* AudioPlayerTest2.h */,
+				5C5B62511CFC510400989CD7 /* AudioPlayerTest2.m */,
+				5C5B624D1CFC447800989CD7 /* AudioRecorderTest_StreamPlayer.h */,
+				5C5B624E1CFC447800989CD7 /* AudioRecorderTest_StreamPlayer.m */,
+				5C7360401CF4770A008DD6B5 /* AudioRecorderTest.h */,
+				5C7360411CF4770A008DD6B5 /* AudioRecorderTest.m */,
+				5C7360391CF43CD2008DD6B5 /* VoiceStreamPlayerHandler.h */,
+				5C73603A1CF43CD2008DD6B5 /* VoiceStreamPlayerHandler.m */,
+				5C7360361CF42014008DD6B5 /* VoiceStreamHandler.h */,
+				5C7360371CF42014008DD6B5 /* VoiceStreamHandler.m */,
+				5C12E1571CE2FDD600F0EE61 /* asyncTCPConnectionHandler.h */,
+				5C12E1581CE2FDD600F0EE61 /* asyncTCPConnectionHandler.m */,
+				5C8CE3761CDC612200EE532F /* RecordViewController.h */,
+				5C8CE3771CDC612200EE532F /* RecordViewController.m */,
+				5C8CE3711CDB36D400EE532F /* AudioFileHandler.h */,
+				5C8CE3721CDB36D400EE532F /* AudioFileHandler.m */,
+				5C8CE3621CD38ECF00EE532F /* ic_back.png */,
+				5C8CE3631CD38ECF00EE532F /* ic_channel_create.png */,
+				5C8CE3641CD38ECF00EE532F /* ic_channel_join.png */,
+				5C8CE3651CD38ECF00EE532F /* ic_info.png */,
+				5C8CE3661CD38ECF00EE532F /* ic_public_channel.png */,
+				5C8CE3531CD0EE2200EE532F /* MessageData.h */,
+				5C8CE3541CD0EE2200EE532F /* MessageData.m */,
+				5C8CE3501CD0D08000EE532F /* Channel.h */,
+				5C8CE3511CD0D08000EE532F /* Channel.m */,
+				5C8CE34D1CD0CFBE00EE532F /* User.h */,
+				5C8CE34E1CD0CFBE00EE532F /* User.m */,
+				5C8CE34A1CD0C8A000EE532F /* WalkieTalkieViewController.h */,
+				5C8CE34B1CD0C8A000EE532F /* WalkieTalkieViewController.m */,
+				5C8CE3461CD0C1E100EE532F /* walkieTalkie.pch */,
+				5C2079EC1CCF7DB0007A5F21 /* SocketTest_walkieTalkie */,
+				5C12E1651CE4368800F0EE61 /* Wallet */,
+				5C2079EB1CCF7DB0007A5F21 /* Products */,
+				EB939EF5D9CCB4A3C8A71314 /* Pods */,
+				098949612D42FF573319961B /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		5C2079EB1CCF7DB0007A5F21 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5C2079EA1CCF7DB0007A5F21 /* SocketTest_walkieTalkie.app */,
+				5C12E1641CE4368800F0EE61 /* Wallet.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5C2079EC1CCF7DB0007A5F21 /* SocketTest_walkieTalkie */ = {
+			isa = PBXGroup;
+			children = (
+				5C2079F01CCF7DB0007A5F21 /* AppDelegate.h */,
+				5C2079F11CCF7DB0007A5F21 /* AppDelegate.m */,
+				5C2079F31CCF7DB0007A5F21 /* ViewController.h */,
+				5C2079F41CCF7DB0007A5F21 /* ViewController.m */,
+				5C2079F61CCF7DB0007A5F21 /* Main.storyboard */,
+				5C2079F91CCF7DB0007A5F21 /* Assets.xcassets */,
+				5C2079FB1CCF7DB0007A5F21 /* LaunchScreen.storyboard */,
+				5C2079FE1CCF7DB0007A5F21 /* Info.plist */,
+				5C2079ED1CCF7DB0007A5F21 /* Supporting Files */,
+				5C8CE3391CD0BE1F00EE532F /* asyncUDPConnectionHandler.h */,
+				5C8CE33A1CD0BE1F00EE532F /* asyncUDPConnectionHandler.m */,
+				5C8CE33C1CD0BE4500EE532F /* ChannelHandler.h */,
+				5C8CE33D1CD0BE4500EE532F /* ChannelHandler.m */,
+				5C8CE33F1CD0BEA900EE532F /* ChatHandler.h */,
+				5C8CE3401CD0BEA900EE532F /* ChatHandler.m */,
+				5C8CE3421CD0BFD200EE532F /* MessageHandler.h */,
+				5C8CE3431CD0BFD200EE532F /* MessageHandler.m */,
+				5C8CE3451CD0C1C900EE532F /* Constants.h */,
+				5C8CE3561CD2157B00EE532F /* CreateChannelViewController.h */,
+				5C8CE3571CD2157B00EE532F /* CreateChannelViewController.m */,
+				5C8CE3591CD2159700EE532F /* JoinChannelViewController.h */,
+				5C8CE35A1CD2159700EE532F /* JoinChannelViewController.m */,
+				5C8CE35C1CD215B000EE532F /* ChatViewController.h */,
+				5C8CE35D1CD215B000EE532F /* ChatViewController.m */,
+				5C8CE35F1CD21AE100EE532F /* StartPageViewController.h */,
+				5C8CE3601CD21AE100EE532F /* StartPageViewController.m */,
+			);
+			path = SocketTest_walkieTalkie;
+			sourceTree = "<group>";
+		};
+		5C2079ED1CCF7DB0007A5F21 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				5C2079EE1CCF7DB0007A5F21 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		EB939EF5D9CCB4A3C8A71314 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				FDE5C871A6A380334B15EF9D /* Pods-SocketTest_walkieTalkie.debug.xcconfig */,
+				C4EFF460277EBE1426537B4F /* Pods-SocketTest_walkieTalkie.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		5C12E1631CE4368800F0EE61 /* Wallet */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5C12E1781CE4368800F0EE61 /* Build configuration list for PBXNativeTarget "Wallet" */;
+			buildPhases = (
+				5C12E1601CE4368800F0EE61 /* Sources */,
+				5C12E1611CE4368800F0EE61 /* Frameworks */,
+				5C12E1621CE4368800F0EE61 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Wallet;
+			productName = Wallet;
+			productReference = 5C12E1641CE4368800F0EE61 /* Wallet.app */;
+			productType = "com.apple.product-type.application";
+		};
+		5C2079E91CCF7DB0007A5F21 /* SocketTest_walkieTalkie */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5C207A011CCF7DB0007A5F21 /* Build configuration list for PBXNativeTarget "SocketTest_walkieTalkie" */;
+			buildPhases = (
+				AB5BC62D01D1C36A78DF3F5D /* Check Pods Manifest.lock */,
+				5C2079E61CCF7DB0007A5F21 /* Sources */,
+				5C2079E71CCF7DB0007A5F21 /* Frameworks */,
+				5C2079E81CCF7DB0007A5F21 /* Resources */,
+				5C207A081CCF8048007A5F21 /* Embed Frameworks */,
+				6DF514B0178653A9371C11CD /* Embed Pods Frameworks */,
+				59C3E6A8547132F92CBDD487 /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SocketTest_walkieTalkie;
+			productName = SocketTest_walkieTalkie;
+			productReference = 5C2079EA1CCF7DB0007A5F21 /* SocketTest_walkieTalkie.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		5C2079E21CCF7DB0007A5F21 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0720;
+				ORGANIZATIONNAME = "salahuddin yousuf";
+				TargetAttributes = {
+					5C12E1631CE4368800F0EE61 = {
+						CreatedOnToolsVersion = 7.2;
+					};
+					5C2079E91CCF7DB0007A5F21 = {
+						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = 3TC5LJ6B2U;
+					};
+				};
+			};
+			buildConfigurationList = 5C2079E51CCF7DB0007A5F21 /* Build configuration list for PBXProject "SocketTest_walkieTalkie" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 5C2079E11CCF7DB0007A5F21;
+			productRefGroup = 5C2079EB1CCF7DB0007A5F21 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				5C2079E91CCF7DB0007A5F21 /* SocketTest_walkieTalkie */,
+				5C12E1631CE4368800F0EE61 /* Wallet */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		5C12E1621CE4368800F0EE61 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5C12E1761CE4368800F0EE61 /* LaunchScreen.storyboard in Resources */,
+				5C12E1731CE4368800F0EE61 /* Assets.xcassets in Resources */,
+				5C12E1711CE4368800F0EE61 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5C2079E81CCF7DB0007A5F21 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5C2079FD1CCF7DB0007A5F21 /* LaunchScreen.storyboard in Resources */,
+				5C8CE36A1CD38ECF00EE532F /* ic_info.png in Resources */,
+				5C8CE36B1CD38ECF00EE532F /* ic_public_channel.png in Resources */,
+				5C8CE3691CD38ECF00EE532F /* ic_channel_join.png in Resources */,
+				5C2079FA1CCF7DB0007A5F21 /* Assets.xcassets in Resources */,
+				5C8CE3671CD38ECF00EE532F /* ic_back.png in Resources */,
+				5C2079F81CCF7DB0007A5F21 /* Main.storyboard in Resources */,
+				5C8CE3681CD38ECF00EE532F /* ic_channel_create.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		59C3E6A8547132F92CBDD487 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SocketTest_walkieTalkie/Pods-SocketTest_walkieTalkie-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6DF514B0178653A9371C11CD /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SocketTest_walkieTalkie/Pods-SocketTest_walkieTalkie-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AB5BC62D01D1C36A78DF3F5D /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5C12E1601CE4368800F0EE61 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5C12E16E1CE4368800F0EE61 /* ViewController.m in Sources */,
+				5C12E16B1CE4368800F0EE61 /* AppDelegate.m in Sources */,
+				5C12E1681CE4368800F0EE61 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5C2079E61CCF7DB0007A5F21 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5C2079F51CCF7DB0007A5F21 /* ViewController.m in Sources */,
+				5C2079F21CCF7DB0007A5F21 /* AppDelegate.m in Sources */,
+				5C7360421CF4770A008DD6B5 /* AudioRecorderTest.m in Sources */,
+				5C8CE34F1CD0CFBE00EE532F /* User.m in Sources */,
+				5C5B62521CFC510400989CD7 /* AudioPlayerTest2.m in Sources */,
+				5C8CE3521CD0D08000EE532F /* Channel.m in Sources */,
+				5C8CE3611CD21AE100EE532F /* StartPageViewController.m in Sources */,
+				5C12E1591CE2FDD600F0EE61 /* asyncTCPConnectionHandler.m in Sources */,
+				5C8CE3411CD0BEA900EE532F /* ChatHandler.m in Sources */,
+				5C8CE3731CDB36D400EE532F /* AudioFileHandler.m in Sources */,
+				5C8CE33E1CD0BE4500EE532F /* ChannelHandler.m in Sources */,
+				5C8CE3551CD0EE2200EE532F /* MessageData.m in Sources */,
+				5C8CE3441CD0BFD200EE532F /* MessageHandler.m in Sources */,
+				5C8CE3581CD2157B00EE532F /* CreateChannelViewController.m in Sources */,
+				5C8CE34C1CD0C8A000EE532F /* WalkieTalkieViewController.m in Sources */,
+				5C7360381CF42014008DD6B5 /* VoiceStreamHandler.m in Sources */,
+				5C2079EF1CCF7DB0007A5F21 /* main.m in Sources */,
+				5C8CE33B1CD0BE1F00EE532F /* asyncUDPConnectionHandler.m in Sources */,
+				5C8CE35E1CD215B000EE532F /* ChatViewController.m in Sources */,
+				5C5B624F1CFC447800989CD7 /* AudioRecorderTest_StreamPlayer.m in Sources */,
+				5C8CE3781CDC612200EE532F /* RecordViewController.m in Sources */,
+				5C73603B1CF43CD2008DD6B5 /* VoiceStreamPlayerHandler.m in Sources */,
+				5C8CE35B1CD2159700EE532F /* JoinChannelViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		5C12E16F1CE4368800F0EE61 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5C12E1701CE4368800F0EE61 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		5C12E1741CE4368800F0EE61 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5C12E1751CE4368800F0EE61 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		5C2079F61CCF7DB0007A5F21 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5C2079F71CCF7DB0007A5F21 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		5C2079FB1CCF7DB0007A5F21 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5C2079FC1CCF7DB0007A5F21 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		5C12E1791CE4368800F0EE61 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = Wallet/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.SSLWireless.Wallet;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		5C12E17A1CE4368800F0EE61 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = Wallet/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.SSLWireless.Wallet;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		5C2079FF1CCF7DB0007A5F21 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		5C207A001CCF7DB0007A5F21 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		5C207A021CCF7DB0007A5F21 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = FDE5C871A6A380334B15EF9D /* Pods-SocketTest_walkieTalkie.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer: S M SHOEB AMIN (TX4KHVPZAK)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SocketTest_walkieTalkie/AsyncSocket",
+				);
+				GCC_PREFIX_HEADER = walkieTalkie.pch;
+				INFOPLIST_FILE = SocketTest_walkieTalkie/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.siliconOrchard.walkieTalkie;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		5C207A031CCF7DB0007A5F21 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C4EFF460277EBE1426537B4F /* Pods-SocketTest_walkieTalkie.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer: S M SHOEB AMIN (TX4KHVPZAK)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SocketTest_walkieTalkie/AsyncSocket",
+				);
+				GCC_PREFIX_HEADER = walkieTalkie.pch;
+				INFOPLIST_FILE = SocketTest_walkieTalkie/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.siliconOrchard.walkieTalkie;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		5C12E1781CE4368800F0EE61 /* Build configuration list for PBXNativeTarget "Wallet" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5C12E1791CE4368800F0EE61 /* Debug */,
+				5C12E17A1CE4368800F0EE61 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5C2079E51CCF7DB0007A5F21 /* Build configuration list for PBXProject "SocketTest_walkieTalkie" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5C2079FF1CCF7DB0007A5F21 /* Debug */,
+				5C207A001CCF7DB0007A5F21 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5C207A011CCF7DB0007A5F21 /* Build configuration list for PBXNativeTarget "SocketTest_walkieTalkie" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5C207A021CCF7DB0007A5F21 /* Debug */,
+				5C207A031CCF7DB0007A5F21 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 5C2079E21CCF7DB0007A5F21 /* Project object */;
+}
