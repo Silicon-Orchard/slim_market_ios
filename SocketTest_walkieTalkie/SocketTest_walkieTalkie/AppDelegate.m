@@ -32,6 +32,11 @@
         [[NSUserDefaults standardUserDefaults] setObject:[[NSUUID UUID]UUIDString] forKey:DEVICE_UUID_KEY_FORUSERDEFAULTS];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
+    
+    [[UINavigationBar appearance] setBackgroundImage:[UIImage new]
+                                       forBarMetrics:UIBarMetricsDefault];
+    [UINavigationBar appearance].shadowImage = [UIImage new];
+    [UINavigationBar appearance].translucent = YES;
     return YES;
 }
 

@@ -18,7 +18,7 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         mySharedHandler = [[AudioRecorderTest_StreamPlayer alloc] init];
-        
+
         // Do any other initialisation stuff here
     });
     
@@ -60,13 +60,20 @@
 void OutputBufferCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueBufferRef inBuffer) {
     //Cast userData to MediaPlayer Objective-C class instance
     AudioRecorderTest_StreamPlayer *mediaPlayer = (__bridge AudioRecorderTest_StreamPlayer *) inUserData;
-    // Fill buffer.
-
-//    [mediaPlayer fillAudioBuffer:inBuffer  withAudioData:mediaPlayer.recordedAudioDataArray[0]];
-    // Re-enqueue buffer.
-//    OSStatus err = AudioQueueEnqueueBuffer(inAQ, inBuffer, 0, NULL);
-//    if (err != noErr)
-//        NSLog(@"AudioQueueEnqueueBuffer() error %d", (int) err);
+    mediaPlayer->playState.counter--;
+    if(mediaPlayer->playState.counter <= 0){
+        
+        //Silence Buffer
+        memset(inBuffer->mAudioData, 0x00, kBufferByteSize);
+        inBuffer->mAudioDataByteSize = kBufferByteSize;
+        
+        OSStatus err = AudioQueueEnqueueBuffer(inAQ, inBuffer, 0, nil);
+        if (err == noErr) {
+            mediaPlayer->playState.counter++;
+        } else{
+            NSLog(@"AudioQueueEnqueueBuffer() error: %d", (int) err);
+        }
+    }
 }
 
 - (void)fillAudioBuffer:(AudioQueueBufferRef)inBuffer withAudioData:(NSData *)audioData{
@@ -80,6 +87,8 @@ void OutputBufferCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueBuffer
 }
 
 - (void)startMediaPlayer {
+    playState.counter = 0;
+
     AudioStreamBasicDescription streamFormat;
 //    streamFormat.mFormatID = kAudioFormatLinearPCM;
 //    streamFormat.mSampleRate = 16000.0;
@@ -110,6 +119,11 @@ void OutputBufferCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueBuffer
         buffer->mAudioDataByteSize = kBufferByteSize;
         if (err == noErr) {
             err = AudioQueueEnqueueBuffer(playState._playerQueue, buffer, 0, nil);
+            if (err == noErr) {
+                playState.counter = 1;
+            } else{
+                NSLog(@"AudioQueueEnqueueBuffer() error: %d", (int) err);
+            }
             if (err != noErr) NSLog(@"AudioQueueEnqueueBuffer() error: %d", (int) err);
         } else {
             NSLog(@"AudioQueueAllocateBuffer() error: %d", (int) err);
@@ -142,6 +156,11 @@ void OutputBufferCallback(void *inUserData, AudioQueueRef inAQ, AudioQueueBuffer
 
         if (err == noErr) {
             err = AudioQueueEnqueueBuffer(playState._playerQueue, buffer, 0, nil);
+            if (err == noErr){
+                playState.counter++;
+            }else {
+                NSLog(@"AudioQueueEnqueueBuffer() error: %d", (int) err);
+            }
             if (err != noErr) NSLog(@"AudioQueueEnqueueBuffer() error: %d", (int) err);
         } else {
             NSLog(@"AudioQueueAllocateBuffer() error: %d", (int) err);

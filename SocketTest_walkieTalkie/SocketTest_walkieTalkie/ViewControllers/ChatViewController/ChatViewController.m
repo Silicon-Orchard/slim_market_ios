@@ -9,6 +9,9 @@
 #import "ChatViewController.h"
 #import "JoinChannelViewController.h"
 #import "RecordViewController.h"
+#import "IncomingMessageCell.h"
+#import "OutGoingMessagesCell.h"
+#import "channelMemberActivityTableViewCell.h"
 
 @interface ChatViewController (){
     AVAudioRecorder *recorder;
@@ -21,8 +24,12 @@
     BOOL _isStreaming, _isPlayingStream;
     AudioRecorderTest *queueRecorder;
     NSMutableArray *receivedAudioStreamContainerArray;
+    NSMutableArray *chatRoomMemberList, *chatMessageList;
     
 }
+
+
+@property (nonatomic, strong) IncomingMessageCell *prototypeCell;
 @end
 
 @implementation ChatViewController
@@ -31,6 +38,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    chatMessageList = [[NSMutableArray alloc] init];
+    chatRoomMemberList = [[NSMutableArray alloc] init];
     receivedAudioStreamContainerArray = [[NSMutableArray alloc] init];
     [ChannelHandler sharedHandler].currentlyActiveChannel = self.currentActiveChannel;
     [[asyncTCPConnectionHandler sharedHandler] createTCPSenderSocket];
@@ -56,6 +65,11 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(voiceMessageReceivedInTCP:) name:TCP_VOICE_MESSAGE_RECEIEVED_NOTIFICATIONKEY object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(requestForRepeatVoiceMessagereceived:) name:UDP_VOICE_MESSAGE_REPEAR_REQUEST_NOTIFICATIONKEY object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playAudioStream) name:@"playAudioNotification" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didChangePreferredContentSize:)
+                                                 name:UIContentSizeCategoryDidChangeNotification object:nil];
+
+    [self.chatTableView addObserver:self forKeyPath:@"contentSize" options:0 context:NULL];
 
 
 
@@ -90,8 +104,17 @@
         recorder.meteringEnabled = YES;
         [recorder prepareToRecord];
     }
+    
+    
 
     // Do any additional setup after loading the view.
+}
+
+- (void) addFooterToTableView:(UITableView *) myTableView
+{
+    UIView *v = [[UIView alloc] initWithFrame:CGRectZero];
+    
+    [myTableView setTableFooterView:v];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -112,12 +135,25 @@
     self.title = [NSString stringWithFormat:@"Channel ID %d", self.currentActiveChannel.channelID];
     self.sendButton.enabled = NO;
     self.audioReceivedButton.hidden = YES;
+    
+    [self addFooterToTableView:self.channelMemberTableView];
+    [self addFooterToTableView:self.chatTableView];
+
+    [self.navigationController.navigationBar setTitleTextAttributes:
+     @{NSForegroundColorAttributeName:[UIColor whiteColor]}];
+    self.navigationController.navigationBar.tintColor = UIColorFromRGB(0xE0362B);
+
 
     
 }
 
 -(void)viewDidAppear:(BOOL)animated{
     [self updateUIForChatViewWithChannel:self.currentActiveChannel];
+    [self.chatTableView setContentOffset:CGPointMake(0, self.chatTableView.frame.size.height)];
+    int lastRow = 0;
+//    [self.chatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:chatMessageList.count-1] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+
+
 
 }
 
@@ -148,25 +184,28 @@
 
     self.channelMemberListLabel.text =@"";
 
+    chatRoomMemberList = [[NSMutableArray alloc] init];
     for (int i = 0; i < currentChatChannel.channelMemberIPs.count; i++) {
         NSMutableString *members = [[NSMutableString alloc] initWithString:self.channelMemberListLabel.text];
         if (i==0) {
             if (currentChatChannel.channelID ==1 || currentChatChannel.channelID ==2) {
                 [members appendString:[NSString stringWithFormat:@"\n%@ Joined", [currentChatChannel.channelMemberNamess objectAtIndex:i]]];
-
+                [chatRoomMemberList addObject:[NSString stringWithFormat:@"%@ Joined", [currentChatChannel.channelMemberNamess objectAtIndex:i]]];
             }
             else{
                 [members appendString:[NSString stringWithFormat:@"%@ Owner", [currentChatChannel.channelMemberNamess objectAtIndex:i]]];
+                [chatRoomMemberList addObject:[NSString stringWithFormat:@"%@ Owner", [currentChatChannel.channelMemberNamess objectAtIndex:i]]];
             }
         }
         else{
             [members appendString:[NSString stringWithFormat:@"\n%@ Joined", [currentChatChannel.channelMemberNamess objectAtIndex:i]]];
+            [chatRoomMemberList addObject:[NSString stringWithFormat:@"%@ Joined", [currentChatChannel.channelMemberNamess objectAtIndex:i]]];
         }
         self.channelMemberListLabel.text = members;
      
     }
     [ChannelHandler sharedHandler].currentlyActiveChannel = self.currentActiveChannel;
-
+    [self.channelMemberTableView reloadData];
 
 
 }
@@ -174,8 +213,14 @@
 -(void)updateUIForChatMessage:(NSString *)chatMessage{
 
     NSMutableString *newString = [[NSMutableString alloc] initWithString:self.chatViewLabel.text];
-    [newString appendString:[NSString stringWithFormat:@"\n%@", chatMessage]];
+    [newString appendString:[NSString stringWithFormat:@"%@", chatMessage]];
     self.chatViewLabel.text = newString;
+    [chatMessageList addObject:chatMessage];
+    [self.chatTableView reloadData];
+    [self.chatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:chatMessageList.count-1] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    
+
+//    [self.chatTableView setContentOffset:CGPointMake(0, CGFLOAT_MAX)];
 
 }
 
@@ -183,6 +228,7 @@
 -(void)ScreenTapped{
     [self.view endEditing:YES];
     self.bottomSpaceForSendContainer.constant = 0;
+    [self.view layoutIfNeeded];
 }
 
 -(void) chatMessageReceived:(NSNotification*)notification{
@@ -251,6 +297,9 @@
             }
             [self updateUIForChatViewWithChannel:currentlyActiveChannel];
             [self updateUIForChatMessage:[NSString stringWithFormat:@"%@ has left!",leftMemberName]];
+            [chatRoomMemberList addObject:[NSString stringWithFormat:@"%@ has left!",leftMemberName]];
+            [self.channelMemberTableView reloadData];
+
         }
         
     }
@@ -358,7 +407,7 @@
    
     NSString *chatMessage = self.chatTextField.text;
     NSString *senderName = [ChannelHandler sharedHandler].userNameInChannel;
-    NSString *FullChatMessage = [NSString stringWithFormat:@"%@:%@", senderName,chatMessage];
+    NSString *FullChatMessage = [NSString stringWithFormat:@"Me:%@", chatMessage];
     [self updateUIForChatMessage:FullChatMessage];
     
     
@@ -524,13 +573,18 @@
         
         // Start recording
         [recorder record];
-        [recordPauseButton setTitle:@"Pause" forState:UIControlStateNormal];
+//        [recordPauseButton setTitle:@"Pause" forState:UIControlStateNormal];
+        [recordPauseButton setBackgroundImage:[UIImage imageNamed:@"Record Stop"] forState:UIControlStateNormal];
         
     } else {
         
         // Pause recording
-        [recorder pause];
-        [recordPauseButton setTitle:@"Record" forState:UIControlStateNormal];
+        [recorder stop];
+//        [recordPauseButton setTitle:@"Record" forState:UIControlStateNormal];
+        [recordPauseButton setBackgroundImage:[UIImage imageNamed:@"Record srt"] forState:UIControlStateNormal];
+
+        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+        [audioSession setActive:NO error:nil];
     }
     
     [stopButton setEnabled:YES];
@@ -799,7 +853,8 @@
 - (IBAction)voiceStreamButtonTapped:(id)sender {
     
     if (_isStreaming) {
-        [self.voiceStreamerButton setTitle:@"Start Streaming" forState:UIControlStateNormal];
+//        [self.voiceStreamerButton setTitle:@"Start Streaming" forState:UIControlStateNormal];
+        [self.voiceStreamerButton setBackgroundImage:[UIImage imageNamed:@"Start Streaming Btn Normal"] forState:UIControlStateNormal];
         [queueRecorder stopRecording];
         [[AudioRecorderTest_StreamPlayer sharedHandler] stopMediaPlayer];
 
@@ -813,7 +868,9 @@
         [queueRecorder startRecording];
 //        [[AudioRecorderTest_StreamPlayer sharedHandler] startMediaPlayer];
 //        [queueRecorder startMediaPlayer];
-        [self.voiceStreamerButton setTitle:@"Stop Streaming" forState:UIControlStateNormal];
+//        [self.voiceStreamerButton setTitle:@"Stop Streaming" forState:UIControlStateNormal];
+        [self.voiceStreamerButton setBackgroundImage:[UIImage imageNamed:@"Stop Streaming Btn normal"] forState:UIControlStateNormal];
+
         
     }
 
@@ -821,8 +878,161 @@
     
 }
 
+#pragma mark -TableViewdelegates
 
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    if (tableView.tag ==101) {
+       return chatMessageList.count;
+    }
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if (tableView.tag ==102) {
+        return chatRoomMemberList.count;
+    }
+    return 1;
+}
+
+-(void)dealloc{
+    [self.chatTableView removeObserver:self forKeyPath:@"contentSize"];
+}
+
+static NSString *incomingMessageCellIdentifier = @"incomingChatMessageCellID";
+static NSString *chatmemberCellID = @"chatmemberCellID";
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+//    static NSString *CellIdentifier = @"Cell";
+//    
+//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+//    if (cell == nil) {
+//        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+//                                      reuseIdentifier:CellIdentifier];
+//    }
+//    
+//    // Configure the cell...
+//    return cell;
+    UITableViewCell *cell;
+//    UITableViewCell *
+    if (tableView.tag == 102) {
+        channelMemberActivityTableViewCell *cell2 = [tableView dequeueReusableCellWithIdentifier:chatmemberCellID forIndexPath:indexPath];
+        cell2.userName.text = [chatRoomMemberList objectAtIndex:indexPath.row];
+        return cell2;
+    }
+    else{
+        cell = [tableView dequeueReusableCellWithIdentifier:incomingMessageCellIdentifier forIndexPath:indexPath];
+        [self configureCell:cell forRowAtIndexPath:indexPath];
+        return cell;
+
+    }
+    
+}
+
+- (void)didChangePreferredContentSize:(NSNotification *)notification
+{
+    [self.chatTableView reloadData];
+    [self.chatTableView setContentOffset:CGPointMake(0, self.chatTableView.frame.size.height)];
+
+
+}
+
+- (void)configureCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([cell isKindOfClass:[IncomingMessageCell class]])
+    {
+        NSString *chatMessage = [chatMessageList objectAtIndex:indexPath.section];
+        NSArray *strings = [chatMessage componentsSeparatedByString:@":"];
+        
+        IncomingMessageCell *textCell = (IncomingMessageCell *)cell;
+        if ([[strings objectAtIndex:0] isEqualToString:@"Me"]) {
+            textCell.nameLabel.textAlignment = NSTextAlignmentRight;
+            textCell.chat_Text_Label.textAlignment = NSTextAlignmentRight;
+            textCell.nameLabel.text = [NSString stringWithFormat:@"%@:",[strings objectAtIndex:0]];
+
+
+        }
+        else{
+            textCell.nameLabel.textAlignment = NSTextAlignmentLeft;
+            textCell.chat_Text_Label.textAlignment = NSTextAlignmentLeft;
+            textCell.nameLabel.text = [NSString stringWithFormat:@"%@:",[strings objectAtIndex:0]];
+
+        }
+        textCell.nameLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
+        NSMutableString *message = [[NSMutableString alloc] init];
+        for (int i = 1; i<strings.count; i++) {
+            [message appendString:strings[i]];
+        }
+        textCell.chat_Text_Label.text = message;
+        textCell.chat_Text_Label.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    }
+}
+
+
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return UITableViewAutomaticDimension;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (tableView.tag == 102) {
+        return 26;
+    }
+    [self configureCell:self.prototypeCell forRowAtIndexPath:indexPath];
+    self.prototypeCell.bounds = CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.chatTableView.bounds), CGRectGetHeight(self.prototypeCell.bounds));
+
+    [self.prototypeCell layoutIfNeeded];
+
+    CGSize size = [self.prototypeCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+    return size.height+1;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    UIView *view = [[UIView alloc] init];
+    
+    return view;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    // This will create a "invisible" footer
+    return 0.01f;
+}
+
+
+- (IncomingMessageCell *)prototypeCell
+{
+    if (!_prototypeCell)
+    {
+        _prototypeCell = [self.chatTableView dequeueReusableCellWithIdentifier:incomingMessageCellIdentifier];
+    }
+    return _prototypeCell;
+}
+
+#pragma mark - observer 
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+//    CGRect frame = self.chatTableView.frame;
+//    frame.size = self.chatTableView.contentSize;
+//    
+//    if (frame.size.height > self.chatTableContainerView.frame.size.height) {
+//        frame.size.height = self.chatTableContainerView.frame.size.height;
+//    }
+//    self.chatTableView.frame = frame;
+}
 
 #pragma mark - Navigation
 

@@ -10,7 +10,7 @@
 #import <AVFoundation/AVFoundation.h>
 
 
-@interface ChatViewController : UIViewController <UITextFieldDelegate,AVAudioRecorderDelegate, AVAudioPlayerDelegate>
+@interface ChatViewController : UIViewController <UITextFieldDelegate,AVAudioRecorderDelegate, AVAudioPlayerDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) Channel *currentActiveChannel;
 @property (weak, nonatomic) IBOutlet UILabel *channelMemberListLabel;
@@ -26,6 +26,9 @@
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
 @property (weak, nonatomic) IBOutlet UIButton *audioReceivedButton;
 @property (weak, nonatomic) IBOutlet UIButton *voiceStreamerButton;
+@property (weak, nonatomic) IBOutlet UITableView *chatTableView;
+@property (weak, nonatomic) IBOutlet UIView *chatTableContainerView;
+@property (weak, nonatomic) IBOutlet UITableView *channelMemberTableView;
 
 - (IBAction)recordPauseTapped:(id)sender;
 - (IBAction)stopTapped:(id)sender;

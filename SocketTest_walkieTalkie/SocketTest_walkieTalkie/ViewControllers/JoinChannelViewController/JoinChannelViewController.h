@@ -11,5 +11,7 @@
 @interface JoinChannelViewController : UIViewController <UITextFieldDelegate>
 
 @property(nonatomic, assign) BOOL isChatOpen;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *publicchannelACenterYConstraint;
+
 
 @end

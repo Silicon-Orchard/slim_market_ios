@@ -22,6 +22,8 @@ typedef struct
     AudioFileID                 _playerAudioFile;
     SInt64                      _playerCurrentPacket;
     bool                        isPlaying;
+    int                         counter;
+
 }PlayState;
 
 +(AudioRecorderTest_StreamPlayer*)sharedHandler;

@@ -27,8 +27,9 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-    
-    self.title = @"Create Channel";
+//    self.navigationController.navigationBar.barStyle = UIBarStyleDefault;
+    self.navigationController.navigationBar.tintColor = UIColorFromRGB(0xE0362B);
+//    self.title = @"Create Channel";
     self.hostNameTextField.text = [UIDevice currentDevice].name;
 
 }

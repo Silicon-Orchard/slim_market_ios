@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SocketTest_walkieTalkie/ViewControllers/ChatViewController/ChatViewController.m"
-            timestampString = "486041328.538056"
+            timestampString = "487147723.451116"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "351"
-            endingLineNumber = "351"
+            startingLineNumber = "400"
+            endingLineNumber = "400"
             landmarkName = "-SendButtonTapped:"
             landmarkType = "5">
          </BreakpointContent>
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SocketTest_walkieTalkie/ViewControllers/ChatViewController/ChatViewController.m"
-            timestampString = "486041328.538056"
+            timestampString = "487147723.451116"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "673"
-            endingLineNumber = "673"
+            startingLineNumber = "727"
+            endingLineNumber = "727"
             landmarkName = "-playReceivedSound:"
             landmarkType = "5">
          </BreakpointContent>
@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SocketTest_walkieTalkie/ViewControllers/ChatViewController/ChatViewController.m"
-            timestampString = "486041328.538056"
+            timestampString = "487147723.451116"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "675"
-            endingLineNumber = "675"
+            startingLineNumber = "729"
+            endingLineNumber = "729"
             landmarkName = "-playReceivedSound:"
             landmarkType = "5">
          </BreakpointContent>
@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SocketTest_walkieTalkie/ViewControllers/ChatViewController/ChatViewController.m"
-            timestampString = "486041328.538056"
+            timestampString = "487147723.451116"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "440"
-            endingLineNumber = "440"
+            startingLineNumber = "489"
+            endingLineNumber = "489"
             landmarkName = "-voiceMessageReceivedInTCP:"
             landmarkType = "5">
          </BreakpointContent>
@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SocketTest_walkieTalkie/ViewControllers/ChatViewController/ChatViewController.m"
-            timestampString = "486041328.538056"
+            timestampString = "487147723.451116"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "419"
-            endingLineNumber = "419"
+            startingLineNumber = "468"
+            endingLineNumber = "468"
             landmarkName = "-requestForRepeatVoiceMessagereceived:"
             landmarkType = "5">
          </BreakpointContent>
@@ -186,11 +186,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SocketTest_walkieTalkie/ViewControllers/ChatViewController/ChatViewController.m"
-            timestampString = "486380679.103697"
+            timestampString = "487147723.451116"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "738"
-            endingLineNumber = "738"
+            startingLineNumber = "792"
+            endingLineNumber = "792"
             landmarkName = "-voiceStreamReceivedInChat:"
             landmarkType = "5">
          </BreakpointContent>
@@ -208,6 +208,38 @@
             startingLineNumber = "81"
             endingLineNumber = "81"
             landmarkName = "-recorded:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SocketTest_walkieTalkie/ViewControllers/ChatViewController/ChatViewController.m"
+            timestampString = "487147723.451116"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "945"
+            endingLineNumber = "945"
+            landmarkName = "-configureCell:forRowAtIndexPath:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SocketTest_walkieTalkie/ViewControllers/JoinChannelViewController/JoinChannelViewController.m"
+            timestampString = "487146860.690234"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "42"
+            endingLineNumber = "42"
+            landmarkName = "-keyboardWasShown:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

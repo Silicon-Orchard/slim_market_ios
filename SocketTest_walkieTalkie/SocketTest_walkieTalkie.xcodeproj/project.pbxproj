@@ -23,6 +23,10 @@
 		5C207A061CCF8048007A5F21 /* CocoaAsyncSocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C207A041CCF7DDA007A5F21 /* CocoaAsyncSocket.framework */; };
 		5C5B624F1CFC447800989CD7 /* AudioRecorderTest_StreamPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5B624E1CFC447800989CD7 /* AudioRecorderTest_StreamPlayer.m */; };
 		5C5B62521CFC510400989CD7 /* AudioPlayerTest2.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5B62511CFC510400989CD7 /* AudioPlayerTest2.m */; };
+		5C5B625D1D06B42300989CD7 /* Znikomit.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5C5B625C1D06B41800989CD7 /* Znikomit.otf */; };
+		5C5B62601D080C7300989CD7 /* IncomingMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5B625F1D080C7300989CD7 /* IncomingMessageCell.m */; };
+		5C5B62631D080C9000989CD7 /* OutGoingMessagesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5B62621D080C9000989CD7 /* OutGoingMessagesCell.m */; };
+		5C5B62661D080CA900989CD7 /* channelMemberActivityTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5B62651D080CA900989CD7 /* channelMemberActivityTableViewCell.m */; };
 		5C7360381CF42014008DD6B5 /* VoiceStreamHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C7360371CF42014008DD6B5 /* VoiceStreamHandler.m */; };
 		5C73603B1CF43CD2008DD6B5 /* VoiceStreamPlayerHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C73603A1CF43CD2008DD6B5 /* VoiceStreamPlayerHandler.m */; };
 		5C73603E1CF47553008DD6B5 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C73603C1CF47553008DD6B5 /* CoreAudio.framework */; };
@@ -94,6 +98,13 @@
 		5C5B624E1CFC447800989CD7 /* AudioRecorderTest_StreamPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AudioRecorderTest_StreamPlayer.m; path = SocketTest_walkieTalkie/AudioStreamRecorderTest/AudioRecorderTest_StreamPlayer.m; sourceTree = "<group>"; };
 		5C5B62501CFC510400989CD7 /* AudioPlayerTest2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioPlayerTest2.h; path = SocketTest_walkieTalkie/AudioStreamRecorderTest/AudioPlayerTest2.h; sourceTree = "<group>"; };
 		5C5B62511CFC510400989CD7 /* AudioPlayerTest2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AudioPlayerTest2.m; path = SocketTest_walkieTalkie/AudioStreamRecorderTest/AudioPlayerTest2.m; sourceTree = "<group>"; };
+		5C5B625C1D06B41800989CD7 /* Znikomit.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Znikomit.otf; path = SocketTest_walkieTalkie/Znikomit.otf; sourceTree = "<group>"; };
+		5C5B625E1D080C7300989CD7 /* IncomingMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IncomingMessageCell.h; path = SocketTest_walkieTalkie/TableViewCells/IncomingMessageCell.h; sourceTree = "<group>"; };
+		5C5B625F1D080C7300989CD7 /* IncomingMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IncomingMessageCell.m; path = SocketTest_walkieTalkie/TableViewCells/IncomingMessageCell.m; sourceTree = "<group>"; };
+		5C5B62611D080C9000989CD7 /* OutGoingMessagesCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OutGoingMessagesCell.h; path = SocketTest_walkieTalkie/TableViewCells/OutGoingMessagesCell.h; sourceTree = "<group>"; };
+		5C5B62621D080C9000989CD7 /* OutGoingMessagesCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OutGoingMessagesCell.m; path = SocketTest_walkieTalkie/TableViewCells/OutGoingMessagesCell.m; sourceTree = "<group>"; };
+		5C5B62641D080CA900989CD7 /* channelMemberActivityTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = channelMemberActivityTableViewCell.h; path = SocketTest_walkieTalkie/TableViewCells/channelMemberActivityTableViewCell.h; sourceTree = "<group>"; };
+		5C5B62651D080CA900989CD7 /* channelMemberActivityTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = channelMemberActivityTableViewCell.m; path = SocketTest_walkieTalkie/TableViewCells/channelMemberActivityTableViewCell.m; sourceTree = "<group>"; };
 		5C7360361CF42014008DD6B5 /* VoiceStreamHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VoiceStreamHandler.h; path = SocketTest_walkieTalkie/VoiceStreamHandler/VoiceStreamHandler.h; sourceTree = "<group>"; };
 		5C7360371CF42014008DD6B5 /* VoiceStreamHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VoiceStreamHandler.m; path = SocketTest_walkieTalkie/VoiceStreamHandler/VoiceStreamHandler.m; sourceTree = "<group>"; };
 		5C7360391CF43CD2008DD6B5 /* VoiceStreamPlayerHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VoiceStreamPlayerHandler.h; path = SocketTest_walkieTalkie/VoiceStreamHandler/VoiceStreamPlayerHandler.h; sourceTree = "<group>"; };
@@ -206,6 +217,13 @@
 		5C2079E11CCF7DB0007A5F21 = {
 			isa = PBXGroup;
 			children = (
+				5C5B62641D080CA900989CD7 /* channelMemberActivityTableViewCell.h */,
+				5C5B62651D080CA900989CD7 /* channelMemberActivityTableViewCell.m */,
+				5C5B62611D080C9000989CD7 /* OutGoingMessagesCell.h */,
+				5C5B62621D080C9000989CD7 /* OutGoingMessagesCell.m */,
+				5C5B625E1D080C7300989CD7 /* IncomingMessageCell.h */,
+				5C5B625F1D080C7300989CD7 /* IncomingMessageCell.m */,
+				5C5B625C1D06B41800989CD7 /* Znikomit.otf */,
 				5C5B62501CFC510400989CD7 /* AudioPlayerTest2.h */,
 				5C5B62511CFC510400989CD7 /* AudioPlayerTest2.m */,
 				5C5B624D1CFC447800989CD7 /* AudioRecorderTest_StreamPlayer.h */,
@@ -396,6 +414,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C5B625D1D06B42300989CD7 /* Znikomit.otf in Resources */,
 				5C2079FD1CCF7DB0007A5F21 /* LaunchScreen.storyboard in Resources */,
 				5C8CE36A1CD38ECF00EE532F /* ic_info.png in Resources */,
 				5C8CE36B1CD38ECF00EE532F /* ic_public_channel.png in Resources */,
@@ -472,7 +491,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C5B62661D080CA900989CD7 /* channelMemberActivityTableViewCell.m in Sources */,
 				5C2079F51CCF7DB0007A5F21 /* ViewController.m in Sources */,
+				5C5B62631D080C9000989CD7 /* OutGoingMessagesCell.m in Sources */,
 				5C2079F21CCF7DB0007A5F21 /* AppDelegate.m in Sources */,
 				5C7360421CF4770A008DD6B5 /* AudioRecorderTest.m in Sources */,
 				5C8CE34F1CD0CFBE00EE532F /* User.m in Sources */,
@@ -489,6 +510,7 @@
 				5C8CE34C1CD0C8A000EE532F /* WalkieTalkieViewController.m in Sources */,
 				5C7360381CF42014008DD6B5 /* VoiceStreamHandler.m in Sources */,
 				5C2079EF1CCF7DB0007A5F21 /* main.m in Sources */,
+				5C5B62601D080C7300989CD7 /* IncomingMessageCell.m in Sources */,
 				5C8CE33B1CD0BE1F00EE532F /* asyncUDPConnectionHandler.m in Sources */,
 				5C8CE35E1CD215B000EE532F /* ChatViewController.m in Sources */,
 				5C5B624F1CFC447800989CD7 /* AudioRecorderTest_StreamPlayer.m in Sources */,
@@ -656,7 +678,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.siliconOrchard.walkieTalkie;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "ce595b51-5c33-4407-b5f4-a4359b7db72e";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -677,7 +699,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.siliconOrchard.walkieTalkie;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "ce595b51-5c33-4407-b5f4-a4359b7db72e";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

@@ -23,15 +23,40 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(joinCHannelConfirmed:) name:JOINCHANNEL_CONFIRM_NOTIFICATIONKEY object:nil];
     UITapGestureRecognizer *aTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(ScreenTapped)];
     [self.view addGestureRecognizer:aTap];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWasShown:)
+                                                 name:UIKeyboardDidShowNotification
+                                               object:nil];
 
 
     // Do any additional setup after loading the view.
 }
 
+-(void)keyboardWasShown:(NSNotification*)notification
+{
+    CGFloat height = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey ] CGRectValue].size.height;
+    
+    if (self.isViewLoaded && self.view.window) {
+        // viewController is visible
+        self.publicchannelACenterYConstraint.constant -= height;
+
+    }
+//    [self.view layoutSubviews];
+}
+
 -(void)viewWillAppear:(BOOL)animated{
     
-    self.title = @"Join Channel";
+//    self.title = @"Join Channel";
     self.client_Name_textField.text = [UIDevice currentDevice].name;
+    self.navigationController.navigationBar.tintColor = UIColorFromRGB(0xE0362B);
+
+}
+
+-(void)viewWillDisappear:(BOOL)animated{
+    self.publicchannelACenterYConstraint.constant = 0;
+    [self.view layoutIfNeeded];
+
 }
 
 
@@ -42,6 +67,8 @@
 
 -(void)ScreenTapped{
     [self.view endEditing:YES];
+    self.publicchannelACenterYConstraint.constant = 0;
+
 }
 
 -(void) joinCHannelConfirmed:(NSNotification*)notification{
@@ -150,15 +177,6 @@
     NSString *foreignChannelOwnerIPaddress;
     
     NSArray *activeIPAddressList = [[NSUserDefaults standardUserDefaults] objectForKey:ACTIVEUSERLISTKEY];
-//    [[asyncUDPConnectionHandler sharedHandler] enableBroadCast];
-//    
-//    for (int i =1 ; i<=254; i++) {
-//        NSString *ipAddressTosendData = [NSString stringWithFormat:@"%@%d",[[NSUserDefaults standardUserDefaults] objectForKey:IPADDRESS_FORMATKEY],i];
-//        if (![ipAddressTosendData isEqualToString:[[MessageHandler sharedHandler] getIPAddress]]) {
-//            [[asyncUDPConnectionHandler sharedHandler]sendMessage:channelJoinNotificationMessage toIPAddress:ipAddressTosendData];
-//        }
-//        
-//    }
     if (foreignChannel) {
         foreignChannelOwnerIPaddress = foreignChannel.foreignChannelHostIP;
         if (foreignChannel.channelID ==1 || foreignChannel.channelID ==2) {

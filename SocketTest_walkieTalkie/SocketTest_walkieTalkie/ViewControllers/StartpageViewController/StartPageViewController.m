@@ -47,7 +47,7 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     
-    self.title = @"Main Menu";
+//    self.title = @"Main Menu";
 }
 
 -(void)viewDidAppear:(BOOL)animated{
