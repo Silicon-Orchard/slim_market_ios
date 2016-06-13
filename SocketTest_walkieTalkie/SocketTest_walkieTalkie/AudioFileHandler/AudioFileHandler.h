@@ -20,4 +20,9 @@
 -(NSArray *)base64EncodedStringChunksOfDataForFile:(NSString *)fileName;
 -(NSString *)returnFilePathAfterAppendingData:(NSData *)audioData toFileName:(NSString *)fileName;
 
+- (NSString *)pathToAudioFileFolder;
+- (NSString *)getAudioFilePathOfFilaName:(NSString *)fileName;
+- (BOOL) deleteAudioFileFolder;
+- (NSString *) saveAudioData:(NSData *)audioData asFileName:(NSString *)fileName inFolderPath:(NSString *)folderPath;
+
 @end

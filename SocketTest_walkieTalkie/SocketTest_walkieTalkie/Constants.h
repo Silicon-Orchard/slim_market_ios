@@ -42,6 +42,7 @@
 #define JSON_KEY_VOICE_MESSAGE @"voice_message"
 #define JSON_KEY_VOICE_MESSAGE_CHUNKCOUNT @"voice_message_chunkCount"
 #define JSON_KEY_VOICE_MESSAGE_CURRENT_CHUNK @"voice_message_current_chunk"
+#define JSON_KEY_VOICE_MESSAGE_FILE_NAME @"voice_message_file_name"
 
 
 #define CURRENTUSERKEY_FOR_USERDEFAULTS @"CurrentUserKey"

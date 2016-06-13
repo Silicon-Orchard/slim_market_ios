@@ -23,6 +23,54 @@
 
 
 
+- (NSString *)pathToAudioFileFolder {
+    
+    NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                                        NSUserDomainMask,
+                                                                        YES) lastObject];
+    NSString *audioFileFolder = [documentsDirectory stringByAppendingPathComponent:@"AudioFileFolder"];
+    
+    // Create the folder if necessary
+    BOOL isDir = NO;
+    NSFileManager *fileManager = [[NSFileManager alloc] init];
+    if (![fileManager fileExistsAtPath:audioFileFolder isDirectory:&isDir] && isDir == NO) {
+        
+        [fileManager createDirectoryAtPath:audioFileFolder
+               withIntermediateDirectories:NO
+                                attributes:nil
+                                     error:nil];
+    }
+    
+    return audioFileFolder;
+}
+
+-(NSString *) getAudioFilePathOfFilaName:(NSString *) fileName {
+    
+    return [[self pathToAudioFileFolder] stringByAppendingPathComponent:fileName];
+}
+
+
+
+- (BOOL) deleteAudioFileFolder {
+    
+    NSString *audioFileFolder = [self pathToAudioFileFolder];
+    
+    return [[NSFileManager defaultManager] removeItemAtPath:audioFileFolder error:nil];
+}
+
+-(NSString *) saveAudioData:(NSData *)audioData asFileName:(NSString *)fileName inFolderPath:(NSString *)folderPath {
+    
+    NSString *audioFilePath = [folderPath stringByAppendingPathComponent:fileName];
+    [audioData writeToFile:audioFilePath atomically:YES];
+    
+    //[[NSFileManager defaultManager] removeItemAtPath:audioFilePath error:&error];
+    
+    return audioFilePath;
+}
+
+
+
+
 -(NSArray *)findFiles:(NSString *)extension
 {
     NSMutableArray *matches = [[NSMutableArray alloc]init];
@@ -129,11 +177,12 @@
     // Adding to JSON and upload goes here.
 }
 
+
 -(NSArray *)base64EncodedStringChunksOfDataForFile:(NSString *)fileName{
-    NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     
-    NSString *filePath = [documentsPath stringByAppendingPathComponent:fileName];
-    NSData *zipFileData = [NSData dataWithContentsOfFile:filePath];
+    NSString *audioFilePath = [self getAudioFilePathOfFilaName:fileName];
+    
+    NSData *zipFileData = [NSData dataWithContentsOfFile:audioFilePath];
     int index = 0;
     int totalLen = (int)[zipFileData length];
     NSMutableArray *dataChunks = [[NSMutableArray alloc ]init];
@@ -149,6 +198,8 @@
     }
     return chunkStringArray;
 }
+
+
 
 -(NSString *)returnFilePathAfterAppendingData:(NSData *)audioData toFileName:(NSString *)fileName{
     NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
