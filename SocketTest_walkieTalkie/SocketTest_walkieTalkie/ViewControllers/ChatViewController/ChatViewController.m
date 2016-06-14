@@ -8,7 +8,7 @@
 
 #import "ChatViewController.h"
 #import "JoinChannelViewController.h"
-#import "RecordViewController.h"
+//#import "RecordViewController.h"
 #import "IncomingMessageCell.h"
 #import "OutGoingMessagesCell.h"
 #import "channelMemberActivityTableViewCell.h"
@@ -53,7 +53,7 @@
 @end
 
 @implementation ChatViewController
-@synthesize stopButton, playButton, recordPauseButton;
+@synthesize playButton, recordPauseButton;
 
 
 
@@ -86,7 +86,7 @@
     aTap.cancelsTouchesInView = NO;
     [self.view addGestureRecognizer:aTap];
     
-    [stopButton setEnabled:NO];
+    //[stopButton setEnabled:NO];
     [playButton setEnabled:NO];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(channelUpdated:) name:@"currentChannelUpdated" object:nil];
@@ -163,7 +163,7 @@
     
     self.title = [NSString stringWithFormat:@"Channel ID %d", self.currentActiveChannel.channelID];
     self.sendButton.enabled = NO;
-    self.audioReceivedButton.hidden = YES;
+    //self.audioReceivedButton.hidden = YES;
     
     [self addFooterToTableView:self.channelMemberTableView];
     [self addFooterToTableView:self.chatTableView];
@@ -500,12 +500,12 @@
     NSDictionary *jsonDict = [NSJSONSerialization  JSONObjectWithData:receivedData options:0 error:nil];
     
     NSString *base64EncodedVoiceString = [jsonDict objectForKey:JSON_KEY_VOICE_MESSAGE];
-    NSData *audioData = [[NSData alloc] initWithBase64EncodedString:base64EncodedVoiceString options:1];
+    NSData *audioDataLocal = [[NSData alloc] initWithBase64EncodedString:base64EncodedVoiceString options:1];
     receivedFileName = [NSString stringWithFormat:@"%d.caf",arc4random_uniform(20000)];
     if ([[jsonDict objectForKey:JSON_KEY_CHANNEL] integerValue] == self.currentActiveChannel.channelID) {
         
     }
-    NSString *SoundfilePath = [[AudioFileHandler sharedHandler] saveFileAndGetSavedFilePathInDocumentsDirectoryFromData:audioData saveDataAsFileName:receivedFileName];
+    NSString *SoundfilePath = [[AudioFileHandler sharedHandler] saveFileAndGetSavedFilePathInDocumentsDirectoryFromData:audioDataLocal saveDataAsFileName:receivedFileName];
     NSURL *soundFileURL2 = [NSURL fileURLWithPath:SoundfilePath];
     receivedSoundURL =soundFileURL2;
     //[self updateUIForChatMessage:[NSString stringWithFormat:@"Message Received From %@",[jsonDict objectForKey:JSON_KEY_DEVICE_NAME]]];
@@ -659,6 +659,9 @@
         }
         
     }
+}
+
+- (IBAction)sendTapped:(id)sender {
 }
 
 
@@ -1123,10 +1126,10 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     
-    if ([segue.identifier isEqualToString:@"voiceMessageSegue"]) {
-        RecordViewController *recordControl = segue.destinationViewController;
-        recordControl.activeChannelInfo = self.currentActiveChannel;
-    }
+//    if ([segue.identifier isEqualToString:@"voiceMessageSegue"]) {
+//        RecordViewController *recordControl = segue.destinationViewController;
+//        recordControl.activeChannelInfo = self.currentActiveChannel;
+//    }
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
 }

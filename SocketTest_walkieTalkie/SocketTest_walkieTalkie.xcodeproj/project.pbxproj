@@ -7,53 +7,45 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5C12E1591CE2FDD600F0EE61 /* asyncTCPConnectionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C12E1581CE2FDD600F0EE61 /* asyncTCPConnectionHandler.m */; };
-		5C12E1681CE4368800F0EE61 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C12E1671CE4368800F0EE61 /* main.m */; };
-		5C12E16B1CE4368800F0EE61 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C12E16A1CE4368800F0EE61 /* AppDelegate.m */; };
-		5C12E16E1CE4368800F0EE61 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C12E16D1CE4368800F0EE61 /* ViewController.m */; };
-		5C12E1711CE4368800F0EE61 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5C12E16F1CE4368800F0EE61 /* Main.storyboard */; };
-		5C12E1731CE4368800F0EE61 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C12E1721CE4368800F0EE61 /* Assets.xcassets */; };
-		5C12E1761CE4368800F0EE61 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5C12E1741CE4368800F0EE61 /* LaunchScreen.storyboard */; };
 		5C2079EF1CCF7DB0007A5F21 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C2079EE1CCF7DB0007A5F21 /* main.m */; };
 		5C2079F21CCF7DB0007A5F21 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C2079F11CCF7DB0007A5F21 /* AppDelegate.m */; };
-		5C2079F51CCF7DB0007A5F21 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C2079F41CCF7DB0007A5F21 /* ViewController.m */; };
 		5C2079F81CCF7DB0007A5F21 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5C2079F61CCF7DB0007A5F21 /* Main.storyboard */; };
 		5C2079FA1CCF7DB0007A5F21 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C2079F91CCF7DB0007A5F21 /* Assets.xcassets */; };
 		5C2079FD1CCF7DB0007A5F21 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5C2079FB1CCF7DB0007A5F21 /* LaunchScreen.storyboard */; };
 		5C207A061CCF8048007A5F21 /* CocoaAsyncSocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C207A041CCF7DDA007A5F21 /* CocoaAsyncSocket.framework */; };
-		5C5B624F1CFC447800989CD7 /* AudioRecorderTest_StreamPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5B624E1CFC447800989CD7 /* AudioRecorderTest_StreamPlayer.m */; };
-		5C5B62521CFC510400989CD7 /* AudioPlayerTest2.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5B62511CFC510400989CD7 /* AudioPlayerTest2.m */; };
-		5C5B625D1D06B42300989CD7 /* Znikomit.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5C5B625C1D06B41800989CD7 /* Znikomit.otf */; };
-		5C5B62601D080C7300989CD7 /* IncomingMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5B625F1D080C7300989CD7 /* IncomingMessageCell.m */; };
-		5C5B62631D080C9000989CD7 /* OutGoingMessagesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5B62621D080C9000989CD7 /* OutGoingMessagesCell.m */; };
-		5C5B62661D080CA900989CD7 /* channelMemberActivityTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5B62651D080CA900989CD7 /* channelMemberActivityTableViewCell.m */; };
-		5C7360381CF42014008DD6B5 /* VoiceStreamHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C7360371CF42014008DD6B5 /* VoiceStreamHandler.m */; };
-		5C73603B1CF43CD2008DD6B5 /* VoiceStreamPlayerHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C73603A1CF43CD2008DD6B5 /* VoiceStreamPlayerHandler.m */; };
 		5C73603E1CF47553008DD6B5 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C73603C1CF47553008DD6B5 /* CoreAudio.framework */; };
 		5C73603F1CF47553008DD6B5 /* CoreAudioKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C73603D1CF47553008DD6B5 /* CoreAudioKit.framework */; };
-		5C7360421CF4770A008DD6B5 /* AudioRecorderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C7360411CF4770A008DD6B5 /* AudioRecorderTest.m */; };
-		5C8CE33B1CD0BE1F00EE532F /* asyncUDPConnectionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8CE33A1CD0BE1F00EE532F /* asyncUDPConnectionHandler.m */; };
-		5C8CE33E1CD0BE4500EE532F /* ChannelHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8CE33D1CD0BE4500EE532F /* ChannelHandler.m */; };
-		5C8CE3411CD0BEA900EE532F /* ChatHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8CE3401CD0BEA900EE532F /* ChatHandler.m */; };
-		5C8CE3441CD0BFD200EE532F /* MessageHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8CE3431CD0BFD200EE532F /* MessageHandler.m */; };
-		5C8CE34C1CD0C8A000EE532F /* WalkieTalkieViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8CE34B1CD0C8A000EE532F /* WalkieTalkieViewController.m */; };
-		5C8CE34F1CD0CFBE00EE532F /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8CE34E1CD0CFBE00EE532F /* User.m */; };
-		5C8CE3521CD0D08000EE532F /* Channel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8CE3511CD0D08000EE532F /* Channel.m */; };
-		5C8CE3551CD0EE2200EE532F /* MessageData.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8CE3541CD0EE2200EE532F /* MessageData.m */; };
-		5C8CE3581CD2157B00EE532F /* CreateChannelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8CE3571CD2157B00EE532F /* CreateChannelViewController.m */; };
-		5C8CE35B1CD2159700EE532F /* JoinChannelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8CE35A1CD2159700EE532F /* JoinChannelViewController.m */; };
-		5C8CE35E1CD215B000EE532F /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8CE35D1CD215B000EE532F /* ChatViewController.m */; };
-		5C8CE3611CD21AE100EE532F /* StartPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8CE3601CD21AE100EE532F /* StartPageViewController.m */; };
-		5C8CE3671CD38ECF00EE532F /* ic_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C8CE3621CD38ECF00EE532F /* ic_back.png */; };
-		5C8CE3681CD38ECF00EE532F /* ic_channel_create.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C8CE3631CD38ECF00EE532F /* ic_channel_create.png */; };
-		5C8CE3691CD38ECF00EE532F /* ic_channel_join.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C8CE3641CD38ECF00EE532F /* ic_channel_join.png */; };
-		5C8CE36A1CD38ECF00EE532F /* ic_info.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C8CE3651CD38ECF00EE532F /* ic_info.png */; };
-		5C8CE36B1CD38ECF00EE532F /* ic_public_channel.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C8CE3661CD38ECF00EE532F /* ic_public_channel.png */; };
 		5C8CE3701CDB13DB00EE532F /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C8CE36F1CDB13DB00EE532F /* AVFoundation.framework */; };
-		5C8CE3731CDB36D400EE532F /* AudioFileHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8CE3721CDB36D400EE532F /* AudioFileHandler.m */; };
 		5C8CE3751CDB8CD400EE532F /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C8CE3741CDB8CD300EE532F /* AudioToolbox.framework */; };
-		5C8CE3781CDC612200EE532F /* RecordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8CE3771CDC612200EE532F /* RecordViewController.m */; };
 		A596D4E8BF31DBC4183CC413 /* Pods_SocketTest_walkieTalkie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AF322D7CC7055B4FE84F5E3 /* Pods_SocketTest_walkieTalkie.framework */; };
+		B23797761D0FD1B200F9F5A7 /* AudioRecorderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B23797671D0FD1B200F9F5A7 /* AudioRecorderViewController.m */; };
+		B23797771D0FD1B200F9F5A7 /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B237976A1D0FD1B200F9F5A7 /* ChatViewController.m */; };
+		B23797781D0FD1B200F9F5A7 /* CreateChannelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B237976D1D0FD1B200F9F5A7 /* CreateChannelViewController.m */; };
+		B23797791D0FD1B200F9F5A7 /* JoinChannelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B23797701D0FD1B200F9F5A7 /* JoinChannelViewController.m */; };
+		B237977A1D0FD1B200F9F5A7 /* StartPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B23797741D0FD1B200F9F5A7 /* StartPageViewController.m */; };
+		B237979F1D0FD4D900F9F5A7 /* channelMemberActivityTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B237979A1D0FD4D900F9F5A7 /* channelMemberActivityTableViewCell.m */; };
+		B23797A01D0FD4D900F9F5A7 /* IncomingMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B237979C1D0FD4D900F9F5A7 /* IncomingMessageCell.m */; };
+		B23797A11D0FD4D900F9F5A7 /* OutGoingMessagesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B237979E1D0FD4D900F9F5A7 /* OutGoingMessagesCell.m */; };
+		B23797AF1D0FD56B00F9F5A7 /* AudioFileHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = B23797A51D0FD56B00F9F5A7 /* AudioFileHandler.m */; };
+		B23797B01D0FD56B00F9F5A7 /* ChannelHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = B23797A81D0FD56B00F9F5A7 /* ChannelHandler.m */; };
+		B23797B11D0FD56B00F9F5A7 /* ChatHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = B23797AB1D0FD56B00F9F5A7 /* ChatHandler.m */; };
+		B23797B21D0FD56B00F9F5A7 /* MessageHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = B23797AE1D0FD56B00F9F5A7 /* MessageHandler.m */; };
+		B23797B91D0FD5AA00F9F5A7 /* asyncTCPConnectionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = B23797B51D0FD5AA00F9F5A7 /* asyncTCPConnectionHandler.m */; };
+		B23797BA1D0FD5AA00F9F5A7 /* asyncUDPConnectionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = B23797B81D0FD5AA00F9F5A7 /* asyncUDPConnectionHandler.m */; };
+		B23797C01D0FD6BA00F9F5A7 /* AudioRecorderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = B23797BD1D0FD6BA00F9F5A7 /* AudioRecorderTest.m */; };
+		B23797C11D0FD6BA00F9F5A7 /* AudioRecorderTest_StreamPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = B23797BF1D0FD6BA00F9F5A7 /* AudioRecorderTest_StreamPlayer.m */; };
+		B23797C71D0FD6E500F9F5A7 /* VoiceStreamHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = B23797C41D0FD6E500F9F5A7 /* VoiceStreamHandler.m */; };
+		B23797C81D0FD6E500F9F5A7 /* VoiceStreamPlayerHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = B23797C61D0FD6E500F9F5A7 /* VoiceStreamPlayerHandler.m */; };
+		B23797D31D0FD78500F9F5A7 /* Channel.m in Sources */ = {isa = PBXBuildFile; fileRef = B23797CC1D0FD78500F9F5A7 /* Channel.m */; };
+		B23797D41D0FD78500F9F5A7 /* MessageData.m in Sources */ = {isa = PBXBuildFile; fileRef = B23797CE1D0FD78500F9F5A7 /* MessageData.m */; };
+		B23797D51D0FD78500F9F5A7 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = B23797D01D0FD78500F9F5A7 /* User.m */; };
+		B23797D61D0FD78500F9F5A7 /* UserDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B23797D21D0FD78500F9F5A7 /* UserDataModel.m */; };
+		B23797DE1D0FD7CA00F9F5A7 /* ic_back.png in Resources */ = {isa = PBXBuildFile; fileRef = B23797D81D0FD7CA00F9F5A7 /* ic_back.png */; };
+		B23797DF1D0FD7CA00F9F5A7 /* ic_channel_create.png in Resources */ = {isa = PBXBuildFile; fileRef = B23797D91D0FD7CA00F9F5A7 /* ic_channel_create.png */; };
+		B23797E01D0FD7CA00F9F5A7 /* ic_channel_join.png in Resources */ = {isa = PBXBuildFile; fileRef = B23797DA1D0FD7CA00F9F5A7 /* ic_channel_join.png */; };
+		B23797E11D0FD7CA00F9F5A7 /* ic_info.png in Resources */ = {isa = PBXBuildFile; fileRef = B23797DB1D0FD7CA00F9F5A7 /* ic_info.png */; };
+		B23797E21D0FD7CA00F9F5A7 /* ic_public_channel.png in Resources */ = {isa = PBXBuildFile; fileRef = B23797DC1D0FD7CA00F9F5A7 /* ic_public_channel.png */; };
+		B23797E31D0FD7CA00F9F5A7 /* SplashScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = B23797DD1D0FD7CA00F9F5A7 /* SplashScreen.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -71,85 +63,73 @@
 
 /* Begin PBXFileReference section */
 		2AF322D7CC7055B4FE84F5E3 /* Pods_SocketTest_walkieTalkie.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SocketTest_walkieTalkie.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		5C12E1571CE2FDD600F0EE61 /* asyncTCPConnectionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = asyncTCPConnectionHandler.h; path = SocketTest_walkieTalkie/TCPConnectionHandler/asyncTCPConnectionHandler.h; sourceTree = "<group>"; };
-		5C12E1581CE2FDD600F0EE61 /* asyncTCPConnectionHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = asyncTCPConnectionHandler.m; path = SocketTest_walkieTalkie/TCPConnectionHandler/asyncTCPConnectionHandler.m; sourceTree = "<group>"; };
 		5C12E1641CE4368800F0EE61 /* Wallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wallet.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		5C12E1671CE4368800F0EE61 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		5C12E1691CE4368800F0EE61 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		5C12E16A1CE4368800F0EE61 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		5C12E16C1CE4368800F0EE61 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		5C12E16D1CE4368800F0EE61 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		5C12E1701CE4368800F0EE61 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		5C12E1721CE4368800F0EE61 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		5C12E1751CE4368800F0EE61 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		5C12E1771CE4368800F0EE61 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		5C2079EA1CCF7DB0007A5F21 /* SocketTest_walkieTalkie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SocketTest_walkieTalkie.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5C2079EA1CCF7DB0007A5F21 /* WalkieTalkie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WalkieTalkie.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C2079EE1CCF7DB0007A5F21 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		5C2079F01CCF7DB0007A5F21 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		5C2079F11CCF7DB0007A5F21 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		5C2079F31CCF7DB0007A5F21 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		5C2079F41CCF7DB0007A5F21 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		5C2079F71CCF7DB0007A5F21 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		5C2079F91CCF7DB0007A5F21 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		5C2079F91CCF7DB0007A5F21 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../Assets.xcassets; sourceTree = "<group>"; };
 		5C2079FC1CCF7DB0007A5F21 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5C2079FE1CCF7DB0007A5F21 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5C207A041CCF7DDA007A5F21 /* CocoaAsyncSocket.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaAsyncSocket.framework; path = "/Users/salahuddin_siliconOrchard/OnGoing Projects/WalkieTalkie_iOS/SocketTest_walkieTalkie/SocketTest_walkieTalkie/AsyncSocket/CocoaAsyncSocket.framework"; sourceTree = "<absolute>"; };
-		5C5B624D1CFC447800989CD7 /* AudioRecorderTest_StreamPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioRecorderTest_StreamPlayer.h; path = SocketTest_walkieTalkie/AudioStreamRecorderTest/AudioRecorderTest_StreamPlayer.h; sourceTree = "<group>"; };
-		5C5B624E1CFC447800989CD7 /* AudioRecorderTest_StreamPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AudioRecorderTest_StreamPlayer.m; path = SocketTest_walkieTalkie/AudioStreamRecorderTest/AudioRecorderTest_StreamPlayer.m; sourceTree = "<group>"; };
-		5C5B62501CFC510400989CD7 /* AudioPlayerTest2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioPlayerTest2.h; path = SocketTest_walkieTalkie/AudioStreamRecorderTest/AudioPlayerTest2.h; sourceTree = "<group>"; };
-		5C5B62511CFC510400989CD7 /* AudioPlayerTest2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AudioPlayerTest2.m; path = SocketTest_walkieTalkie/AudioStreamRecorderTest/AudioPlayerTest2.m; sourceTree = "<group>"; };
-		5C5B625C1D06B41800989CD7 /* Znikomit.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Znikomit.otf; path = SocketTest_walkieTalkie/Znikomit.otf; sourceTree = "<group>"; };
-		5C5B625E1D080C7300989CD7 /* IncomingMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IncomingMessageCell.h; path = SocketTest_walkieTalkie/TableViewCells/IncomingMessageCell.h; sourceTree = "<group>"; };
-		5C5B625F1D080C7300989CD7 /* IncomingMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IncomingMessageCell.m; path = SocketTest_walkieTalkie/TableViewCells/IncomingMessageCell.m; sourceTree = "<group>"; };
-		5C5B62611D080C9000989CD7 /* OutGoingMessagesCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OutGoingMessagesCell.h; path = SocketTest_walkieTalkie/TableViewCells/OutGoingMessagesCell.h; sourceTree = "<group>"; };
-		5C5B62621D080C9000989CD7 /* OutGoingMessagesCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OutGoingMessagesCell.m; path = SocketTest_walkieTalkie/TableViewCells/OutGoingMessagesCell.m; sourceTree = "<group>"; };
-		5C5B62641D080CA900989CD7 /* channelMemberActivityTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = channelMemberActivityTableViewCell.h; path = SocketTest_walkieTalkie/TableViewCells/channelMemberActivityTableViewCell.h; sourceTree = "<group>"; };
-		5C5B62651D080CA900989CD7 /* channelMemberActivityTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = channelMemberActivityTableViewCell.m; path = SocketTest_walkieTalkie/TableViewCells/channelMemberActivityTableViewCell.m; sourceTree = "<group>"; };
-		5C7360361CF42014008DD6B5 /* VoiceStreamHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VoiceStreamHandler.h; path = SocketTest_walkieTalkie/VoiceStreamHandler/VoiceStreamHandler.h; sourceTree = "<group>"; };
-		5C7360371CF42014008DD6B5 /* VoiceStreamHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VoiceStreamHandler.m; path = SocketTest_walkieTalkie/VoiceStreamHandler/VoiceStreamHandler.m; sourceTree = "<group>"; };
-		5C7360391CF43CD2008DD6B5 /* VoiceStreamPlayerHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VoiceStreamPlayerHandler.h; path = SocketTest_walkieTalkie/VoiceStreamHandler/VoiceStreamPlayerHandler.h; sourceTree = "<group>"; };
-		5C73603A1CF43CD2008DD6B5 /* VoiceStreamPlayerHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VoiceStreamPlayerHandler.m; path = SocketTest_walkieTalkie/VoiceStreamHandler/VoiceStreamPlayerHandler.m; sourceTree = "<group>"; };
 		5C73603C1CF47553008DD6B5 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		5C73603D1CF47553008DD6B5 /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = System/Library/Frameworks/CoreAudioKit.framework; sourceTree = SDKROOT; };
-		5C7360401CF4770A008DD6B5 /* AudioRecorderTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioRecorderTest.h; path = SocketTest_walkieTalkie/AudioStreamRecorderTest/AudioRecorderTest.h; sourceTree = "<group>"; };
-		5C7360411CF4770A008DD6B5 /* AudioRecorderTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AudioRecorderTest.m; path = SocketTest_walkieTalkie/AudioStreamRecorderTest/AudioRecorderTest.m; sourceTree = "<group>"; };
-		5C8CE3391CD0BE1F00EE532F /* asyncUDPConnectionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = asyncUDPConnectionHandler.h; path = "UDP ConnectionHandler/asyncUDPConnectionHandler.h"; sourceTree = "<group>"; };
-		5C8CE33A1CD0BE1F00EE532F /* asyncUDPConnectionHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = asyncUDPConnectionHandler.m; path = "UDP ConnectionHandler/asyncUDPConnectionHandler.m"; sourceTree = "<group>"; };
-		5C8CE33C1CD0BE4500EE532F /* ChannelHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ChannelHandler.h; path = ChannelHandler/ChannelHandler.h; sourceTree = "<group>"; };
-		5C8CE33D1CD0BE4500EE532F /* ChannelHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ChannelHandler.m; path = ChannelHandler/ChannelHandler.m; sourceTree = "<group>"; };
-		5C8CE33F1CD0BEA900EE532F /* ChatHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ChatHandler.h; path = ChatHandler/ChatHandler.h; sourceTree = "<group>"; };
-		5C8CE3401CD0BEA900EE532F /* ChatHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ChatHandler.m; path = ChatHandler/ChatHandler.m; sourceTree = "<group>"; };
-		5C8CE3421CD0BFD200EE532F /* MessageHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MessageHandler.h; path = MessageHandler/MessageHandler.h; sourceTree = "<group>"; };
-		5C8CE3431CD0BFD200EE532F /* MessageHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MessageHandler.m; path = MessageHandler/MessageHandler.m; sourceTree = "<group>"; };
 		5C8CE3451CD0C1C900EE532F /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
-		5C8CE3461CD0C1E100EE532F /* walkieTalkie.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = walkieTalkie.pch; sourceTree = "<group>"; };
-		5C8CE34A1CD0C8A000EE532F /* WalkieTalkieViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WalkieTalkieViewController.h; path = SocketTest_walkieTalkie/ViewControllers/walkieTalkieViewController/WalkieTalkieViewController.h; sourceTree = "<group>"; };
-		5C8CE34B1CD0C8A000EE532F /* WalkieTalkieViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WalkieTalkieViewController.m; path = SocketTest_walkieTalkie/ViewControllers/walkieTalkieViewController/WalkieTalkieViewController.m; sourceTree = "<group>"; };
-		5C8CE34D1CD0CFBE00EE532F /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = User.h; path = SocketTest_walkieTalkie/ClientDataModel/User.h; sourceTree = "<group>"; };
-		5C8CE34E1CD0CFBE00EE532F /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = User.m; path = SocketTest_walkieTalkie/ClientDataModel/User.m; sourceTree = "<group>"; };
-		5C8CE3501CD0D08000EE532F /* Channel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Channel.h; path = SocketTest_walkieTalkie/ClientDataModel/Channel.h; sourceTree = "<group>"; };
-		5C8CE3511CD0D08000EE532F /* Channel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Channel.m; path = SocketTest_walkieTalkie/ClientDataModel/Channel.m; sourceTree = "<group>"; };
-		5C8CE3531CD0EE2200EE532F /* MessageData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MessageData.h; path = SocketTest_walkieTalkie/ClientDataModel/MessageData.h; sourceTree = "<group>"; };
-		5C8CE3541CD0EE2200EE532F /* MessageData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MessageData.m; path = SocketTest_walkieTalkie/ClientDataModel/MessageData.m; sourceTree = "<group>"; };
-		5C8CE3561CD2157B00EE532F /* CreateChannelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CreateChannelViewController.h; path = ViewControllers/CreateChannelViewController/CreateChannelViewController.h; sourceTree = "<group>"; };
-		5C8CE3571CD2157B00EE532F /* CreateChannelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CreateChannelViewController.m; path = ViewControllers/CreateChannelViewController/CreateChannelViewController.m; sourceTree = "<group>"; };
-		5C8CE3591CD2159700EE532F /* JoinChannelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JoinChannelViewController.h; path = ViewControllers/JoinChannelViewController/JoinChannelViewController.h; sourceTree = "<group>"; };
-		5C8CE35A1CD2159700EE532F /* JoinChannelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JoinChannelViewController.m; path = ViewControllers/JoinChannelViewController/JoinChannelViewController.m; sourceTree = "<group>"; };
-		5C8CE35C1CD215B000EE532F /* ChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ChatViewController.h; path = ViewControllers/ChatViewController/ChatViewController.h; sourceTree = "<group>"; };
-		5C8CE35D1CD215B000EE532F /* ChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ChatViewController.m; path = ViewControllers/ChatViewController/ChatViewController.m; sourceTree = "<group>"; };
-		5C8CE35F1CD21AE100EE532F /* StartPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StartPageViewController.h; path = ViewControllers/StartpageViewController/StartPageViewController.h; sourceTree = "<group>"; };
-		5C8CE3601CD21AE100EE532F /* StartPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StartPageViewController.m; path = ViewControllers/StartpageViewController/StartPageViewController.m; sourceTree = "<group>"; };
-		5C8CE3621CD38ECF00EE532F /* ic_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_back.png; path = SocketTest_walkieTalkie/Graphics/ic_back.png; sourceTree = "<group>"; };
-		5C8CE3631CD38ECF00EE532F /* ic_channel_create.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_channel_create.png; path = SocketTest_walkieTalkie/Graphics/ic_channel_create.png; sourceTree = "<group>"; };
-		5C8CE3641CD38ECF00EE532F /* ic_channel_join.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_channel_join.png; path = SocketTest_walkieTalkie/Graphics/ic_channel_join.png; sourceTree = "<group>"; };
-		5C8CE3651CD38ECF00EE532F /* ic_info.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_info.png; path = SocketTest_walkieTalkie/Graphics/ic_info.png; sourceTree = "<group>"; };
-		5C8CE3661CD38ECF00EE532F /* ic_public_channel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_public_channel.png; path = SocketTest_walkieTalkie/Graphics/ic_public_channel.png; sourceTree = "<group>"; };
 		5C8CE36F1CDB13DB00EE532F /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		5C8CE3711CDB36D400EE532F /* AudioFileHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioFileHandler.h; path = SocketTest_walkieTalkie/AudioFileHandler/AudioFileHandler.h; sourceTree = "<group>"; };
-		5C8CE3721CDB36D400EE532F /* AudioFileHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AudioFileHandler.m; path = SocketTest_walkieTalkie/AudioFileHandler/AudioFileHandler.m; sourceTree = "<group>"; };
 		5C8CE3741CDB8CD300EE532F /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
-		5C8CE3761CDC612200EE532F /* RecordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RecordViewController.h; path = SocketTest_walkieTalkie/ViewControllers/RecordViewController/RecordViewController.h; sourceTree = "<group>"; };
-		5C8CE3771CDC612200EE532F /* RecordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RecordViewController.m; path = SocketTest_walkieTalkie/ViewControllers/RecordViewController/RecordViewController.m; sourceTree = "<group>"; };
+		B23797661D0FD1B200F9F5A7 /* AudioRecorderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioRecorderViewController.h; sourceTree = "<group>"; };
+		B23797671D0FD1B200F9F5A7 /* AudioRecorderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioRecorderViewController.m; sourceTree = "<group>"; };
+		B23797691D0FD1B200F9F5A7 /* ChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewController.h; sourceTree = "<group>"; };
+		B237976A1D0FD1B200F9F5A7 /* ChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewController.m; sourceTree = "<group>"; };
+		B237976C1D0FD1B200F9F5A7 /* CreateChannelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateChannelViewController.h; sourceTree = "<group>"; };
+		B237976D1D0FD1B200F9F5A7 /* CreateChannelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateChannelViewController.m; sourceTree = "<group>"; };
+		B237976F1D0FD1B200F9F5A7 /* JoinChannelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JoinChannelViewController.h; sourceTree = "<group>"; };
+		B23797701D0FD1B200F9F5A7 /* JoinChannelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JoinChannelViewController.m; sourceTree = "<group>"; };
+		B23797731D0FD1B200F9F5A7 /* StartPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StartPageViewController.h; sourceTree = "<group>"; };
+		B23797741D0FD1B200F9F5A7 /* StartPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StartPageViewController.m; sourceTree = "<group>"; };
+		B23797991D0FD4D900F9F5A7 /* channelMemberActivityTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = channelMemberActivityTableViewCell.h; sourceTree = "<group>"; };
+		B237979A1D0FD4D900F9F5A7 /* channelMemberActivityTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = channelMemberActivityTableViewCell.m; sourceTree = "<group>"; };
+		B237979B1D0FD4D900F9F5A7 /* IncomingMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IncomingMessageCell.h; sourceTree = "<group>"; };
+		B237979C1D0FD4D900F9F5A7 /* IncomingMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IncomingMessageCell.m; sourceTree = "<group>"; };
+		B237979D1D0FD4D900F9F5A7 /* OutGoingMessagesCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OutGoingMessagesCell.h; sourceTree = "<group>"; };
+		B237979E1D0FD4D900F9F5A7 /* OutGoingMessagesCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OutGoingMessagesCell.m; sourceTree = "<group>"; };
+		B23797A41D0FD56B00F9F5A7 /* AudioFileHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioFileHandler.h; sourceTree = "<group>"; };
+		B23797A51D0FD56B00F9F5A7 /* AudioFileHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioFileHandler.m; sourceTree = "<group>"; };
+		B23797A71D0FD56B00F9F5A7 /* ChannelHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChannelHandler.h; sourceTree = "<group>"; };
+		B23797A81D0FD56B00F9F5A7 /* ChannelHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChannelHandler.m; sourceTree = "<group>"; };
+		B23797AA1D0FD56B00F9F5A7 /* ChatHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatHandler.h; sourceTree = "<group>"; };
+		B23797AB1D0FD56B00F9F5A7 /* ChatHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatHandler.m; sourceTree = "<group>"; };
+		B23797AD1D0FD56B00F9F5A7 /* MessageHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageHandler.h; sourceTree = "<group>"; };
+		B23797AE1D0FD56B00F9F5A7 /* MessageHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageHandler.m; sourceTree = "<group>"; };
+		B23797B41D0FD5AA00F9F5A7 /* asyncTCPConnectionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = asyncTCPConnectionHandler.h; sourceTree = "<group>"; };
+		B23797B51D0FD5AA00F9F5A7 /* asyncTCPConnectionHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = asyncTCPConnectionHandler.m; sourceTree = "<group>"; };
+		B23797B71D0FD5AA00F9F5A7 /* asyncUDPConnectionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = asyncUDPConnectionHandler.h; sourceTree = "<group>"; };
+		B23797B81D0FD5AA00F9F5A7 /* asyncUDPConnectionHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = asyncUDPConnectionHandler.m; sourceTree = "<group>"; };
+		B23797BC1D0FD6BA00F9F5A7 /* AudioRecorderTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioRecorderTest.h; sourceTree = "<group>"; };
+		B23797BD1D0FD6BA00F9F5A7 /* AudioRecorderTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioRecorderTest.m; sourceTree = "<group>"; };
+		B23797BE1D0FD6BA00F9F5A7 /* AudioRecorderTest_StreamPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioRecorderTest_StreamPlayer.h; sourceTree = "<group>"; };
+		B23797BF1D0FD6BA00F9F5A7 /* AudioRecorderTest_StreamPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioRecorderTest_StreamPlayer.m; sourceTree = "<group>"; };
+		B23797C31D0FD6E500F9F5A7 /* VoiceStreamHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VoiceStreamHandler.h; sourceTree = "<group>"; };
+		B23797C41D0FD6E500F9F5A7 /* VoiceStreamHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VoiceStreamHandler.m; sourceTree = "<group>"; };
+		B23797C51D0FD6E500F9F5A7 /* VoiceStreamPlayerHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VoiceStreamPlayerHandler.h; sourceTree = "<group>"; };
+		B23797C61D0FD6E500F9F5A7 /* VoiceStreamPlayerHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VoiceStreamPlayerHandler.m; sourceTree = "<group>"; };
+		B23797C91D0FD74100F9F5A7 /* walkieTalkie.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = walkieTalkie.pch; sourceTree = SOURCE_ROOT; };
+		B23797CB1D0FD78500F9F5A7 /* Channel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Channel.h; sourceTree = "<group>"; };
+		B23797CC1D0FD78500F9F5A7 /* Channel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Channel.m; sourceTree = "<group>"; };
+		B23797CD1D0FD78500F9F5A7 /* MessageData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageData.h; sourceTree = "<group>"; };
+		B23797CE1D0FD78500F9F5A7 /* MessageData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageData.m; sourceTree = "<group>"; };
+		B23797CF1D0FD78500F9F5A7 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		B23797D01D0FD78500F9F5A7 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		B23797D11D0FD78500F9F5A7 /* UserDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserDataModel.h; sourceTree = "<group>"; };
+		B23797D21D0FD78500F9F5A7 /* UserDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserDataModel.m; sourceTree = "<group>"; };
+		B23797D81D0FD7CA00F9F5A7 /* ic_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_back.png; sourceTree = "<group>"; };
+		B23797D91D0FD7CA00F9F5A7 /* ic_channel_create.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_channel_create.png; sourceTree = "<group>"; };
+		B23797DA1D0FD7CA00F9F5A7 /* ic_channel_join.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_channel_join.png; sourceTree = "<group>"; };
+		B23797DB1D0FD7CA00F9F5A7 /* ic_info.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_info.png; sourceTree = "<group>"; };
+		B23797DC1D0FD7CA00F9F5A7 /* ic_public_channel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_public_channel.png; sourceTree = "<group>"; };
+		B23797DD1D0FD7CA00F9F5A7 /* SplashScreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SplashScreen.png; sourceTree = "<group>"; };
+		B23797E41D0FD7D900F9F5A7 /* Znikomit.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Znikomit.otf; sourceTree = "<group>"; };
 		C4EFF460277EBE1426537B4F /* Pods-SocketTest_walkieTalkie.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SocketTest_walkieTalkie.release.xcconfig"; path = "Pods/Target Support Files/Pods-SocketTest_walkieTalkie/Pods-SocketTest_walkieTalkie.release.xcconfig"; sourceTree = "<group>"; };
 		FDE5C871A6A380334B15EF9D /* Pods-SocketTest_walkieTalkie.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SocketTest_walkieTalkie.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SocketTest_walkieTalkie/Pods-SocketTest_walkieTalkie.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -190,72 +170,10 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		5C12E1651CE4368800F0EE61 /* Wallet */ = {
-			isa = PBXGroup;
-			children = (
-				5C12E1691CE4368800F0EE61 /* AppDelegate.h */,
-				5C12E16A1CE4368800F0EE61 /* AppDelegate.m */,
-				5C12E16C1CE4368800F0EE61 /* ViewController.h */,
-				5C12E16D1CE4368800F0EE61 /* ViewController.m */,
-				5C12E16F1CE4368800F0EE61 /* Main.storyboard */,
-				5C12E1721CE4368800F0EE61 /* Assets.xcassets */,
-				5C12E1741CE4368800F0EE61 /* LaunchScreen.storyboard */,
-				5C12E1771CE4368800F0EE61 /* Info.plist */,
-				5C12E1661CE4368800F0EE61 /* Supporting Files */,
-			);
-			path = Wallet;
-			sourceTree = "<group>";
-		};
-		5C12E1661CE4368800F0EE61 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				5C12E1671CE4368800F0EE61 /* main.m */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 		5C2079E11CCF7DB0007A5F21 = {
 			isa = PBXGroup;
 			children = (
-				5C5B62641D080CA900989CD7 /* channelMemberActivityTableViewCell.h */,
-				5C5B62651D080CA900989CD7 /* channelMemberActivityTableViewCell.m */,
-				5C5B62611D080C9000989CD7 /* OutGoingMessagesCell.h */,
-				5C5B62621D080C9000989CD7 /* OutGoingMessagesCell.m */,
-				5C5B625E1D080C7300989CD7 /* IncomingMessageCell.h */,
-				5C5B625F1D080C7300989CD7 /* IncomingMessageCell.m */,
-				5C5B625C1D06B41800989CD7 /* Znikomit.otf */,
-				5C5B62501CFC510400989CD7 /* AudioPlayerTest2.h */,
-				5C5B62511CFC510400989CD7 /* AudioPlayerTest2.m */,
-				5C5B624D1CFC447800989CD7 /* AudioRecorderTest_StreamPlayer.h */,
-				5C5B624E1CFC447800989CD7 /* AudioRecorderTest_StreamPlayer.m */,
-				5C7360401CF4770A008DD6B5 /* AudioRecorderTest.h */,
-				5C7360411CF4770A008DD6B5 /* AudioRecorderTest.m */,
-				5C7360391CF43CD2008DD6B5 /* VoiceStreamPlayerHandler.h */,
-				5C73603A1CF43CD2008DD6B5 /* VoiceStreamPlayerHandler.m */,
-				5C7360361CF42014008DD6B5 /* VoiceStreamHandler.h */,
-				5C7360371CF42014008DD6B5 /* VoiceStreamHandler.m */,
-				5C12E1571CE2FDD600F0EE61 /* asyncTCPConnectionHandler.h */,
-				5C12E1581CE2FDD600F0EE61 /* asyncTCPConnectionHandler.m */,
-				5C8CE3761CDC612200EE532F /* RecordViewController.h */,
-				5C8CE3771CDC612200EE532F /* RecordViewController.m */,
-				5C8CE3711CDB36D400EE532F /* AudioFileHandler.h */,
-				5C8CE3721CDB36D400EE532F /* AudioFileHandler.m */,
-				5C8CE3621CD38ECF00EE532F /* ic_back.png */,
-				5C8CE3631CD38ECF00EE532F /* ic_channel_create.png */,
-				5C8CE3641CD38ECF00EE532F /* ic_channel_join.png */,
-				5C8CE3651CD38ECF00EE532F /* ic_info.png */,
-				5C8CE3661CD38ECF00EE532F /* ic_public_channel.png */,
-				5C8CE3531CD0EE2200EE532F /* MessageData.h */,
-				5C8CE3541CD0EE2200EE532F /* MessageData.m */,
-				5C8CE3501CD0D08000EE532F /* Channel.h */,
-				5C8CE3511CD0D08000EE532F /* Channel.m */,
-				5C8CE34D1CD0CFBE00EE532F /* User.h */,
-				5C8CE34E1CD0CFBE00EE532F /* User.m */,
-				5C8CE34A1CD0C8A000EE532F /* WalkieTalkieViewController.h */,
-				5C8CE34B1CD0C8A000EE532F /* WalkieTalkieViewController.m */,
-				5C8CE3461CD0C1E100EE532F /* walkieTalkie.pch */,
 				5C2079EC1CCF7DB0007A5F21 /* SocketTest_walkieTalkie */,
-				5C12E1651CE4368800F0EE61 /* Wallet */,
 				5C2079EB1CCF7DB0007A5F21 /* Products */,
 				EB939EF5D9CCB4A3C8A71314 /* Pods */,
 				098949612D42FF573319961B /* Frameworks */,
@@ -265,7 +183,7 @@
 		5C2079EB1CCF7DB0007A5F21 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5C2079EA1CCF7DB0007A5F21 /* SocketTest_walkieTalkie.app */,
+				5C2079EA1CCF7DB0007A5F21 /* WalkieTalkie.app */,
 				5C12E1641CE4368800F0EE61 /* Wallet.app */,
 			);
 			name = Products;
@@ -274,32 +192,15 @@
 		5C2079EC1CCF7DB0007A5F21 /* SocketTest_walkieTalkie */ = {
 			isa = PBXGroup;
 			children = (
+				B23797631D0FD0DE00F9F5A7 /* Models */,
+				B23797971D0FD4B400F9F5A7 /* Views */,
+				B23797641D0FD1B200F9F5A7 /* ViewControllers */,
 				5C2079F01CCF7DB0007A5F21 /* AppDelegate.h */,
 				5C2079F11CCF7DB0007A5F21 /* AppDelegate.m */,
-				5C2079F31CCF7DB0007A5F21 /* ViewController.h */,
-				5C2079F41CCF7DB0007A5F21 /* ViewController.m */,
 				5C2079F61CCF7DB0007A5F21 /* Main.storyboard */,
-				5C2079F91CCF7DB0007A5F21 /* Assets.xcassets */,
-				5C2079FB1CCF7DB0007A5F21 /* LaunchScreen.storyboard */,
-				5C2079FE1CCF7DB0007A5F21 /* Info.plist */,
-				5C2079ED1CCF7DB0007A5F21 /* Supporting Files */,
-				5C8CE3391CD0BE1F00EE532F /* asyncUDPConnectionHandler.h */,
-				5C8CE33A1CD0BE1F00EE532F /* asyncUDPConnectionHandler.m */,
-				5C8CE33C1CD0BE4500EE532F /* ChannelHandler.h */,
-				5C8CE33D1CD0BE4500EE532F /* ChannelHandler.m */,
-				5C8CE33F1CD0BEA900EE532F /* ChatHandler.h */,
-				5C8CE3401CD0BEA900EE532F /* ChatHandler.m */,
-				5C8CE3421CD0BFD200EE532F /* MessageHandler.h */,
-				5C8CE3431CD0BFD200EE532F /* MessageHandler.m */,
 				5C8CE3451CD0C1C900EE532F /* Constants.h */,
-				5C8CE3561CD2157B00EE532F /* CreateChannelViewController.h */,
-				5C8CE3571CD2157B00EE532F /* CreateChannelViewController.m */,
-				5C8CE3591CD2159700EE532F /* JoinChannelViewController.h */,
-				5C8CE35A1CD2159700EE532F /* JoinChannelViewController.m */,
-				5C8CE35C1CD215B000EE532F /* ChatViewController.h */,
-				5C8CE35D1CD215B000EE532F /* ChatViewController.m */,
-				5C8CE35F1CD21AE100EE532F /* StartPageViewController.h */,
-				5C8CE3601CD21AE100EE532F /* StartPageViewController.m */,
+				B23797881D0FD38A00F9F5A7 /* Resources */,
+				5C2079ED1CCF7DB0007A5F21 /* Supporting Files */,
 			);
 			path = SocketTest_walkieTalkie;
 			sourceTree = "<group>";
@@ -307,9 +208,244 @@
 		5C2079ED1CCF7DB0007A5F21 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				B23797C91D0FD74100F9F5A7 /* walkieTalkie.pch */,
+				5C2079FB1CCF7DB0007A5F21 /* LaunchScreen.storyboard */,
+				5C2079FE1CCF7DB0007A5F21 /* Info.plist */,
 				5C2079EE1CCF7DB0007A5F21 /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		B23797631D0FD0DE00F9F5A7 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B23797CA1D0FD78500F9F5A7 /* ClientDataModel */,
+				B23797BB1D0FD6BA00F9F5A7 /* AudioStreamRecorderTest */,
+				B23797A21D0FD52E00F9F5A7 /* Handlers */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		B23797641D0FD1B200F9F5A7 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				B23797651D0FD1B200F9F5A7 /* AudioRecorderViewController */,
+				B23797681D0FD1B200F9F5A7 /* ChatViewController */,
+				B237976B1D0FD1B200F9F5A7 /* CreateChannelViewController */,
+				B237976E1D0FD1B200F9F5A7 /* JoinChannelViewController */,
+				B23797711D0FD1B200F9F5A7 /* RecordViewController */,
+				B23797721D0FD1B200F9F5A7 /* StartpageViewController */,
+				B23797751D0FD1B200F9F5A7 /* walkieTalkieViewController */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		B23797651D0FD1B200F9F5A7 /* AudioRecorderViewController */ = {
+			isa = PBXGroup;
+			children = (
+				B23797661D0FD1B200F9F5A7 /* AudioRecorderViewController.h */,
+				B23797671D0FD1B200F9F5A7 /* AudioRecorderViewController.m */,
+			);
+			path = AudioRecorderViewController;
+			sourceTree = "<group>";
+		};
+		B23797681D0FD1B200F9F5A7 /* ChatViewController */ = {
+			isa = PBXGroup;
+			children = (
+				B23797691D0FD1B200F9F5A7 /* ChatViewController.h */,
+				B237976A1D0FD1B200F9F5A7 /* ChatViewController.m */,
+			);
+			path = ChatViewController;
+			sourceTree = "<group>";
+		};
+		B237976B1D0FD1B200F9F5A7 /* CreateChannelViewController */ = {
+			isa = PBXGroup;
+			children = (
+				B237976C1D0FD1B200F9F5A7 /* CreateChannelViewController.h */,
+				B237976D1D0FD1B200F9F5A7 /* CreateChannelViewController.m */,
+			);
+			path = CreateChannelViewController;
+			sourceTree = "<group>";
+		};
+		B237976E1D0FD1B200F9F5A7 /* JoinChannelViewController */ = {
+			isa = PBXGroup;
+			children = (
+				B237976F1D0FD1B200F9F5A7 /* JoinChannelViewController.h */,
+				B23797701D0FD1B200F9F5A7 /* JoinChannelViewController.m */,
+			);
+			path = JoinChannelViewController;
+			sourceTree = "<group>";
+		};
+		B23797711D0FD1B200F9F5A7 /* RecordViewController */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = RecordViewController;
+			sourceTree = "<group>";
+		};
+		B23797721D0FD1B200F9F5A7 /* StartpageViewController */ = {
+			isa = PBXGroup;
+			children = (
+				B23797731D0FD1B200F9F5A7 /* StartPageViewController.h */,
+				B23797741D0FD1B200F9F5A7 /* StartPageViewController.m */,
+			);
+			path = StartpageViewController;
+			sourceTree = "<group>";
+		};
+		B23797751D0FD1B200F9F5A7 /* walkieTalkieViewController */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = walkieTalkieViewController;
+			sourceTree = "<group>";
+		};
+		B23797881D0FD38A00F9F5A7 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B23797E41D0FD7D900F9F5A7 /* Znikomit.otf */,
+				B23797D71D0FD7CA00F9F5A7 /* Graphics */,
+				5C2079F91CCF7DB0007A5F21 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		B23797971D0FD4B400F9F5A7 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B23797981D0FD4D900F9F5A7 /* TableViewCells */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		B23797981D0FD4D900F9F5A7 /* TableViewCells */ = {
+			isa = PBXGroup;
+			children = (
+				B23797991D0FD4D900F9F5A7 /* channelMemberActivityTableViewCell.h */,
+				B237979A1D0FD4D900F9F5A7 /* channelMemberActivityTableViewCell.m */,
+				B237979B1D0FD4D900F9F5A7 /* IncomingMessageCell.h */,
+				B237979C1D0FD4D900F9F5A7 /* IncomingMessageCell.m */,
+				B237979D1D0FD4D900F9F5A7 /* OutGoingMessagesCell.h */,
+				B237979E1D0FD4D900F9F5A7 /* OutGoingMessagesCell.m */,
+			);
+			path = TableViewCells;
+			sourceTree = "<group>";
+		};
+		B23797A21D0FD52E00F9F5A7 /* Handlers */ = {
+			isa = PBXGroup;
+			children = (
+				B23797C21D0FD6E500F9F5A7 /* VoiceStreamHandler */,
+				B23797B31D0FD5AA00F9F5A7 /* TCPConnectionHandler */,
+				B23797B61D0FD5AA00F9F5A7 /* UDP ConnectionHandler */,
+				B23797A31D0FD56B00F9F5A7 /* AudioFileHandler */,
+				B23797A61D0FD56B00F9F5A7 /* ChannelHandler */,
+				B23797A91D0FD56B00F9F5A7 /* ChatHandler */,
+				B23797AC1D0FD56B00F9F5A7 /* MessageHandler */,
+			);
+			path = Handlers;
+			sourceTree = "<group>";
+		};
+		B23797A31D0FD56B00F9F5A7 /* AudioFileHandler */ = {
+			isa = PBXGroup;
+			children = (
+				B23797A41D0FD56B00F9F5A7 /* AudioFileHandler.h */,
+				B23797A51D0FD56B00F9F5A7 /* AudioFileHandler.m */,
+			);
+			path = AudioFileHandler;
+			sourceTree = "<group>";
+		};
+		B23797A61D0FD56B00F9F5A7 /* ChannelHandler */ = {
+			isa = PBXGroup;
+			children = (
+				B23797A71D0FD56B00F9F5A7 /* ChannelHandler.h */,
+				B23797A81D0FD56B00F9F5A7 /* ChannelHandler.m */,
+			);
+			path = ChannelHandler;
+			sourceTree = "<group>";
+		};
+		B23797A91D0FD56B00F9F5A7 /* ChatHandler */ = {
+			isa = PBXGroup;
+			children = (
+				B23797AA1D0FD56B00F9F5A7 /* ChatHandler.h */,
+				B23797AB1D0FD56B00F9F5A7 /* ChatHandler.m */,
+			);
+			path = ChatHandler;
+			sourceTree = "<group>";
+		};
+		B23797AC1D0FD56B00F9F5A7 /* MessageHandler */ = {
+			isa = PBXGroup;
+			children = (
+				B23797AD1D0FD56B00F9F5A7 /* MessageHandler.h */,
+				B23797AE1D0FD56B00F9F5A7 /* MessageHandler.m */,
+			);
+			path = MessageHandler;
+			sourceTree = "<group>";
+		};
+		B23797B31D0FD5AA00F9F5A7 /* TCPConnectionHandler */ = {
+			isa = PBXGroup;
+			children = (
+				B23797B41D0FD5AA00F9F5A7 /* asyncTCPConnectionHandler.h */,
+				B23797B51D0FD5AA00F9F5A7 /* asyncTCPConnectionHandler.m */,
+			);
+			path = TCPConnectionHandler;
+			sourceTree = "<group>";
+		};
+		B23797B61D0FD5AA00F9F5A7 /* UDP ConnectionHandler */ = {
+			isa = PBXGroup;
+			children = (
+				B23797B71D0FD5AA00F9F5A7 /* asyncUDPConnectionHandler.h */,
+				B23797B81D0FD5AA00F9F5A7 /* asyncUDPConnectionHandler.m */,
+			);
+			path = "UDP ConnectionHandler";
+			sourceTree = "<group>";
+		};
+		B23797BB1D0FD6BA00F9F5A7 /* AudioStreamRecorderTest */ = {
+			isa = PBXGroup;
+			children = (
+				B23797BC1D0FD6BA00F9F5A7 /* AudioRecorderTest.h */,
+				B23797BD1D0FD6BA00F9F5A7 /* AudioRecorderTest.m */,
+				B23797BE1D0FD6BA00F9F5A7 /* AudioRecorderTest_StreamPlayer.h */,
+				B23797BF1D0FD6BA00F9F5A7 /* AudioRecorderTest_StreamPlayer.m */,
+			);
+			path = AudioStreamRecorderTest;
+			sourceTree = "<group>";
+		};
+		B23797C21D0FD6E500F9F5A7 /* VoiceStreamHandler */ = {
+			isa = PBXGroup;
+			children = (
+				B23797C31D0FD6E500F9F5A7 /* VoiceStreamHandler.h */,
+				B23797C41D0FD6E500F9F5A7 /* VoiceStreamHandler.m */,
+				B23797C51D0FD6E500F9F5A7 /* VoiceStreamPlayerHandler.h */,
+				B23797C61D0FD6E500F9F5A7 /* VoiceStreamPlayerHandler.m */,
+			);
+			path = VoiceStreamHandler;
+			sourceTree = "<group>";
+		};
+		B23797CA1D0FD78500F9F5A7 /* ClientDataModel */ = {
+			isa = PBXGroup;
+			children = (
+				B23797CB1D0FD78500F9F5A7 /* Channel.h */,
+				B23797CC1D0FD78500F9F5A7 /* Channel.m */,
+				B23797CD1D0FD78500F9F5A7 /* MessageData.h */,
+				B23797CE1D0FD78500F9F5A7 /* MessageData.m */,
+				B23797CF1D0FD78500F9F5A7 /* User.h */,
+				B23797D01D0FD78500F9F5A7 /* User.m */,
+				B23797D11D0FD78500F9F5A7 /* UserDataModel.h */,
+				B23797D21D0FD78500F9F5A7 /* UserDataModel.m */,
+			);
+			path = ClientDataModel;
+			sourceTree = "<group>";
+		};
+		B23797D71D0FD7CA00F9F5A7 /* Graphics */ = {
+			isa = PBXGroup;
+			children = (
+				B23797D81D0FD7CA00F9F5A7 /* ic_back.png */,
+				B23797D91D0FD7CA00F9F5A7 /* ic_channel_create.png */,
+				B23797DA1D0FD7CA00F9F5A7 /* ic_channel_join.png */,
+				B23797DB1D0FD7CA00F9F5A7 /* ic_info.png */,
+				B23797DC1D0FD7CA00F9F5A7 /* ic_public_channel.png */,
+				B23797DD1D0FD7CA00F9F5A7 /* SplashScreen.png */,
+			);
+			path = Graphics;
 			sourceTree = "<group>";
 		};
 		EB939EF5D9CCB4A3C8A71314 /* Pods */ = {
@@ -359,7 +495,7 @@
 			);
 			name = SocketTest_walkieTalkie;
 			productName = SocketTest_walkieTalkie;
-			productReference = 5C2079EA1CCF7DB0007A5F21 /* SocketTest_walkieTalkie.app */;
+			productReference = 5C2079EA1CCF7DB0007A5F21 /* WalkieTalkie.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -404,9 +540,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5C12E1761CE4368800F0EE61 /* LaunchScreen.storyboard in Resources */,
-				5C12E1731CE4368800F0EE61 /* Assets.xcassets in Resources */,
-				5C12E1711CE4368800F0EE61 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -414,15 +547,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5C5B625D1D06B42300989CD7 /* Znikomit.otf in Resources */,
 				5C2079FD1CCF7DB0007A5F21 /* LaunchScreen.storyboard in Resources */,
-				5C8CE36A1CD38ECF00EE532F /* ic_info.png in Resources */,
-				5C8CE36B1CD38ECF00EE532F /* ic_public_channel.png in Resources */,
-				5C8CE3691CD38ECF00EE532F /* ic_channel_join.png in Resources */,
+				B23797E11D0FD7CA00F9F5A7 /* ic_info.png in Resources */,
+				B23797E21D0FD7CA00F9F5A7 /* ic_public_channel.png in Resources */,
+				B23797E01D0FD7CA00F9F5A7 /* ic_channel_join.png in Resources */,
 				5C2079FA1CCF7DB0007A5F21 /* Assets.xcassets in Resources */,
-				5C8CE3671CD38ECF00EE532F /* ic_back.png in Resources */,
+				B23797DE1D0FD7CA00F9F5A7 /* ic_back.png in Resources */,
 				5C2079F81CCF7DB0007A5F21 /* Main.storyboard in Resources */,
-				5C8CE3681CD38ECF00EE532F /* ic_channel_create.png in Resources */,
+				B23797E31D0FD7CA00F9F5A7 /* SplashScreen.png in Resources */,
+				B23797DF1D0FD7CA00F9F5A7 /* ic_channel_create.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -481,9 +614,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5C12E16E1CE4368800F0EE61 /* ViewController.m in Sources */,
-				5C12E16B1CE4368800F0EE61 /* AppDelegate.m in Sources */,
-				5C12E1681CE4368800F0EE61 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -491,54 +621,36 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5C5B62661D080CA900989CD7 /* channelMemberActivityTableViewCell.m in Sources */,
-				5C2079F51CCF7DB0007A5F21 /* ViewController.m in Sources */,
-				5C5B62631D080C9000989CD7 /* OutGoingMessagesCell.m in Sources */,
+				B237979F1D0FD4D900F9F5A7 /* channelMemberActivityTableViewCell.m in Sources */,
+				B23797D31D0FD78500F9F5A7 /* Channel.m in Sources */,
+				B23797AF1D0FD56B00F9F5A7 /* AudioFileHandler.m in Sources */,
+				B23797C81D0FD6E500F9F5A7 /* VoiceStreamPlayerHandler.m in Sources */,
+				B23797D61D0FD78500F9F5A7 /* UserDataModel.m in Sources */,
+				B23797C01D0FD6BA00F9F5A7 /* AudioRecorderTest.m in Sources */,
+				B23797A11D0FD4D900F9F5A7 /* OutGoingMessagesCell.m in Sources */,
 				5C2079F21CCF7DB0007A5F21 /* AppDelegate.m in Sources */,
-				5C7360421CF4770A008DD6B5 /* AudioRecorderTest.m in Sources */,
-				5C8CE34F1CD0CFBE00EE532F /* User.m in Sources */,
-				5C5B62521CFC510400989CD7 /* AudioPlayerTest2.m in Sources */,
-				5C8CE3521CD0D08000EE532F /* Channel.m in Sources */,
-				5C8CE3611CD21AE100EE532F /* StartPageViewController.m in Sources */,
-				5C12E1591CE2FDD600F0EE61 /* asyncTCPConnectionHandler.m in Sources */,
-				5C8CE3411CD0BEA900EE532F /* ChatHandler.m in Sources */,
-				5C8CE3731CDB36D400EE532F /* AudioFileHandler.m in Sources */,
-				5C8CE33E1CD0BE4500EE532F /* ChannelHandler.m in Sources */,
-				5C8CE3551CD0EE2200EE532F /* MessageData.m in Sources */,
-				5C8CE3441CD0BFD200EE532F /* MessageHandler.m in Sources */,
-				5C8CE3581CD2157B00EE532F /* CreateChannelViewController.m in Sources */,
-				5C8CE34C1CD0C8A000EE532F /* WalkieTalkieViewController.m in Sources */,
-				5C7360381CF42014008DD6B5 /* VoiceStreamHandler.m in Sources */,
+				B237977A1D0FD1B200F9F5A7 /* StartPageViewController.m in Sources */,
+				B23797791D0FD1B200F9F5A7 /* JoinChannelViewController.m in Sources */,
+				B23797B01D0FD56B00F9F5A7 /* ChannelHandler.m in Sources */,
+				B23797781D0FD1B200F9F5A7 /* CreateChannelViewController.m in Sources */,
+				B23797C71D0FD6E500F9F5A7 /* VoiceStreamHandler.m in Sources */,
+				B23797D51D0FD78500F9F5A7 /* User.m in Sources */,
+				B23797B21D0FD56B00F9F5A7 /* MessageHandler.m in Sources */,
+				B23797B11D0FD56B00F9F5A7 /* ChatHandler.m in Sources */,
+				B23797761D0FD1B200F9F5A7 /* AudioRecorderViewController.m in Sources */,
+				B23797B91D0FD5AA00F9F5A7 /* asyncTCPConnectionHandler.m in Sources */,
+				B23797BA1D0FD5AA00F9F5A7 /* asyncUDPConnectionHandler.m in Sources */,
+				B23797D41D0FD78500F9F5A7 /* MessageData.m in Sources */,
+				B23797A01D0FD4D900F9F5A7 /* IncomingMessageCell.m in Sources */,
+				B23797C11D0FD6BA00F9F5A7 /* AudioRecorderTest_StreamPlayer.m in Sources */,
 				5C2079EF1CCF7DB0007A5F21 /* main.m in Sources */,
-				5C5B62601D080C7300989CD7 /* IncomingMessageCell.m in Sources */,
-				5C8CE33B1CD0BE1F00EE532F /* asyncUDPConnectionHandler.m in Sources */,
-				5C8CE35E1CD215B000EE532F /* ChatViewController.m in Sources */,
-				5C5B624F1CFC447800989CD7 /* AudioRecorderTest_StreamPlayer.m in Sources */,
-				5C8CE3781CDC612200EE532F /* RecordViewController.m in Sources */,
-				5C73603B1CF43CD2008DD6B5 /* VoiceStreamPlayerHandler.m in Sources */,
-				5C8CE35B1CD2159700EE532F /* JoinChannelViewController.m in Sources */,
+				B23797771D0FD1B200F9F5A7 /* ChatViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		5C12E16F1CE4368800F0EE61 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				5C12E1701CE4368800F0EE61 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		5C12E1741CE4368800F0EE61 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				5C12E1751CE4368800F0EE61 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
 		5C2079F61CCF7DB0007A5F21 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -677,7 +789,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.siliconOrchard.walkieTalkie;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = WalkieTalkie;
 				PROVISIONING_PROFILE = "e3253401-c74c-4eeb-8ffd-b091c0b40907";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -698,7 +810,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.siliconOrchard.walkieTalkie;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = WalkieTalkie;
 				PROVISIONING_PROFILE = "e3253401-c74c-4eeb-8ffd-b091c0b40907";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
