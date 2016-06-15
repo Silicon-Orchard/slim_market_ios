@@ -41,5 +41,7 @@
 -(NSString *)repeatVoiceMessageRequest;
 -(NSString *)voiceStreamDataFromAudioBuffer:(NSData *)buffer inChannelID:(int)channelID;
 
+-(NSString *)leaveSystemMessage;
+
 
 @end

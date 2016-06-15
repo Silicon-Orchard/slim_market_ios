@@ -111,6 +111,9 @@
 -(void)sendVoiceStreamData:(NSData *)audioFile toIPAddress:(NSString *)IPAddress {
     //    NSLog(@"data sent to %@", IPAddress);
     [self.currentVoiceStreamSocket sendData:audioFile toHost:IPAddress port:WALKIETALKIE_VOICE_STREAMER_PORT withTimeout:3 tag:0];
+    
+    
+    int i = TYPE_ONE_TO_ONE_CHAT_ACCEPT;
 }
 
 
@@ -191,6 +194,9 @@
             break;
         case 9:
             [[NSNotificationCenter defaultCenter] postNotificationName:CHANNEL_LEFT_NOTIFICATIONKEY object:nil userInfo:userInfo];
+            break;
+        case 10:
+            [[NSNotificationCenter defaultCenter] postNotificationName:USER_LEFT_SYSTEM_NOTIFICATIONKEY object:nil userInfo:userInfo];
             break;
         case 11:
             [[NSNotificationCenter defaultCenter] postNotificationName:VOICE_MESSAGE_RECEIEVED_NOTIFICATIONKEY object:nil userInfo:userInfo];

@@ -22,12 +22,22 @@
 #define CHUNKSIZE ((int) 3000)
 
 
-#define TYPE_CHATMESSAGE ((int) 1)
+#define TYPE_MESSAGE ((int) 1)
 #define TYPE_ADD_CLIENT ((int) 2)
 #define TYPE_REQUEST_INFO ((int) 3)
 #define TYPE_RECEIVE_INFO ((int) 4)
-#define TYPE_CHANNEL_CREATED ((int) 5)
-#define TYPE_CHANNEL_JOIN ((int) 6)
+#define TYPE_CREATE_CHANNEL ((int) 5)
+#define TYPE_JOIN_CHANNEL ((int) 6)
+
+#define TYPE_CHANNEL_FOUND ((int) 7)
+#define TYPE_CHANNEL_DUPLICATE ((int) 8)
+#define TYPE_LEFT_CHANNEL ((int) 9)
+#define TYPE_LEFT_APPLICATION ((int) 10)
+#define TYPE_ONE_TO_ONE_CHAT_REQUEST ((int) 11)
+#define TYPE_ONE_TO_ONE_CHAT_ACCEPT ((int) 12)
+
+
+
 
 #define JSON_KEY_IP_ADDRESS @"ip_address"
 #define JSON_KEY_DEVICE_NAME @"device_name"
@@ -64,6 +74,8 @@
 #define TCP_VOICE_MESSAGE_RECEIEVED_NOTIFICATIONKEY @"TCPvoiceMessageReceivedNotification"
 #define UDP_VOICE_MESSAGE_REPEAR_REQUEST_NOTIFICATIONKEY @"UDPvoiceMessageRepeatRequestNotification"
 #define VOICE_STREAM_RECEIEVED_NOTIFICATIONKEY @"voiceStreamReceivedNotification"
+
+#define USER_LEFT_SYSTEM_NOTIFICATIONKEY @"userLeftSystemNotification"
 
 
 #define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]

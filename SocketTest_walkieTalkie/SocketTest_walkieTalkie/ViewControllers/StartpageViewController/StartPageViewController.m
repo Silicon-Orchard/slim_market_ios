@@ -7,6 +7,8 @@
 //
 
 #import "StartPageViewController.h"
+//#import "User.h"
+//#import "UserHandler.h"
 
 @interface StartPageViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *testLabel;
@@ -28,10 +30,15 @@
     [[asyncUDPConnectionHandler sharedHandler] createSocketWithPort:WALKIETALKIE_UINT_PORT_sender];
     [[asyncUDPConnectionHandler sharedHandler] createVoiceSocketWithPort:WALKIETALKIE_VOICE_LISTENER];
     [[asyncUDPConnectionHandler sharedHandler] createVoiceStreamerSocketWithPort:WALKIETALKIE_VOICE_STREAMER_PORT];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(foreignChannelCreated:) name:FOREIGN_CHANNEL_CREATED_NOTIFICATIONKEY object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addNewDeviceToNetWorkDeviceList:) name:NEW_DEVICE_CONNECTED_NOTIFICATIONKEY object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(confirmNewDeviceToNetWorkDeviceList:) name:NEW_DEVICE_CONFIRMED_NOTIFICATIONKEY object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeDeviceFromActiveDeviceList:) name:CHANNEL_LEFT_NOTIFICATIONKEY object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeUserFromList:) name:USER_LEFT_SYSTEM_NOTIFICATIONKEY object:nil];
+    
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(notifySelfPresenceToNetwork)
                                                  name:UIApplicationDidBecomeActiveNotification object:nil];
@@ -56,6 +63,7 @@
 
 
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -100,10 +108,22 @@
 }
 
 -(void) addNewDeviceToNetWorkDeviceList:(NSNotification*)notification{
+    
     NSDictionary* userInfo = notification.userInfo;
     NSData* receivedData = (NSData*)userInfo[@"receievedData"];
     NSLog (@"Successfully received New device Presence notification! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
     NSDictionary *jsonDict = [NSJSONSerialization  JSONObjectWithData:receivedData options:0 error:nil];
+    
+    //Save The User In UserHander
+    [[UserHandler sharedInstance] addUserWithIP:[jsonDict objectForKey:JSON_KEY_IP_ADDRESS]
+                                       deviceID:[jsonDict objectForKey:JSON_KEY_DEVICE_ID]
+                                           name:[jsonDict objectForKey:JSON_KEY_DEVICE_NAME]
+                                      andActive:YES];
+    
+    
+    int count = [[[UserHandler sharedInstance] getUsers] count];
+    NSLog(@"UserHandler Count %d", count);
+    
     NSMutableArray *networkDevices = [[NSMutableArray alloc] initWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:ACTIVEUSERLISTKEY]];
     if ([networkDevices indexOfObject:[jsonDict objectForKey:JSON_KEY_IP_ADDRESS]] == NSNotFound) {
         [networkDevices addObject:[jsonDict objectForKey:JSON_KEY_IP_ADDRESS]];
@@ -121,8 +141,18 @@
 -(void) confirmNewDeviceToNetWorkDeviceList:(NSNotification*)notification{
     NSDictionary* userInfo = notification.userInfo;
     NSData* receivedData = (NSData*)userInfo[@"receievedData"];
-    NSLog (@"Successfully confirmed existing device in network notification! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
     NSDictionary *jsonDict = [NSJSONSerialization  JSONObjectWithData:receivedData options:0 error:nil];
+    
+    //Save The User In UserHander
+    [[UserHandler sharedInstance] addUserWithIP:[jsonDict objectForKey:JSON_KEY_IP_ADDRESS]
+                                       deviceID:[jsonDict objectForKey:JSON_KEY_DEVICE_ID]
+                                           name:[jsonDict objectForKey:JSON_KEY_DEVICE_NAME]
+                                      andActive:YES];
+    
+    int count = [[[UserHandler sharedInstance] getUsers] count];
+    NSLog(@"UserHandler Count %d", count);
+    
+    
     NSMutableArray *networkDevices = [[NSMutableArray alloc] initWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:ACTIVEUSERLISTKEY]];
     if ([networkDevices indexOfObject:[jsonDict objectForKey:JSON_KEY_IP_ADDRESS]] == NSNotFound) {
         [networkDevices addObject:[jsonDict objectForKey:JSON_KEY_IP_ADDRESS]];
@@ -149,8 +179,21 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
     NSLog(@"Devices %@", networkDevices);
     self.testLabel.text = [NSString stringWithFormat:@"ipaddress removed %@ \n Devices %@", [jsonDict objectForKey:JSON_KEY_IP_ADDRESS ], networkDevices];
-
 }
+
+- (void)removeUserFromList:(NSNotification *)sender {
+    
+    NSDictionary* userInfo = sender.userInfo;
+    NSData* receivedData = (NSData*)userInfo[@"receievedData"];
+    NSDictionary *jsonDict = [NSJSONSerialization  JSONObjectWithData:receivedData options:0 error:nil];
+    
+    //Remove The User from UserHander
+    
+    [[UserHandler sharedInstance] removeUserofIP:[jsonDict objectForKey:JSON_KEY_IP_ADDRESS]
+                                    andDeviceID:[jsonDict objectForKey:JSON_KEY_DEVICE_ID]];
+}
+
+
 
 -(void) foreignChannelCreated:(NSNotification*)notification{
     NSDictionary* userInfo = notification.userInfo;

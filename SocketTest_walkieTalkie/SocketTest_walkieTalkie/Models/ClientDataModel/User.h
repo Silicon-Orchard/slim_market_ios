@@ -10,7 +10,13 @@
 
 @interface User : NSObject
 
+@property (nonatomic, strong) NSString *deviceIP;
+@property (nonatomic, strong) NSString *deviceID;
+@property (nonatomic, strong) NSString *deviceName;
+@property BOOL isActive;
 
+
+-(instancetype)initWithIP:(NSString *)ip deviceID:(NSString* )ID name:(NSString*)name andActive:(BOOL)active;
 
 
 @end

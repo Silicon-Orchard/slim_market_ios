@@ -53,10 +53,10 @@
 @end
 
 @implementation ChatViewController
-@synthesize playButton, recordPauseButton;
+//@synthesize playButton, recordPauseButton;
 
 
-
+#pragma mark - LifeCycle
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -87,7 +87,7 @@
     [self.view addGestureRecognizer:aTap];
     
     //[stopButton setEnabled:NO];
-    [playButton setEnabled:NO];
+    [self.playButton setEnabled:NO];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(channelUpdated:) name:@"currentChannelUpdated" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(voiceMessageReceived:) name:VOICE_MESSAGE_RECEIEVED_NOTIFICATIONKEY object:nil];
@@ -139,26 +139,6 @@
     // Do any additional setup after loading the view.
 }
 
-- (void) addFooterToTableView:(UITableView *) myTableView
-{
-    UIView *v = [[UIView alloc] initWithFrame:CGRectZero];
-    
-    [myTableView setTableFooterView:v];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
--(void)keyboardWasShown:(NSNotification*)notification
-{
-    CGFloat height = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey ] CGRectValue].size.height;
-    
-    self.bottomSpaceForSendContainer.constant = height;
-    [self.view layoutIfNeeded];
-}
-
 -(void)viewWillAppear:(BOOL)animated{
     
     self.title = [NSString stringWithFormat:@"Channel ID %d", self.currentActiveChannel.channelID];
@@ -172,8 +152,6 @@
      @{NSForegroundColorAttributeName:[UIColor whiteColor]}];
     self.navigationController.navigationBar.tintColor = UIColorFromRGB(0xE0362B);
 
-
-    
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -181,8 +159,6 @@
     [self.chatTableView setContentOffset:CGPointMake(0, self.chatTableView.frame.size.height)];
     int lastRow = 0;
 //    [self.chatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:chatMessageList.count-1] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-
-
 
 }
 
@@ -194,12 +170,30 @@
         previousViewController.isChatOpen = NO;
     }
     if ([self.navigationController.viewControllers indexOfObject:self]==NSNotFound) {
-        // Navigation button was pressed. Do some stuff
+        // Navigation button was pressed.
         [self channelLeaveMessageSend];
-//        [self.navigationController popViewControllerAnimated:NO];
     }
-//    [self channelLeaveMessageSend];
+}
 
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+-(void)dealloc{
+    
+    [self.chatTableView removeObserver:self forKeyPath:@"contentSize"];
+    [[AudioFileHandler sharedHandler] deleteAudioFileFolder];
+}
+
+
+#pragma mark - Helpers
+
+- (void) addFooterToTableView:(UITableView *) myTableView
+{
+    UIView *v = [[UIView alloc] initWithFrame:CGRectZero];
+    
+    [myTableView setTableFooterView:v];
 }
 
 -(UIViewController *)backViewController
@@ -209,34 +203,59 @@
     return stack.lastObject;
 }
 
+-(void)channelLeaveMessageSend{
+    
+    Channel *currentlyActiveChannel;
+    if ([ChannelHandler sharedHandler].isHost) {
+        currentlyActiveChannel = [self.currentActiveChannel geChannel:[ChannelHandler sharedHandler].currentlyActiveChannelID];
+    }
+    else{
+        currentlyActiveChannel = [self.currentActiveChannel getForeignChannel:[ChannelHandler sharedHandler].currentlyActiveChannelID];
+        
+    }
+    
+    NSString *leaveMessageToSend = [[MessageHandler sharedHandler] leaveChatMessageWithChannelID:[ChannelHandler sharedHandler].currentlyActiveChannelID  deviceName:[ChannelHandler sharedHandler].userNameInChannel];
+    
+    
+    NSLog(@"leaveMessageToSend: %@", leaveMessageToSend);
+    
+    for (int i= 0; i<currentlyActiveChannel.channelMemberIPs.count; i++) {
+        if (![[currentlyActiveChannel.channelMemberIPs objectAtIndex:i] isEqualToString:[[MessageHandler sharedHandler] getIPAddress]]) {
+            [[asyncUDPConnectionHandler sharedHandler]sendMessage:leaveMessageToSend toIPAddress:[currentlyActiveChannel.channelMemberIPs objectAtIndex:i]];
+        }
+        
+    }
+    [self.currentActiveChannel removeChannelWithChannelID:currentlyActiveChannel.channelID];
+}
+
+#pragma mark - UIHelpers
+
 -(void)updateUIForChatViewWithChannel:(Channel *)currentChatChannel{
 
-    self.channelMemberListLabel.text =@"";
+    //self.channelMemberListLabel.text =@"";
 
     chatRoomMemberList = [[NSMutableArray alloc] init];
     for (int i = 0; i < currentChatChannel.channelMemberIPs.count; i++) {
-        NSMutableString *members = [[NSMutableString alloc] initWithString:self.channelMemberListLabel.text];
+        //NSMutableString *members = [[NSMutableString alloc] initWithString:self.channelMemberListLabel.text];
         if (i==0) {
             if (currentChatChannel.channelID ==1 || currentChatChannel.channelID ==2) {
-                [members appendString:[NSString stringWithFormat:@"\n%@ Joined", [currentChatChannel.channelMemberNamess objectAtIndex:i]]];
+                //[members appendString:[NSString stringWithFormat:@"\n%@ Joined", [currentChatChannel.channelMemberNamess objectAtIndex:i]]];
                 [chatRoomMemberList addObject:[NSString stringWithFormat:@"%@ Joined", [currentChatChannel.channelMemberNamess objectAtIndex:i]]];
             }
             else{
-                [members appendString:[NSString stringWithFormat:@"%@ Owner", [currentChatChannel.channelMemberNamess objectAtIndex:i]]];
+                //[members appendString:[NSString stringWithFormat:@"%@ Owner", [currentChatChannel.channelMemberNamess objectAtIndex:i]]];
                 [chatRoomMemberList addObject:[NSString stringWithFormat:@"%@ Owner", [currentChatChannel.channelMemberNamess objectAtIndex:i]]];
             }
         }
         else{
-            [members appendString:[NSString stringWithFormat:@"\n%@ Joined", [currentChatChannel.channelMemberNamess objectAtIndex:i]]];
+            //[members appendString:[NSString stringWithFormat:@"\n%@ Joined", [currentChatChannel.channelMemberNamess objectAtIndex:i]]];
             [chatRoomMemberList addObject:[NSString stringWithFormat:@"%@ Joined", [currentChatChannel.channelMemberNamess objectAtIndex:i]]];
         }
-        self.channelMemberListLabel.text = members;
-     
+        //self.channelMemberListLabel.text = members;
     }
-    [ChannelHandler sharedHandler].currentlyActiveChannel = self.currentActiveChannel;
+    
+    //[ChannelHandler sharedHandler].currentlyActiveChannel = self.currentActiveChannel;
     [self.channelMemberTableView reloadData];
-
-
 }
 
 -(void)updateUIForChatMessage:(NSDictionary *)messageDic
@@ -248,15 +267,245 @@
     
 
 //    [self.chatTableView setContentOffset:CGPointMake(0, CGFLOAT_MAX)];
+}
 
+#pragma mark - IBAction
+
+- (IBAction)SendButtonTapped:(id)sender {
+    
+    
+    Channel *currentlyActiveChannel;
+    if ([ChannelHandler sharedHandler].isHost) {
+        currentlyActiveChannel = [self.currentActiveChannel geChannel:[ChannelHandler sharedHandler].currentlyActiveChannelID];
+    }
+    else{
+        currentlyActiveChannel = [self.currentActiveChannel getForeignChannel:[ChannelHandler sharedHandler].currentlyActiveChannelID];
+        
+    }
+    NSString *chatMessageToSend = [[MessageHandler sharedHandler] createChatMessageWithChannelID:[ChannelHandler sharedHandler].currentlyActiveChannelID  deviceName:[ChannelHandler sharedHandler].userNameInChannel chatmessage:self.chatTextField.text];
+    
+    
+    for (int i= 0; i<currentlyActiveChannel.channelMemberIPs.count; i++) {
+        if (![[currentlyActiveChannel.channelMemberIPs objectAtIndex:i] isEqualToString:[[MessageHandler sharedHandler] getIPAddress]]) {
+            
+            [[asyncUDPConnectionHandler sharedHandler]sendMessage:chatMessageToSend toIPAddress:[currentlyActiveChannel.channelMemberIPs objectAtIndex:i]];
+            
+        }
+        
+    }
+    
+    NSDictionary *messageDic = @{
+                                 @"type": MesssageType_Text_Me,
+                                 @"sender": @"Me",
+                                 @"message": self.chatTextField.text
+                                 };
+    [self updateUIForChatMessage:messageDic];
+    
 }
 
 
--(void)ScreenTapped{
-    [self.view endEditing:YES];
-    self.bottomSpaceForSendContainer.constant = 0;
-    [self.view layoutIfNeeded];
+
+
+- (IBAction)voiceTapped:(id)sender {
+    
+    self.voiceMailView.hidden = NO;
+    
 }
+- (IBAction)closeTappedOnVoiceMailView:(id)sender {
+    if (self.thePlayer.isPlaying) {
+        [self.thePlayer stop];
+    }
+    if (recorder.isRecording) {
+        [recorder stop];
+    }
+    self.voiceMailView.hidden = YES;
+}
+
+
+
+
+
+
+
+- (IBAction)recordPauseTapped:(id)sender {
+    // Stop the audio player before recording
+    if (player.playing) {
+        [player stop];
+    }
+    
+    if (!recorder.recording) {
+        AVAudioSession *session = [AVAudioSession sharedInstance];
+        [session setActive:YES error:nil];
+        
+        // Start recording
+        [recorder record];
+        //        [recordPauseButton setTitle:@"Pause" forState:UIControlStateNormal];
+        [self.recordPauseButton setBackgroundImage:[UIImage imageNamed:@"Record Stop"] forState:UIControlStateNormal];
+        
+    } else {
+        
+        // Pause recording
+        [recorder stop];
+        //        [recordPauseButton setTitle:@"Record" forState:UIControlStateNormal];
+        [self.recordPauseButton setBackgroundImage:[UIImage imageNamed:@"Record srt"] forState:UIControlStateNormal];
+        
+        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+        [audioSession setActive:NO error:nil];
+    }
+    
+    //    [stopButton setEnabled:YES];
+    [self.playButton setEnabled:NO];
+}
+
+//- (IBAction)stopTapped:(id)sender {
+//    [recorder stop];
+//
+//    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+//    [audioSession setActive:NO error:nil];
+//}
+
+
+- (IBAction)playTapped:(id)sender {
+    
+    if (!recorder.recording){
+        
+        //NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        //NSString *filePath = [documentsPath stringByAppendingPathComponent:recordedFileName];
+        NSLog(@"recordedAudioFileNames Count: %d", [recordedAudioFileNames count]);
+        NSString *audioFilePath = [[AudioFileHandler sharedHandler] getAudioFilePathOfFilaName:[recordedAudioFileNames lastObject]];
+        
+        NSURL *soundFileURL = [NSURL fileURLWithPath:audioFilePath];
+        NSError *error = nil;
+        //NSString* foofile = [documentsPath stringByAppendingPathComponent:recordedFileName];
+        
+        BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:audioFilePath];
+        if (!fileExists) {
+            NSLog(@"File Doesn't Exist!");
+        }
+        
+        AVAudioSession *session = [AVAudioSession sharedInstance];
+        [session setActive:YES error:nil];
+        
+        self.thePlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:soundFileURL error:&error];
+        //        AVPlayer *newPlayer = [[AVPlayer alloc] initWithURL:soundFileURL];
+        if (error) {
+            NSLog(@"Audio can't play. Error %@", [error localizedDescription]);
+        }
+        else {
+            [self.thePlayer setDelegate:self];
+            [self.thePlayer play];
+        }
+        
+    }
+}
+
+- (IBAction)sendTapped:(id)sender {
+    AVAudioSession *session = [AVAudioSession sharedInstance];
+    [session setActive:YES error:nil];
+    
+    
+    self.sendButton.enabled = NO;
+    NSString *audioFileName = [recordedAudioFileNames lastObject];
+    NSArray *voiceMessagechunkStrings = [[MessageHandler sharedHandler] voiceMessageJSONStringInChunksWithAudioFileName:audioFileName inChannel:self.currentActiveChannel.channelID];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+        NSLog(@"Data To send\npacket count %lu", (unsigned long)voiceMessagechunkStrings.count);
+        
+        for (int i= 0; i<self.currentActiveChannel.channelMemberIPs.count; i++) {
+            if (![[self.currentActiveChannel.channelMemberIPs objectAtIndex:i] isEqualToString:[[MessageHandler sharedHandler] getIPAddress]]) {
+                //            [[asyncUDPConnectionHandler sharedHandler]sendMessage:voiceMessageToSend toIPAddress:[self.activeChannelInfo.channelMemberIPs objectAtIndex:i]];
+                for (int j = 0; j<voiceMessagechunkStrings.count; j++) {
+                    NSLog(@"message to send %@", [voiceMessagechunkStrings objectAtIndex:j]);
+                    if (j%5 == 0) {
+                        [NSThread sleepForTimeInterval:0.09];
+                    }
+                    //                    [NSThread sleepForTimeInterval:0.09];
+                    [[asyncUDPConnectionHandler sharedHandler] sendVoiceMessage:[voiceMessagechunkStrings objectAtIndex:j] toIPAddress:[self.currentActiveChannel.channelMemberIPs objectAtIndex:i]];
+                }
+            }
+            
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Done"
+                                                            message: [NSString stringWithFormat:@"Sent packet count %lu", (unsigned long)voiceMessagechunkStrings.count] //@"Voice Message Sent to Channel Members!"
+                                                           delegate: nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+            
+            
+            [alert show];
+            self.sendButton.enabled = YES;
+            
+            // voice message
+            NSDictionary *messageDic = @{
+                                         @"type": MesssageType_Voice_Me,
+                                         @"sender": @"Me",
+                                         @"message": @"sent a voice message ▶️"
+                                         };
+            [self updateUIForChatMessage:messageDic];
+        });
+    });
+    
+}
+
+
+
+- (IBAction)playReceivedSound:(id)sender {
+    
+    if (!recorder.recording){
+        
+        NSLog(@"Received Count: %d", [receivedAudioFileNames count]);
+        
+        NSString *audioFilePath = [[AudioFileHandler sharedHandler] getAudioFilePathOfFilaName:[receivedAudioFileNames lastObject]];
+        
+        //NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        //NSString *filePath = [documentsPath stringByAppendingPathComponent:receivedFileName];
+        
+        NSURL *audioFileURL = [NSURL fileURLWithPath:audioFilePath];
+        NSError *error = nil;
+        
+        BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:audioFilePath];
+        if (!fileExists) {
+            NSLog(@"File Doesn't Exist!");
+            return;
+        }
+        AVAudioSession *session = [AVAudioSession sharedInstance];
+        [session setActive:YES error:nil];
+        
+        self.thePlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:audioFileURL error:&error];
+        //        if (error) {
+        //            NSLog(@"Audio can't play. Error %@", [error localizedDescription]);
+        //        }
+        //        else {
+        //            [player setDelegate:self];
+        //            [player play];
+        //        }
+        
+        //                self.thePlayer = [[AVAudioPlayer alloc] initWithData:finalAudioData error:&error];
+        if (error) {
+            NSLog(@"Audio can't play. Error %@", [error localizedDescription]);
+        }
+        else {
+            [self.thePlayer setDelegate:self];
+            [self.thePlayer setNumberOfLoops:0];
+            [self.thePlayer prepareToPlay];
+            [self.thePlayer play];
+        }
+        //
+        //        AVPlayer *newPlayer = [[AVPlayer alloc] initWithURL:receivedSoundURL];
+        //        [newPlayer play];
+        
+        
+    }
+    else{
+        NSLog(@"Recorder Active For some reason!");
+    }
+}
+
+
+#pragma mark - Noticfication
+#pragma mark Observer
 
 -(void) chatMessageReceived:(NSNotification*)notification{
     
@@ -367,6 +616,124 @@
 
 }
 
+-(void)requestForRepeatVoiceMessagereceived:(NSNotification *)notification{
+    NSDictionary* userInfo = notification.userInfo;
+    NSData* receivedData = (NSData*)userInfo[@"receievedData"];
+    //    NSLog (@"Successfully received Voice Message notification! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+    NSDictionary *jsonDict = [NSJSONSerialization  JSONObjectWithData:receivedData options:0 error:nil];
+    NSArray *voiceMessagechunkStrings = [[MessageHandler sharedHandler] voiceMessageJSONStringInChunksWithAudioFileName:@"MyAudioMemo.m4a" inChannel:self.currentActiveChannel.channelID];
+    for (int j = 0; j<voiceMessagechunkStrings.count; j++) {
+        NSLog(@"message to send %@", [voiceMessagechunkStrings objectAtIndex:j]);
+        //                    [NSThread sleepForTimeInterval:0.09];
+        [[asyncUDPConnectionHandler sharedHandler]sendVoiceMessage:[voiceMessagechunkStrings objectAtIndex:j] toIPAddress:[jsonDict objectForKey:JSON_KEY_IP_ADDRESS]];
+    }
+}
+
+
+-(void) voiceMessageReceived:(NSNotification*)notification{
+    
+    
+    NSDictionary* userInfo = notification.userInfo;
+    NSData* receivedData = (NSData*)userInfo[@"receievedData"];
+    NSDictionary *jsonDict = [NSJSONSerialization  JSONObjectWithData:receivedData options:0 error:nil];
+    
+    NSString *base64EncodedVoiceString = [jsonDict objectForKey:JSON_KEY_VOICE_MESSAGE];
+    NSData *audioDataFromBase64String = [[NSData alloc] initWithBase64EncodedString:base64EncodedVoiceString options:1];
+    
+    int currentChunk  = [[jsonDict objectForKey:JSON_KEY_VOICE_MESSAGE_CURRENT_CHUNK] intValue];
+    int chunkCount = [[jsonDict objectForKey:JSON_KEY_VOICE_MESSAGE_CHUNKCOUNT] intValue];
+    NSLog(@"Received Data: voiceMessage\npacket count %d\ntotalPacket %d",currentChunk, chunkCount);
+    
+    if (currentChunk == 1) {
+        
+        finalAudioData = nil;
+        audioData = nil;
+        chunkCounter = 1;
+        audioData = [[NSMutableData alloc] initWithData:audioDataFromBase64String];
+        receivedFileName = [NSString stringWithFormat:@"%d.caf",arc4random_uniform(20000)];
+        
+    }else {
+        
+        chunkCounter ++;
+        [audioData appendData:audioDataFromBase64String];
+        //        SoundfilePath = [[AudioFileHandler sharedHandler] returnFilePathAfterAppendingData:audioDataFromBase64String toFileName:receivedFileName];
+        
+        if (currentChunk == chunkCount) {
+            if (chunkCounter == chunkCount) {
+                
+                
+                
+                
+                
+                finalAudioData = [[NSData alloc] initWithData:audioData];
+                NSString * audioFileName = [jsonDict objectForKey:JSON_KEY_VOICE_MESSAGE_FILE_NAME];
+                NSString *audioFolderPath = [[AudioFileHandler sharedHandler] pathToAudioFileFolder];
+                //saveAudioData
+                
+                NSString *audioFilePath = [[AudioFileHandler sharedHandler] saveAudioData:finalAudioData asFileName:audioFileName inFolderPath:audioFolderPath];
+                //NSString *SoundfilePath = [[AudioFileHandler sharedHandler] saveFileAndGetSavedFilePathInDocumentsDirectoryFromData:finalAudioData saveDataAsFileName:receivedFileName];
+                
+                receivedSoundURL = [NSURL fileURLWithPath:audioFilePath];
+                [receivedAudioFileNames addObject:audioFileName];
+                
+                
+                NSLog(@"packet arrived %d/%d",chunkCounter, [[jsonDict objectForKey:JSON_KEY_VOICE_MESSAGE_CHUNKCOUNT] intValue]);
+                chunkCounter = 0;
+                
+                //
+                //                [self.audioReceivedButton setTitle:[NSString stringWithFormat:@"Play received %@'s VoiceMail", [jsonDict objectForKey:JSON_KEY_DEVICE_NAME]] forState:UIControlStateNormal];
+                //                self.audioReceivedButton.hidden = NO;
+                
+                // voice message
+                NSDictionary *messageDic = @{
+                                             @"type": MesssageType_Voice_Other,
+                                             @"sender": [jsonDict objectForKey:JSON_KEY_DEVICE_NAME],
+                                             @"message": @"sent a voice message ▶️"
+                                             };
+                [self updateUIForChatMessage:messageDic];
+                
+            } else{
+                
+                NSString *repeatMessageRequestJSON = [[MessageHandler sharedHandler] repeatVoiceMessageRequest];
+                [[asyncUDPConnectionHandler sharedHandler]sendVoiceMessage:repeatMessageRequestJSON toIPAddress:[jsonDict objectForKey:JSON_KEY_IP_ADDRESS]];
+                
+            }
+        }
+        
+    }
+}
+
+/*
+ -(void)voiceMessageReceivedInTCP:(NSNotification *) notification{
+ NSDictionary* userInfo = notification.userInfo;
+ NSData* receivedData = (NSData*)userInfo[@"receievedData"];
+ NSDictionary *jsonDict = [NSJSONSerialization  JSONObjectWithData:receivedData options:0 error:nil];
+ 
+ NSString *base64EncodedVoiceString = [jsonDict objectForKey:JSON_KEY_VOICE_MESSAGE];
+ NSData *audioDataLocal = [[NSData alloc] initWithBase64EncodedString:base64EncodedVoiceString options:1];
+ receivedFileName = [NSString stringWithFormat:@"%d.caf",arc4random_uniform(20000)];
+ if ([[jsonDict objectForKey:JSON_KEY_CHANNEL] integerValue] == self.currentActiveChannel.channelID) {
+ 
+ }
+ NSString *SoundfilePath = [[AudioFileHandler sharedHandler] saveFileAndGetSavedFilePathInDocumentsDirectoryFromData:audioDataLocal saveDataAsFileName:receivedFileName];
+ NSURL *soundFileURL2 = [NSURL fileURLWithPath:SoundfilePath];
+ receivedSoundURL =soundFileURL2;
+ //[self updateUIForChatMessage:[NSString stringWithFormat:@"Message Received From %@",[jsonDict objectForKey:JSON_KEY_DEVICE_NAME]]];
+ 
+ //[self.audioReceivedButton setTitle:[NSString stringWithFormat:@"Play received %@'s VoiceMail", [jsonDict objectForKey:JSON_KEY_DEVICE_NAME]] forState:UIControlStateNormal];
+ //self.audioReceivedButton.hidden = NO;
+ }*/
+
+- (void)didChangePreferredContentSize:(NSNotification *)notification
+{
+    [self.chatTableView reloadData];
+    [self.chatTableView setContentOffset:CGPointMake(0, self.chatTableView.frame.size.height)];
+    
+}
+
+
+#pragma mark Helper
+
 -(void)addNewChannelToChannelListForJoinedChannelWithChannelData:(NSDictionary *)channelData{
     
     Channel *blankChannel = [[Channel alloc] init];
@@ -405,377 +772,13 @@
 
 
 
-
-- (IBAction)SendButtonTapped:(id)sender {
-    
-
-    Channel *currentlyActiveChannel;
-    if ([ChannelHandler sharedHandler].isHost) {
-        currentlyActiveChannel = [self.currentActiveChannel geChannel:[ChannelHandler sharedHandler].currentlyActiveChannelID];
-    }
-    else{
-        currentlyActiveChannel = [self.currentActiveChannel getForeignChannel:[ChannelHandler sharedHandler].currentlyActiveChannelID];
-        
-    }
-    NSString *chatMessageToSend = [[MessageHandler sharedHandler] createChatMessageWithChannelID:[ChannelHandler sharedHandler].currentlyActiveChannelID  deviceName:[ChannelHandler sharedHandler].userNameInChannel chatmessage:self.chatTextField.text];
-
-    
-    for (int i= 0; i<currentlyActiveChannel.channelMemberIPs.count; i++) {
-        if (![[currentlyActiveChannel.channelMemberIPs objectAtIndex:i] isEqualToString:[[MessageHandler sharedHandler] getIPAddress]]) {
-
-            [[asyncUDPConnectionHandler sharedHandler]sendMessage:chatMessageToSend toIPAddress:[currentlyActiveChannel.channelMemberIPs objectAtIndex:i]];
-
-        }
-        
-    }
-    
-    NSDictionary *messageDic = @{
-                                 @"type": MesssageType_Text_Me,
-                                 @"sender": @"Me",
-                                 @"message": self.chatTextField.text
-                                 };
-    [self updateUIForChatMessage:messageDic];
-
-}
-
--(void)channelLeaveMessageSend{
-
-    Channel *currentlyActiveChannel;
-    if ([ChannelHandler sharedHandler].isHost) {
-        currentlyActiveChannel = [self.currentActiveChannel geChannel:[ChannelHandler sharedHandler].currentlyActiveChannelID];
-    }
-    else{
-        currentlyActiveChannel = [self.currentActiveChannel getForeignChannel:[ChannelHandler sharedHandler].currentlyActiveChannelID];
-        
-    }
-   
-    NSString *leaveMessageToSend = [[MessageHandler sharedHandler] leaveChatMessageWithChannelID:[ChannelHandler sharedHandler].currentlyActiveChannelID  deviceName:[ChannelHandler sharedHandler].userNameInChannel];
-    for (int i= 0; i<currentlyActiveChannel.channelMemberIPs.count; i++) {
-        if (![[currentlyActiveChannel.channelMemberIPs objectAtIndex:i] isEqualToString:[[MessageHandler sharedHandler] getIPAddress]]) {
-            [[asyncUDPConnectionHandler sharedHandler]sendMessage:leaveMessageToSend toIPAddress:[currentlyActiveChannel.channelMemberIPs objectAtIndex:i]];
-        }
-        
-    }
-    [self.currentActiveChannel removeChannelWithChannelID:currentlyActiveChannel.channelID];
-
-
-}
-
--(BOOL) textFieldShouldReturn:(UITextField *)textField{
-    
-    [textField resignFirstResponder];
-    return YES;
-}
-- (IBAction)voiceTapped:(id)sender {
-    
-    self.voiceMailView.hidden = NO;
-    
-}
-- (IBAction)closeTappedOnVoiceMailView:(id)sender {
-    if (self.thePlayer.isPlaying) {
-        [self.thePlayer stop];
-    }
-    if (recorder.isRecording) {
-        [recorder stop];
-    }
-    self.voiceMailView.hidden = YES;
-}
-
--(void)requestForRepeatVoiceMessagereceived:(NSNotification *)notification{
-    NSDictionary* userInfo = notification.userInfo;
-    NSData* receivedData = (NSData*)userInfo[@"receievedData"];
-    //    NSLog (@"Successfully received Voice Message notification! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
-    NSDictionary *jsonDict = [NSJSONSerialization  JSONObjectWithData:receivedData options:0 error:nil];
-    NSArray *voiceMessagechunkStrings = [[MessageHandler sharedHandler] voiceMessageJSONStringInChunksWithAudioFileName:@"MyAudioMemo.m4a" inChannel:self.currentActiveChannel.channelID];
-    for (int j = 0; j<voiceMessagechunkStrings.count; j++) {
-        NSLog(@"message to send %@", [voiceMessagechunkStrings objectAtIndex:j]);
-        //                    [NSThread sleepForTimeInterval:0.09];
-        [[asyncUDPConnectionHandler sharedHandler]sendVoiceMessage:[voiceMessagechunkStrings objectAtIndex:j] toIPAddress:[jsonDict objectForKey:JSON_KEY_IP_ADDRESS]];
-    }
-}
-
--(void)voiceMessageReceivedInTCP:(NSNotification *) notification{
-    NSDictionary* userInfo = notification.userInfo;
-    NSData* receivedData = (NSData*)userInfo[@"receievedData"];
-    NSDictionary *jsonDict = [NSJSONSerialization  JSONObjectWithData:receivedData options:0 error:nil];
-    
-    NSString *base64EncodedVoiceString = [jsonDict objectForKey:JSON_KEY_VOICE_MESSAGE];
-    NSData *audioDataLocal = [[NSData alloc] initWithBase64EncodedString:base64EncodedVoiceString options:1];
-    receivedFileName = [NSString stringWithFormat:@"%d.caf",arc4random_uniform(20000)];
-    if ([[jsonDict objectForKey:JSON_KEY_CHANNEL] integerValue] == self.currentActiveChannel.channelID) {
-        
-    }
-    NSString *SoundfilePath = [[AudioFileHandler sharedHandler] saveFileAndGetSavedFilePathInDocumentsDirectoryFromData:audioDataLocal saveDataAsFileName:receivedFileName];
-    NSURL *soundFileURL2 = [NSURL fileURLWithPath:SoundfilePath];
-    receivedSoundURL =soundFileURL2;
-    //[self updateUIForChatMessage:[NSString stringWithFormat:@"Message Received From %@",[jsonDict objectForKey:JSON_KEY_DEVICE_NAME]]];
-
-    [self.audioReceivedButton setTitle:[NSString stringWithFormat:@"Play received %@'s VoiceMail", [jsonDict objectForKey:JSON_KEY_DEVICE_NAME]] forState:UIControlStateNormal];
-    self.audioReceivedButton.hidden = NO;
-
-}
-
--(void) voiceMessageReceived:(NSNotification*)notification{
-    
-    
-    
-    NSDictionary* userInfo = notification.userInfo;
-    NSData* receivedData = (NSData*)userInfo[@"receievedData"];
-    NSDictionary *jsonDict = [NSJSONSerialization  JSONObjectWithData:receivedData options:0 error:nil];
-    
-    NSString *base64EncodedVoiceString = [jsonDict objectForKey:JSON_KEY_VOICE_MESSAGE];
-    NSData *audioDataFromBase64String = [[NSData alloc] initWithBase64EncodedString:base64EncodedVoiceString options:1];
-    
-    int currentChunk  = [[jsonDict objectForKey:JSON_KEY_VOICE_MESSAGE_CURRENT_CHUNK] intValue];
-    int chunkCount = [[jsonDict objectForKey:JSON_KEY_VOICE_MESSAGE_CHUNKCOUNT] intValue];
-    NSLog(@"Received Data: voiceMessage\npacket count %d\ntotalPacket %d",currentChunk, chunkCount);
-    
-    if (currentChunk == 1) {
-        
-        finalAudioData = nil;
-        audioData = nil;
-        chunkCounter = 1;
-        audioData = [[NSMutableData alloc] initWithData:audioDataFromBase64String];
-        receivedFileName = [NSString stringWithFormat:@"%d.caf",arc4random_uniform(20000)];
-        
-    }else {
-        
-        chunkCounter ++;
-        [audioData appendData:audioDataFromBase64String];
-        //        SoundfilePath = [[AudioFileHandler sharedHandler] returnFilePathAfterAppendingData:audioDataFromBase64String toFileName:receivedFileName];
-        
-        if (currentChunk == chunkCount) {
-            if (chunkCounter == chunkCount) {
-                
-                
-
-                
-                
-                finalAudioData = [[NSData alloc] initWithData:audioData];
-                NSString * audioFileName = [jsonDict objectForKey:JSON_KEY_VOICE_MESSAGE_FILE_NAME];
-                NSString *audioFolderPath = [[AudioFileHandler sharedHandler] pathToAudioFileFolder];
-                //saveAudioData
-                
-                NSString *audioFilePath = [[AudioFileHandler sharedHandler] saveAudioData:finalAudioData asFileName:audioFileName inFolderPath:audioFolderPath];
-                //NSString *SoundfilePath = [[AudioFileHandler sharedHandler] saveFileAndGetSavedFilePathInDocumentsDirectoryFromData:finalAudioData saveDataAsFileName:receivedFileName];
-                
-                receivedSoundURL = [NSURL fileURLWithPath:audioFilePath];
-                [receivedAudioFileNames addObject:audioFileName];
-                
-                
-                NSLog(@"packet arrived %d/%d",chunkCounter, [[jsonDict objectForKey:JSON_KEY_VOICE_MESSAGE_CHUNKCOUNT] intValue]);
-                chunkCounter = 0;
-                
-                //
-                [self.audioReceivedButton setTitle:[NSString stringWithFormat:@"Play received %@'s VoiceMail", [jsonDict objectForKey:JSON_KEY_DEVICE_NAME]] forState:UIControlStateNormal];
-                self.audioReceivedButton.hidden = NO;
-
-                // voice message
-                NSDictionary *messageDic = @{
-                                             @"type": MesssageType_Voice_Other,
-                                             @"sender": [jsonDict objectForKey:JSON_KEY_DEVICE_NAME],
-                                             @"message": @"sent a voice message ▶️"
-                                             };
-                [self updateUIForChatMessage:messageDic];
-                
-            } else{
-                
-                NSString *repeatMessageRequestJSON = [[MessageHandler sharedHandler] repeatVoiceMessageRequest];
-                [[asyncUDPConnectionHandler sharedHandler]sendVoiceMessage:repeatMessageRequestJSON toIPAddress:[jsonDict objectForKey:JSON_KEY_IP_ADDRESS]];
-                
-            }
-        }
-
-    }
-}
-
-- (IBAction)recordPauseTapped:(id)sender {
-    // Stop the audio player before recording
-    if (player.playing) {
-        [player stop];
-    }
-    
-    if (!recorder.recording) {
-        AVAudioSession *session = [AVAudioSession sharedInstance];
-        [session setActive:YES error:nil];
-        
-        // Start recording
-        [recorder record];
-//        [recordPauseButton setTitle:@"Pause" forState:UIControlStateNormal];
-        [recordPauseButton setBackgroundImage:[UIImage imageNamed:@"Record Stop"] forState:UIControlStateNormal];
-        
-    } else {
-        
-        // Pause recording
-        [recorder stop];
-//        [recordPauseButton setTitle:@"Record" forState:UIControlStateNormal];
-        [recordPauseButton setBackgroundImage:[UIImage imageNamed:@"Record srt"] forState:UIControlStateNormal];
-
-        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-        [audioSession setActive:NO error:nil];
-    }
-    
-    [stopButton setEnabled:YES];
-    [playButton setEnabled:NO];
-}
-
-- (IBAction)stopTapped:(id)sender {
-    [recorder stop];
-    
-    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-    [audioSession setActive:NO error:nil];
-}
-
-
-- (IBAction)playTapped:(id)sender {
-    
-    if (!recorder.recording){
-        
-        //NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-        //NSString *filePath = [documentsPath stringByAppendingPathComponent:recordedFileName];
-        NSLog(@"recordedAudioFileNames Count: %d", [recordedAudioFileNames count]);
-        NSString *audioFilePath = [[AudioFileHandler sharedHandler] getAudioFilePathOfFilaName:[recordedAudioFileNames lastObject]];
-        
-        NSURL *soundFileURL = [NSURL fileURLWithPath:audioFilePath];
-        NSError *error = nil;
-        //NSString* foofile = [documentsPath stringByAppendingPathComponent:recordedFileName];
-        
-        BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:audioFilePath];
-        if (!fileExists) {
-            NSLog(@"File Doesn't Exist!");
-        }
-        
-        AVAudioSession *session = [AVAudioSession sharedInstance];
-        [session setActive:YES error:nil];
-        
-        self.thePlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:soundFileURL error:&error];
-        //        AVPlayer *newPlayer = [[AVPlayer alloc] initWithURL:soundFileURL];
-        if (error) {
-            NSLog(@"Audio can't play. Error %@", [error localizedDescription]);
-        }
-        else {
-            [self.thePlayer setDelegate:self];
-            [self.thePlayer play];
-        }
-        
-    }
-}
-
-- (IBAction)sendTapped:(id)sender {
-}
-
-
-- (IBAction)sendTapped:(id)sender {
-    AVAudioSession *session = [AVAudioSession sharedInstance];
-    [session setActive:YES error:nil];
-    
-    
-    self.sendButton.enabled = NO;
-    NSString *audioFileName = [recordedAudioFileNames lastObject];
-    NSArray *voiceMessagechunkStrings = [[MessageHandler sharedHandler] voiceMessageJSONStringInChunksWithAudioFileName:audioFileName inChannel:self.currentActiveChannel.channelID];
-    
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        
-        NSLog(@"Data To send\npacket count %lu", (unsigned long)voiceMessagechunkStrings.count);
-        
-        for (int i= 0; i<self.currentActiveChannel.channelMemberIPs.count; i++) {
-            if (![[self.currentActiveChannel.channelMemberIPs objectAtIndex:i] isEqualToString:[[MessageHandler sharedHandler] getIPAddress]]) {
-                //            [[asyncUDPConnectionHandler sharedHandler]sendMessage:voiceMessageToSend toIPAddress:[self.activeChannelInfo.channelMemberIPs objectAtIndex:i]];
-                for (int j = 0; j<voiceMessagechunkStrings.count; j++) {
-                    NSLog(@"message to send %@", [voiceMessagechunkStrings objectAtIndex:j]);
-                    if (j%5 == 0) {
-                        [NSThread sleepForTimeInterval:0.09];
-                    }
-                    //                    [NSThread sleepForTimeInterval:0.09];
-                    [[asyncUDPConnectionHandler sharedHandler] sendVoiceMessage:[voiceMessagechunkStrings objectAtIndex:j] toIPAddress:[self.currentActiveChannel.channelMemberIPs objectAtIndex:i]];
-                }
-            }
-            
-        }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Done"
-                                                            message: [NSString stringWithFormat:@"Sent packet count %lu", (unsigned long)voiceMessagechunkStrings.count] //@"Voice Message Sent to Channel Members!"
-                                                           delegate: nil
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:nil];
-            
-            
-            [alert show];
-            self.sendButton.enabled = YES;
-
-            // voice message
-            NSDictionary *messageDic = @{
-                                         @"type": MesssageType_Voice_Me,
-                                         @"sender": @"Me",
-                                         @"message": @"sent a voice message ▶️"
-                                         };
-            [self updateUIForChatMessage:messageDic];
-        });
-    });
-    
-}
-
-
-
-- (IBAction)playReceivedSound:(id)sender {
-    
-    if (!recorder.recording){
-        
-        NSLog(@"Received Count: %d", [receivedAudioFileNames count]);
-        
-        NSString *audioFilePath = [[AudioFileHandler sharedHandler] getAudioFilePathOfFilaName:[receivedAudioFileNames lastObject]];
-        
-        //NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-        //NSString *filePath = [documentsPath stringByAppendingPathComponent:receivedFileName];
-        
-        NSURL *audioFileURL = [NSURL fileURLWithPath:audioFilePath];
-        NSError *error = nil;
-        
-        BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:audioFilePath];
-        if (!fileExists) {
-            NSLog(@"File Doesn't Exist!");
-            return;
-        }
-        AVAudioSession *session = [AVAudioSession sharedInstance];
-        [session setActive:YES error:nil];
-        
-        self.thePlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:audioFileURL error:&error];
-        //        if (error) {
-        //            NSLog(@"Audio can't play. Error %@", [error localizedDescription]);
-        //        }
-        //        else {
-        //            [player setDelegate:self];
-        //            [player play];
-        //        }
-        
-        //                self.thePlayer = [[AVAudioPlayer alloc] initWithData:finalAudioData error:&error];
-        if (error) {
-            NSLog(@"Audio can't play. Error %@", [error localizedDescription]);
-        }
-        else {
-            [self.thePlayer setDelegate:self];
-            [self.thePlayer setNumberOfLoops:0];
-            [self.thePlayer prepareToPlay];
-            [self.thePlayer play];
-        }
-        //
-        //        AVPlayer *newPlayer = [[AVPlayer alloc] initWithURL:receivedSoundURL];
-        //        [newPlayer play];
-        
-        
-    }
-    else{
-        NSLog(@"Recorder Active For some reason!");
-    }
-}
-
 #pragma mark - AVAudioRecorderDelegate
 
 - (void) audioRecorderDidFinishRecording:(AVAudioRecorder *)avrecorder successfully:(BOOL)flag{
 
-    [recordPauseButton setTitle:@"Record" forState:UIControlStateNormal];
-    [stopButton setEnabled:NO];
-    [playButton setEnabled:YES];
+    [self.recordPauseButton setTitle:@"Record" forState:UIControlStateNormal];
+    //[stopButton setEnabled:NO];
+    [self.playButton setEnabled:YES];
     
     
     NSData *recAudioData = [[AudioFileHandler sharedHandler] dataFromAudioFile:@"MyAudioMemo.m4a"];
@@ -893,70 +896,7 @@
     
 }
 
-#pragma mark -TableViewdelegates
-
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    if (tableView.tag ==101) {
-       return chatMessageList.count;
-    }
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    if (tableView.tag ==102) {
-        return chatRoomMemberList.count;
-    }
-    return 1;
-}
-
--(void)dealloc{
-    [self.chatTableView removeObserver:self forKeyPath:@"contentSize"];
-    [[AudioFileHandler sharedHandler] deleteAudioFileFolder];
-}
-
-static NSString *incomingMessageCellIdentifier = @"incomingChatMessageCellID";
-static NSString *chatmemberCellID = @"chatmemberCellID";
-
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-//    static NSString *CellIdentifier = @"Cell";
-//    
-//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-//    if (cell == nil) {
-//        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
-//                                      reuseIdentifier:CellIdentifier];
-//    }
-//    
-//    // Configure the cell...
-//    return cell;
-    UITableViewCell *cell;
-//    UITableViewCell *
-    if (tableView.tag == 102) {
-        channelMemberActivityTableViewCell *cell2 = [tableView dequeueReusableCellWithIdentifier:chatmemberCellID forIndexPath:indexPath];
-        cell2.userName.text = [chatRoomMemberList objectAtIndex:indexPath.row];
-        return cell2;
-    }
-    else{
-        
-        cell = [tableView dequeueReusableCellWithIdentifier:incomingMessageCellIdentifier forIndexPath:indexPath];
-        [self configureCell:cell forRowAtIndexPath:indexPath];
-        return cell;
-
-    }
-    
-}
-
-- (void)didChangePreferredContentSize:(NSNotification *)notification
-{
-    [self.chatTableView reloadData];
-    [self.chatTableView setContentOffset:CGPointMake(0, self.chatTableView.frame.size.height)];
-
-
-}
+#pragma mark - UITableView
 
 - (void)configureCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -972,7 +912,7 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
             textCell.chat_Text_Label.text = messageDic[@"message"];
             textCell.nameLabel.textAlignment = NSTextAlignmentRight;
             textCell.chat_Text_Label.textAlignment = NSTextAlignmentRight;
-
+            
             
         }else if([messageDic[@"type"] isEqual: MesssageType_Text_Other]) {
             
@@ -988,9 +928,6 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
                 
                 [audioFileNamesDic setObject:[recordedAudioFileNames lastObject] forKey:@(indexPath.section)];
             }
-            
-            
-            
             
             textCell.nameLabel.text = messageDic[@"sender"];
             textCell.chat_Text_Label.text = messageDic[@"message"];
@@ -1019,8 +956,57 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
     }
 }
 
-    
+- (IncomingMessageCell *)prototypeCell
+{
+    if (!_prototypeCell)
+    {
+        _prototypeCell = [self.chatTableView dequeueReusableCellWithIdentifier:incomingMessageCellIdentifier];
+    }
+    return _prototypeCell;
+}
 
+
+#pragma mark UITableViewDataSource
+
+static NSString *incomingMessageCellIdentifier = @"incomingChatMessageCellID";
+static NSString *chatmemberCellID = @"chatmemberCellID";
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    if (tableView.tag ==101) {
+       return chatMessageList.count;
+    }
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if (tableView.tag ==102) {
+        return chatRoomMemberList.count;
+    }
+    return 1;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+
+    
+    if (tableView.tag == 102) {
+        channelMemberActivityTableViewCell *cell2 = [tableView dequeueReusableCellWithIdentifier:chatmemberCellID forIndexPath:indexPath];
+        cell2.userName.text = [chatRoomMemberList objectAtIndex:indexPath.row];
+        return cell2;
+    }
+    else{
+        
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:incomingMessageCellIdentifier forIndexPath:indexPath];
+        [self configureCell:cell forRowAtIndexPath:indexPath];
+        return cell;
+
+    }
+    
+}
+
+    
+#pragma mark UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -1042,10 +1028,6 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-
-    
-    NSLog(@"%d", indexPath.section);
-    NSLog(@"%@", audioFileNamesDic);
     
     NSString * audioFileName = [audioFileNamesDic objectForKey:@(indexPath.section)];
     
@@ -1083,7 +1065,6 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
     
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
@@ -1098,16 +1079,6 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
     return 0.01f;
 }
 
-
-- (IncomingMessageCell *)prototypeCell
-{
-    if (!_prototypeCell)
-    {
-        _prototypeCell = [self.chatTableView dequeueReusableCellWithIdentifier:incomingMessageCellIdentifier];
-    }
-    return _prototypeCell;
-}
-
 #pragma mark - observer 
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -1117,8 +1088,34 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
 //    
 //    if (frame.size.height > self.chatTableContainerView.frame.size.height) {
 //        frame.size.height = self.chatTableContainerView.frame.size.height;
-//    }
+//     }
 //    self.chatTableView.frame = frame;
+}
+
+-(void)ScreenTapped {
+    
+    [self.view endEditing:YES];
+    self.bottomSpaceForSendContainer.constant = 0;
+    [self.view layoutIfNeeded];
+}
+
+-(void)keyboardWasShown:(NSNotification*)notification {
+    
+    
+    CGRect frame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    CGRect newFrame = [self.view convertRect:frame fromView:[[UIApplication sharedApplication] delegate].window];
+    self.bottomSpaceForSendContainer.constant = newFrame.origin.y - CGRectGetHeight(self.view.frame);;
+    [self.view layoutIfNeeded];
+    
+//    CGFloat height = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey ] CGRectValue].size.height;
+//    self.bottomSpaceForSendContainer.constant = height;
+//    [self.view layoutIfNeeded];
+}
+
+-(BOOL) textFieldShouldReturn:(UITextField *)textField{
+    
+    [textField resignFirstResponder];
+    return YES;
 }
 
 #pragma mark - Navigation

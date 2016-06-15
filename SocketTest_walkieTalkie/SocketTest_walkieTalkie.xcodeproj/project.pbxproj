@@ -46,6 +46,9 @@
 		B23797E11D0FD7CA00F9F5A7 /* ic_info.png in Resources */ = {isa = PBXBuildFile; fileRef = B23797DB1D0FD7CA00F9F5A7 /* ic_info.png */; };
 		B23797E21D0FD7CA00F9F5A7 /* ic_public_channel.png in Resources */ = {isa = PBXBuildFile; fileRef = B23797DC1D0FD7CA00F9F5A7 /* ic_public_channel.png */; };
 		B23797E31D0FD7CA00F9F5A7 /* SplashScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = B23797DD1D0FD7CA00F9F5A7 /* SplashScreen.png */; };
+		B23797E81D1129FE00F9F5A7 /* ContactListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = B23797E71D1129FE00F9F5A7 /* ContactListVC.m */; };
+		B2FBD3FF1D113BF700AC2495 /* UserHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FBD3FE1D113BF700AC2495 /* UserHandler.m */; };
+		B2FBD4021D1156DA00AC2495 /* ContactListTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FBD4011D1156DA00AC2495 /* ContactListTVC.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -130,6 +133,12 @@
 		B23797DC1D0FD7CA00F9F5A7 /* ic_public_channel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_public_channel.png; sourceTree = "<group>"; };
 		B23797DD1D0FD7CA00F9F5A7 /* SplashScreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SplashScreen.png; sourceTree = "<group>"; };
 		B23797E41D0FD7D900F9F5A7 /* Znikomit.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Znikomit.otf; sourceTree = "<group>"; };
+		B23797E61D1129FE00F9F5A7 /* ContactListVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactListVC.h; sourceTree = "<group>"; };
+		B23797E71D1129FE00F9F5A7 /* ContactListVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactListVC.m; sourceTree = "<group>"; };
+		B2FBD3FD1D113BF700AC2495 /* UserHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserHandler.h; sourceTree = "<group>"; };
+		B2FBD3FE1D113BF700AC2495 /* UserHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserHandler.m; sourceTree = "<group>"; };
+		B2FBD4001D1156DA00AC2495 /* ContactListTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactListTVC.h; sourceTree = "<group>"; };
+		B2FBD4011D1156DA00AC2495 /* ContactListTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactListTVC.m; sourceTree = "<group>"; };
 		C4EFF460277EBE1426537B4F /* Pods-SocketTest_walkieTalkie.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SocketTest_walkieTalkie.release.xcconfig"; path = "Pods/Target Support Files/Pods-SocketTest_walkieTalkie/Pods-SocketTest_walkieTalkie.release.xcconfig"; sourceTree = "<group>"; };
 		FDE5C871A6A380334B15EF9D /* Pods-SocketTest_walkieTalkie.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SocketTest_walkieTalkie.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SocketTest_walkieTalkie/Pods-SocketTest_walkieTalkie.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -229,6 +238,7 @@
 		B23797641D0FD1B200F9F5A7 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				B23797E51D1129D500F9F5A7 /* ContactListVC */,
 				B23797651D0FD1B200F9F5A7 /* AudioRecorderViewController */,
 				B23797681D0FD1B200F9F5A7 /* ChatViewController */,
 				B237976B1D0FD1B200F9F5A7 /* CreateChannelViewController */,
@@ -326,6 +336,8 @@
 				B237979C1D0FD4D900F9F5A7 /* IncomingMessageCell.m */,
 				B237979D1D0FD4D900F9F5A7 /* OutGoingMessagesCell.h */,
 				B237979E1D0FD4D900F9F5A7 /* OutGoingMessagesCell.m */,
+				B2FBD4001D1156DA00AC2495 /* ContactListTVC.h */,
+				B2FBD4011D1156DA00AC2495 /* ContactListTVC.m */,
 			);
 			path = TableViewCells;
 			sourceTree = "<group>";
@@ -429,6 +441,8 @@
 				B23797CE1D0FD78500F9F5A7 /* MessageData.m */,
 				B23797CF1D0FD78500F9F5A7 /* User.h */,
 				B23797D01D0FD78500F9F5A7 /* User.m */,
+				B2FBD3FD1D113BF700AC2495 /* UserHandler.h */,
+				B2FBD3FE1D113BF700AC2495 /* UserHandler.m */,
 				B23797D11D0FD78500F9F5A7 /* UserDataModel.h */,
 				B23797D21D0FD78500F9F5A7 /* UserDataModel.m */,
 			);
@@ -446,6 +460,15 @@
 				B23797DD1D0FD7CA00F9F5A7 /* SplashScreen.png */,
 			);
 			path = Graphics;
+			sourceTree = "<group>";
+		};
+		B23797E51D1129D500F9F5A7 /* ContactListVC */ = {
+			isa = PBXGroup;
+			children = (
+				B23797E61D1129FE00F9F5A7 /* ContactListVC.h */,
+				B23797E71D1129FE00F9F5A7 /* ContactListVC.m */,
+			);
+			path = ContactListVC;
 			sourceTree = "<group>";
 		};
 		EB939EF5D9CCB4A3C8A71314 /* Pods */ = {
@@ -625,6 +648,7 @@
 				B23797D31D0FD78500F9F5A7 /* Channel.m in Sources */,
 				B23797AF1D0FD56B00F9F5A7 /* AudioFileHandler.m in Sources */,
 				B23797C81D0FD6E500F9F5A7 /* VoiceStreamPlayerHandler.m in Sources */,
+				B23797E81D1129FE00F9F5A7 /* ContactListVC.m in Sources */,
 				B23797D61D0FD78500F9F5A7 /* UserDataModel.m in Sources */,
 				B23797C01D0FD6BA00F9F5A7 /* AudioRecorderTest.m in Sources */,
 				B23797A11D0FD4D900F9F5A7 /* OutGoingMessagesCell.m in Sources */,
@@ -639,8 +663,10 @@
 				B23797B11D0FD56B00F9F5A7 /* ChatHandler.m in Sources */,
 				B23797761D0FD1B200F9F5A7 /* AudioRecorderViewController.m in Sources */,
 				B23797B91D0FD5AA00F9F5A7 /* asyncTCPConnectionHandler.m in Sources */,
+				B2FBD4021D1156DA00AC2495 /* ContactListTVC.m in Sources */,
 				B23797BA1D0FD5AA00F9F5A7 /* asyncUDPConnectionHandler.m in Sources */,
 				B23797D41D0FD78500F9F5A7 /* MessageData.m in Sources */,
+				B2FBD3FF1D113BF700AC2495 /* UserHandler.m in Sources */,
 				B23797A01D0FD4D900F9F5A7 /* IncomingMessageCell.m in Sources */,
 				B23797C11D0FD6BA00F9F5A7 /* AudioRecorderTest_StreamPlayer.m in Sources */,
 				5C2079EF1CCF7DB0007A5F21 /* main.m in Sources */,

@@ -18,6 +18,7 @@
 #import "Constants.h"
 #import "Channel.h"
 #import "User.h"
+#import "UserHandler.h"
 #import "asyncUDPConnectionHandler.h"
 #import "MessageData.h"
 #import "MessageHandler.h"

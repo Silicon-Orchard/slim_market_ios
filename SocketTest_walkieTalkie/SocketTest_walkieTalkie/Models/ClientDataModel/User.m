@@ -12,6 +12,31 @@
 
 
 
+-(instancetype)init {
+    
+    if(self = [super init]) {
+        
+    }
+    
+    return self;
+}
+
+
+-(instancetype)initWithIP:(NSString *)ip deviceID:(NSString* )ID name:(NSString*)name andActive:(BOOL)active {
+    
+    if(self = [super init]) {
+        
+        self.deviceIP = ip;
+        self.deviceID = ID;
+        self.deviceName = name;
+        self.isActive = active;
+    }
+    
+    return self;
+}
+
+
+
 
 
 

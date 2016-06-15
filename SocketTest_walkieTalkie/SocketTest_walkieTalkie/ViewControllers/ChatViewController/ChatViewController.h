@@ -12,6 +12,10 @@
 
 @interface ChatViewController : UIViewController <UITextFieldDelegate,AVAudioRecorderDelegate, AVAudioPlayerDelegate, UITableViewDataSource, UITableViewDelegate>
 
+
+@property BOOL isPrivateChannel;
+@property (strong, nonatomic) User *oponentUser;
+
 @property (strong, nonatomic) Channel *currentActiveChannel;
 @property (nonatomic, strong) AVAudioPlayer *thePlayer;
 
@@ -42,7 +46,6 @@
 
 //@property (weak, nonatomic) IBOutlet UIButton *stopButton;
 //@property (weak, nonatomic) IBOutlet UIButton *audioReceivedButton;
-
 
 
 
