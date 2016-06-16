@@ -62,15 +62,15 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     
     //send
-    NSString * messgae = [[MessageHandler sharedHandler] leaveSystemMessage];
-    NSArray *ipArray = [[UserHandler sharedInstance] getAllUserIPs];
-    
-    
-    for (NSString *ip in ipArray) {
-        
-        [[asyncUDPConnectionHandler sharedHandler] sendMessage:messgae toIPAddress:ip];
-    }
-     NSLog(@"applicationWillTerminate");
+//    NSString * messgae = [[MessageHandler sharedHandler] leftApplicationMessage];
+//    NSArray *ipArray = [[UserHandler sharedInstance] getAllUserIPs];
+//    
+//    
+//    for (NSString *ip in ipArray) {
+//        
+//        [[asyncUDPConnectionHandler sharedHandler] sendMessage:messgae toIPAddress:ip];
+//    }
+//     NSLog(@"applicationWillTerminate");
 }
 
 @end

@@ -69,15 +69,8 @@
 
 -(NSString *)newChannelCreatedMessageWithChannelID:(int) channelID deviceName:(NSString *)deviceNameForChannel{
     
-    MessageData *newMessage = [[MessageData alloc] init];
-    
-    newMessage.deviceIPAddress = [self getIPAddress];
-    newMessage.deviceID = [[NSUUID UUID] UUIDString];
-    newMessage.deviceName = deviceNameForChannel;
-    newMessage.messageTYPE = 5;
-    newMessage.channelID = channelID;
-    NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[[NSUserDefaults standardUserDefaults] objectForKey:DEVICE_UUID_KEY_FORUSERDEFAULTS], deviceNameForChannel, [self getIPAddress ],[NSNumber numberWithInt:5], [NSNumber numberWithInt:channelID], nil]
-                                                                forKeys:[NSArray arrayWithObjects:JSON_KEY_DEVICE_ID, JSON_KEY_DEVICE_NAME,JSON_KEY_IP_ADDRESS, JSON_KEY_TYPE, JSON_KEY_CHANNEL,  nil]];
+    NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[[NSUserDefaults standardUserDefaults] objectForKey:DEVICE_UUID_KEY_FORUSERDEFAULTS], deviceNameForChannel, [self getIPAddress ],[NSNumber numberWithInt:TYPE_CREATE_CHANNEL], [NSNumber numberWithInt:channelID], nil]
+                                                                forKeys:[NSArray arrayWithObjects:JSON_KEY_DEVICE_ID, JSON_KEY_DEVICE_NAME, JSON_KEY_IP_ADDRESS, JSON_KEY_TYPE, JSON_KEY_CHANNEL, nil]];
     
     NSError * error = nil;
     NSData * jsonData = [NSJSONSerialization dataWithJSONObject:postDictionary options:NSJSONWritingPrettyPrinted error:&error];
@@ -89,7 +82,7 @@
 -(NSString *)createChatMessageWithChannelID:(int) channelID deviceName:(NSString *)deviceNameForChannel chatmessage:(NSString *)message{
     
     
-    NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[[NSUserDefaults standardUserDefaults] objectForKey:DEVICE_UUID_KEY_FORUSERDEFAULTS], deviceNameForChannel, [self getIPAddress ],[NSNumber numberWithInt:1], [NSNumber numberWithInt:channelID], message,nil]
+    NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[[NSUserDefaults standardUserDefaults] objectForKey:DEVICE_UUID_KEY_FORUSERDEFAULTS], deviceNameForChannel, [self getIPAddress ],[NSNumber numberWithInt:TYPE_MESSAGE], [NSNumber numberWithInt:channelID], message,nil]
                                                                 forKeys:[NSArray arrayWithObjects:JSON_KEY_DEVICE_ID, JSON_KEY_DEVICE_NAME,JSON_KEY_IP_ADDRESS, JSON_KEY_TYPE, JSON_KEY_CHANNEL,  JSON_KEY_MESSAGE,nil]];
     
     NSError * error = nil;
@@ -101,7 +94,7 @@
 
 -(NSString *)leaveChatMessageWithChannelID:(int)channelID deviceName:(NSString *)deviceNameForChannel{
 
-    NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[[NSUserDefaults standardUserDefaults] objectForKey:DEVICE_UUID_KEY_FORUSERDEFAULTS], deviceNameForChannel, [self getIPAddress ],[NSNumber numberWithInt:9], [NSNumber numberWithInt:channelID], nil]
+    NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[[NSUserDefaults standardUserDefaults] objectForKey:DEVICE_UUID_KEY_FORUSERDEFAULTS], deviceNameForChannel, [self getIPAddress ],[NSNumber numberWithInt:TYPE_LEFT_CHANNEL], [NSNumber numberWithInt:channelID], nil]
                                                                 forKeys:[NSArray arrayWithObjects:JSON_KEY_DEVICE_ID, JSON_KEY_DEVICE_NAME,JSON_KEY_IP_ADDRESS, JSON_KEY_TYPE, JSON_KEY_CHANNEL, nil]];
     
     
@@ -114,14 +107,7 @@
 
 -(NSString *)joinChannelCreatedMessageWithChannelID:(int) channelID deviceName:(NSString *)deviceNameForChannel{
     
-    MessageData *newMessage = [[MessageData alloc] init];
-    
-    newMessage.deviceIPAddress = [self getIPAddress];
-    newMessage.deviceID = [[NSUUID UUID] UUIDString];
-    newMessage.deviceName = deviceNameForChannel;
-    newMessage.messageTYPE = 6;
-    newMessage.channelID = channelID;
-    NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[[NSUserDefaults standardUserDefaults] objectForKey:DEVICE_UUID_KEY_FORUSERDEFAULTS], deviceNameForChannel, [self getIPAddress ],[NSNumber numberWithInt:6], [NSNumber numberWithInt:channelID], nil]
+    NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[[NSUserDefaults standardUserDefaults] objectForKey:DEVICE_UUID_KEY_FORUSERDEFAULTS], deviceNameForChannel, [self getIPAddress ],[NSNumber numberWithInt:TYPE_JOIN_CHANNEL], [NSNumber numberWithInt:channelID], nil]
                                                                 forKeys:[NSArray arrayWithObjects:JSON_KEY_DEVICE_ID, JSON_KEY_DEVICE_NAME,JSON_KEY_IP_ADDRESS, JSON_KEY_TYPE, JSON_KEY_CHANNEL,  nil]];
     
     NSError * error = nil;
@@ -141,7 +127,7 @@
         NSDictionary *channelMember = [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:[channelToJoin.channelMemberIPs objectAtIndex:i],[channelToJoin.channelMemberNamess objectAtIndex:i], nil] forKeys:[NSArray arrayWithObjects:JSON_KEY_IP_ADDRESS,JSON_KEY_DEVICE_NAME, nil]];
         [channelMembers addObject:channelMember];
     }
-    NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[[NSUserDefaults standardUserDefaults] objectForKey:DEVICE_UUID_KEY_FORUSERDEFAULTS], hostName, [self getIPAddress ],[NSNumber numberWithInt:7], [NSNumber numberWithInt:channelID], channelMembers,nil]
+    NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[[NSUserDefaults standardUserDefaults] objectForKey:DEVICE_UUID_KEY_FORUSERDEFAULTS], hostName, [self getIPAddress ],[NSNumber numberWithInt:TYPE_CHANNEL_FOUND], [NSNumber numberWithInt:channelID], channelMembers,nil]
                                                                 forKeys:[NSArray arrayWithObjects:JSON_KEY_DEVICE_ID, JSON_KEY_DEVICE_NAME,JSON_KEY_IP_ADDRESS, JSON_KEY_TYPE, JSON_KEY_CHANNEL, JSON_KEY_CHANNEL_MEMBERS, nil]];
     
     NSError * error = nil;
@@ -157,7 +143,7 @@
 -(NSString *)requestInfoAtStartMessage{
 
 
-    NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[[NSUserDefaults standardUserDefaults] objectForKey:DEVICE_UUID_KEY_FORUSERDEFAULTS], [UIDevice currentDevice].name, [self getIPAddress ],[NSNumber numberWithInt:3], nil]
+    NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[[NSUserDefaults standardUserDefaults] objectForKey:DEVICE_UUID_KEY_FORUSERDEFAULTS], [UIDevice currentDevice].name, [self getIPAddress ],[NSNumber numberWithInt:TYPE_REQUEST_INFO], nil]
                                                                 forKeys:[NSArray arrayWithObjects:JSON_KEY_DEVICE_ID, JSON_KEY_DEVICE_NAME,JSON_KEY_IP_ADDRESS, JSON_KEY_TYPE,  nil]];
     
     NSError * error = nil;
@@ -168,7 +154,7 @@
 
 -(NSString *)acknowledgeDeviceInNetwork{
     
-    NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[[NSUserDefaults standardUserDefaults] objectForKey:DEVICE_UUID_KEY_FORUSERDEFAULTS], [UIDevice currentDevice].name, [self getIPAddress ],[NSNumber numberWithInt:4], nil]
+    NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[[NSUserDefaults standardUserDefaults] objectForKey:DEVICE_UUID_KEY_FORUSERDEFAULTS], [UIDevice currentDevice].name, [self getIPAddress ],[NSNumber numberWithInt:TYPE_RECEIVE_INFO], nil]
                                                                 forKeys:[NSArray arrayWithObjects:JSON_KEY_DEVICE_ID, JSON_KEY_DEVICE_NAME,JSON_KEY_IP_ADDRESS, JSON_KEY_TYPE,  nil]];
     
     NSError * error = nil;
@@ -179,23 +165,22 @@
     
 }
 
--(NSString *)deviceSigningOffMessage{
-
-    NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[[NSUserDefaults standardUserDefaults] objectForKey:DEVICE_UUID_KEY_FORUSERDEFAULTS],[UIDevice currentDevice].name, [self getIPAddress ],[NSNumber numberWithInt:9], nil]
-                                                                forKeys:[NSArray arrayWithObjects:JSON_KEY_DEVICE_ID, JSON_KEY_DEVICE_NAME,JSON_KEY_IP_ADDRESS, JSON_KEY_TYPE,  nil]];
+-(NSString *)leftApplicationMessage {
+    
+    NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[[NSUserDefaults standardUserDefaults] objectForKey:DEVICE_UUID_KEY_FORUSERDEFAULTS], [UIDevice currentDevice].name, [self getIPAddress ],[NSNumber numberWithInt:TYPE_LEFT_APPLICATION], nil]
+                                                                forKeys:[NSArray arrayWithObjects:JSON_KEY_DEVICE_ID, JSON_KEY_DEVICE_NAME, JSON_KEY_IP_ADDRESS, JSON_KEY_TYPE,  nil]];
     
     NSError * error = nil;
     NSData * jsonData = [NSJSONSerialization dataWithJSONObject:postDictionary options:NSJSONWritingPrettyPrinted error:&error];
     NSString *resultAsString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     return resultAsString;
-
-
 }
+
 
 -(NSString *)voiceMessageJSONStringWithAudioFileName:(NSString *)fileName{
     
     NSString *base64StringFromAudioFile = [[AudioFileHandler sharedHandler] bas64EncodedStringFromAudioFileDataWithFileName:fileName];
-    NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[[NSUserDefaults standardUserDefaults] objectForKey:DEVICE_UUID_KEY_FORUSERDEFAULTS],[UIDevice currentDevice].name, [self getIPAddress ],[NSNumber numberWithInt:11], base64StringFromAudioFile ,nil]
+    NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[[NSUserDefaults standardUserDefaults] objectForKey:DEVICE_UUID_KEY_FORUSERDEFAULTS],[UIDevice currentDevice].name, [self getIPAddress ],[NSNumber numberWithInt:TYPE_VOICE_MESSAGE], base64StringFromAudioFile ,nil]
                                                                 forKeys:[NSArray arrayWithObjects:JSON_KEY_DEVICE_ID, JSON_KEY_DEVICE_NAME,JSON_KEY_IP_ADDRESS, JSON_KEY_TYPE, JSON_KEY_VOICE_MESSAGE, nil]];
     
     NSError * error = nil;
@@ -222,11 +207,10 @@
     NSMutableArray *JSONStringArray = [[NSMutableArray alloc] init];
     NSArray *base64StringArrayFromAudioFile = [[AudioFileHandler sharedHandler] base64EncodedStringChunksOfDataForFile:fileName];
     for (int i = 0; i < base64StringArrayFromAudioFile.count; i++) {
-//        NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[[NSUserDefaults standardUserDefaults] objectForKey:DEVICE_UUID_KEY_FORUSERDEFAULTS],[UIDevice currentDevice].name, [self getIPAddress ],[NSNumber numberWithInt:11], [base64StringArrayFromAudioFile objectAtIndex:i], [NSNumber numberWithInt:i],[NSNumber numberWithInt:base64StringArrayFromAudioFile.count ] ,nil]
-//                                                                    forKeys:[NSArray arrayWithObjects:JSON_KEY_DEVICE_ID, JSON_KEY_DEVICE_NAME,JSON_KEY_IP_ADDRESS, JSON_KEY_TYPE, JSON_KEY_VOICE_MESSAGE, JSON_KEY_VOICE_MESSAGE_CURRENT_CHUNK, JSON_KEY_VOICE_MESSAGE_CHUNKCOUNT, nil]];
+
         NSError * error = nil;
         
-        NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[UIDevice currentDevice].name,[NSNumber numberWithInt:11], [base64StringArrayFromAudioFile objectAtIndex:i], [NSNumber numberWithInt:i+1],[NSNumber numberWithInt:base64StringArrayFromAudioFile.count ] ,[NSNumber numberWithInt:2],nil]
+        NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[UIDevice currentDevice].name,[NSNumber numberWithInt:TYPE_VOICE_MESSAGE], [base64StringArrayFromAudioFile objectAtIndex:i], [NSNumber numberWithInt:i+1],[NSNumber numberWithInt:base64StringArrayFromAudioFile.count ] ,[NSNumber numberWithInt:2],nil]
                                                                     forKeys:[NSArray arrayWithObjects: JSON_KEY_DEVICE_NAME, JSON_KEY_TYPE, JSON_KEY_VOICE_MESSAGE, JSON_KEY_VOICE_MESSAGE_CURRENT_CHUNK, JSON_KEY_VOICE_MESSAGE_CHUNKCOUNT, JSON_KEY_CHANNEL,  nil]];
         
         NSData * jsonData = [NSJSONSerialization dataWithJSONObject:postDictionary options:NSJSONWritingPrettyPrinted error:&error];
@@ -240,7 +224,7 @@
 }
 
 -(NSString *)repeatVoiceMessageRequest{
-    NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[[NSUserDefaults standardUserDefaults] objectForKey:DEVICE_UUID_KEY_FORUSERDEFAULTS], [UIDevice currentDevice].name, [self getIPAddress ],[NSNumber numberWithInt:14], nil]
+    NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[[NSUserDefaults standardUserDefaults] objectForKey:DEVICE_UUID_KEY_FORUSERDEFAULTS], [UIDevice currentDevice].name, [self getIPAddress ],[NSNumber numberWithInt:TYPE_VOICE_MESSAGE_REPEAT_REQUEST], nil]
                                                                 forKeys:[NSArray arrayWithObjects:JSON_KEY_DEVICE_ID, JSON_KEY_DEVICE_NAME,JSON_KEY_IP_ADDRESS, JSON_KEY_TYPE,  nil]];
     
     NSError * error = nil;
@@ -259,7 +243,7 @@
         
         NSError * error = nil;
         
-        NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[UIDevice currentDevice].name,[NSNumber numberWithInt:11],
+        NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[UIDevice currentDevice].name,[NSNumber numberWithInt:TYPE_VOICE_MESSAGE],
                                                                              [base64StringArrayFromAudioFile objectAtIndex:i], [NSNumber numberWithInt:i+1],
                                                                              [NSNumber numberWithInt:(int)base64StringArrayFromAudioFile.count ], [NSNumber numberWithInt:channelID],
                                                                              [[MessageHandler sharedHandler] getIPAddress], fileName, nil]
@@ -283,11 +267,10 @@
     NSMutableArray *JSONStringArray = [[NSMutableArray alloc] init];
     NSArray *base64StringArrayFromAudioFile = [[AudioFileHandler sharedHandler] base64EncodedStringChunksOfDataForFile:fileName];
     for (int i = 0; i < base64StringArrayFromAudioFile.count; i++) {
-        //        NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[[NSUserDefaults standardUserDefaults] objectForKey:DEVICE_UUID_KEY_FORUSERDEFAULTS],[UIDevice currentDevice].name, [self getIPAddress ],[NSNumber numberWithInt:11], [base64StringArrayFromAudioFile objectAtIndex:i], [NSNumber numberWithInt:i],[NSNumber numberWithInt:base64StringArrayFromAudioFile.count ] ,nil]
-        //                                                                    forKeys:[NSArray arrayWithObjects:JSON_KEY_DEVICE_ID, JSON_KEY_DEVICE_NAME,JSON_KEY_IP_ADDRESS, JSON_KEY_TYPE, JSON_KEY_VOICE_MESSAGE, JSON_KEY_VOICE_MESSAGE_CURRENT_CHUNK, JSON_KEY_VOICE_MESSAGE_CHUNKCOUNT, nil]];
+
         NSError * error = nil;
         
-        NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[UIDevice currentDevice].name,[NSNumber numberWithInt:15], [base64StringArrayFromAudioFile objectAtIndex:i], [NSNumber numberWithInt:i+1],[NSNumber numberWithInt:base64StringArrayFromAudioFile.count ] ,[NSNumber numberWithInt:channelID],[[MessageHandler sharedHandler] getIPAddress], nil]
+        NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[UIDevice currentDevice].name,[NSNumber numberWithInt:TYPE_VOICE_STREAM], [base64StringArrayFromAudioFile objectAtIndex:i], [NSNumber numberWithInt:i+1],[NSNumber numberWithInt:base64StringArrayFromAudioFile.count ] ,[NSNumber numberWithInt:channelID],[[MessageHandler sharedHandler] getIPAddress], nil]
                                                                     forKeys:[NSArray arrayWithObjects: JSON_KEY_DEVICE_NAME, JSON_KEY_TYPE, JSON_KEY_VOICE_MESSAGE, JSON_KEY_VOICE_MESSAGE_CURRENT_CHUNK, JSON_KEY_VOICE_MESSAGE_CHUNKCOUNT, JSON_KEY_CHANNEL, JSON_KEY_IP_ADDRESS, nil]];
         
         NSData * jsonData = [NSJSONSerialization dataWithJSONObject:postDictionary options:NSJSONWritingPrettyPrinted error:&error];
@@ -305,7 +288,7 @@
     NSString *base64buffer = [buffer base64EncodedStringWithOptions:0];
     NSError * error = nil;
     
-    NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[NSNumber numberWithInt:15], base64buffer,[NSNumber numberWithInt:channelID], nil]
+    NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[NSNumber numberWithInt:TYPE_VOICE_STREAM], base64buffer,[NSNumber numberWithInt:channelID], nil]
                                                                 forKeys:[NSArray arrayWithObjects: JSON_KEY_TYPE, JSON_KEY_VOICE_MESSAGE,   JSON_KEY_CHANNEL, nil]];
     
     NSData * jsonData = [NSJSONSerialization dataWithJSONObject:postDictionary options:NSJSONWritingPrettyPrinted error:&error];
@@ -314,9 +297,36 @@
 }
 
 
--(NSString *)leaveSystemMessage{
+
+
+-(NSString *)oneToOneChatRequestMessage{
     
-    NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[[NSUserDefaults standardUserDefaults] objectForKey:DEVICE_UUID_KEY_FORUSERDEFAULTS], [UIDevice currentDevice].name, [self getIPAddress ],[NSNumber numberWithInt:10], nil]
+    
+    NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[[NSUserDefaults standardUserDefaults] objectForKey:DEVICE_UUID_KEY_FORUSERDEFAULTS], [UIDevice currentDevice].name, [self getIPAddress ],[NSNumber numberWithInt:TYPE_ONE_TO_ONE_CHAT_REQUEST], nil]
+                                                                forKeys:[NSArray arrayWithObjects:JSON_KEY_DEVICE_ID, JSON_KEY_DEVICE_NAME,JSON_KEY_IP_ADDRESS, JSON_KEY_TYPE,  nil]];
+    
+    NSError * error = nil;
+    NSData * jsonData = [NSJSONSerialization dataWithJSONObject:postDictionary options:NSJSONWritingPrettyPrinted error:&error];
+    NSString *resultAsString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    return resultAsString;
+}
+
+-(NSString *)oneToOneChatAcceptMessage{
+    
+    
+    NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[[NSUserDefaults standardUserDefaults] objectForKey:DEVICE_UUID_KEY_FORUSERDEFAULTS], [UIDevice currentDevice].name, [self getIPAddress ],[NSNumber numberWithInt:TYPE_ONE_TO_ONE_CHAT_ACCEPT], nil]
+                                                                forKeys:[NSArray arrayWithObjects:JSON_KEY_DEVICE_ID, JSON_KEY_DEVICE_NAME,JSON_KEY_IP_ADDRESS, JSON_KEY_TYPE,  nil]];
+    
+    NSError * error = nil;
+    NSData * jsonData = [NSJSONSerialization dataWithJSONObject:postDictionary options:NSJSONWritingPrettyPrinted error:&error];
+    NSString *resultAsString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    return resultAsString;
+}
+
+-(NSString *)oneToOneChatDeclineMessage{
+    
+    
+    NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[[NSUserDefaults standardUserDefaults] objectForKey:DEVICE_UUID_KEY_FORUSERDEFAULTS], [UIDevice currentDevice].name, [self getIPAddress ],[NSNumber numberWithInt:TYPE_ONE_TO_ONE_CHAT_DECLINE], nil]
                                                                 forKeys:[NSArray arrayWithObjects:JSON_KEY_DEVICE_ID, JSON_KEY_DEVICE_NAME,JSON_KEY_IP_ADDRESS, JSON_KEY_TYPE,  nil]];
     
     NSError * error = nil;

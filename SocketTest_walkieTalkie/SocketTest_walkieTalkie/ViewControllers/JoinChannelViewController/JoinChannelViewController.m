@@ -72,6 +72,7 @@
 }
 
 -(void) joinCHannelConfirmed:(NSNotification*)notification{
+    
     NSDictionary* userInfo = notification.userInfo;
     NSData* receivedData = (NSData*)userInfo[@"receievedData"];
     NSLog (@"Successfully received foreign Channel Join Confirmed notification! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
@@ -279,6 +280,7 @@
         ChatViewController * chatControl = [segue destinationViewController];
         Channel *currentChannelForeign = [blank getForeignChannel: [ChannelHandler sharedHandler].currentlyActiveChannelID];
         chatControl.currentActiveChannel = currentChannelForeign;
+        chatControl.isPersonalChannel = NO;
         NSLog(@"client Channel Selection");
     }
 }

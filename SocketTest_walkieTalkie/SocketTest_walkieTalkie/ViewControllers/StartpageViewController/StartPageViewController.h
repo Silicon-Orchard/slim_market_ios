@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface StartPageViewController : UIViewController <UITextFieldDelegate>
+@interface StartPageViewController : UIViewController <UITextFieldDelegate, UIAlertViewDelegate>
 
 @end

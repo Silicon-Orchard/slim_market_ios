@@ -70,7 +70,19 @@
     chatRoomMemberList = [[NSMutableArray alloc] init];
     receivedAudioStreamContainerArray = [[NSMutableArray alloc] init];
     [ChannelHandler sharedHandler].currentlyActiveChannel = self.currentActiveChannel;
-    [[asyncTCPConnectionHandler sharedHandler] createTCPSenderSocket];
+    
+    
+    //Emergency UI Update
+    if(self.isPersonalChannel){
+        
+        [self updateUIForPersonalMessage];
+    }else{
+        
+        [self updateUIForChatViewWithChannel:self.currentActiveChannel];
+    }
+    
+    //[[asyncTCPConnectionHandler sharedHandler] createTCPSenderSocket];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(joinChannelRequestReceived:) name:JOINCHANNEL_REQUEST_NOTIFICATIONKEY object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(channelUpdated:) name:@"currentChannelUpdated" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chatMessageReceived:) name:CHATMESSAGE_RECEIVED_NOTIFICATIONKEY object:nil];
@@ -89,9 +101,8 @@
     //[stopButton setEnabled:NO];
     [self.playButton setEnabled:NO];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(channelUpdated:) name:@"currentChannelUpdated" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(voiceMessageReceived:) name:VOICE_MESSAGE_RECEIEVED_NOTIFICATIONKEY object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(voiceMessageReceivedInTCP:) name:TCP_VOICE_MESSAGE_RECEIEVED_NOTIFICATIONKEY object:nil];
+//  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(voiceMessageReceivedInTCP:) name:TCP_VOICE_MESSAGE_RECEIEVED_NOTIFICATIONKEY object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(requestForRepeatVoiceMessagereceived:) name:UDP_VOICE_MESSAGE_REPEAR_REQUEST_NOTIFICATIONKEY object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playAudioStream) name:@"playAudioNotification" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -141,12 +152,18 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     
-    self.title = [NSString stringWithFormat:@"Channel ID %d", self.currentActiveChannel.channelID];
+    [self setNavigationItemTitle];
+    
     self.sendButton.enabled = NO;
     //self.audioReceivedButton.hidden = YES;
     
-    [self addFooterToTableView:self.channelMemberTableView];
-    [self addFooterToTableView:self.chatTableView];
+    self.popupBoxView.layer.cornerRadius = 10;
+    self.popupBoxView.layer.masksToBounds = YES;
+    
+//    if(!self.isPersonalChannel){
+//        [self addFooterToTableView:self.channelMemberTableView];
+//    }
+//    [self addFooterToTableView:self.chatTableView];
 
     [self.navigationController.navigationBar setTitleTextAttributes:
      @{NSForegroundColorAttributeName:[UIColor whiteColor]}];
@@ -155,11 +172,11 @@
 }
 
 -(void)viewDidAppear:(BOOL)animated{
-    [self updateUIForChatViewWithChannel:self.currentActiveChannel];
-    [self.chatTableView setContentOffset:CGPointMake(0, self.chatTableView.frame.size.height)];
-    int lastRow = 0;
-//    [self.chatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:chatMessageList.count-1] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-
+    
+    if(!self.isPersonalChannel){
+        [self.chatTableView setContentOffset:CGPointMake(0, self.chatTableView.frame.size.height)];
+        //[self.chatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:chatMessageList.count-1] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    }
 }
 
 -(void) viewWillDisappear:(BOOL)animated {
@@ -171,7 +188,12 @@
     }
     if ([self.navigationController.viewControllers indexOfObject:self]==NSNotFound) {
         // Navigation button was pressed.
-        [self channelLeaveMessageSend];
+        if(self.isPersonalChannel){
+            
+        }else {
+            [self channelLeaveMessageSend];
+        }
+        
     }
 }
 
@@ -189,12 +211,32 @@
 
 #pragma mark - Helpers
 
-- (void) addFooterToTableView:(UITableView *) myTableView
-{
-    UIView *v = [[UIView alloc] initWithFrame:CGRectZero];
+-(void)setNavigationItemTitle{
     
-    [myTableView setTableFooterView:v];
+    if(self.isPersonalChannel){
+        
+        self.title = self.oponentUser.deviceName;
+    }else{
+        
+        NSString *title;
+        if(self.currentActiveChannel.channelID == 1){
+            title = @"Public Channel A";
+        }else if(self.currentActiveChannel.channelID == 2){
+            title = @"Public Channel B";
+        }else{
+            title = [NSString stringWithFormat:@"Private Channel: %d", self.currentActiveChannel.channelID];
+        }
+        
+        self.title = title;
+    }
 }
+
+//- (void) addFooterToTableView:(UITableView *) myTableView
+//{
+//    UIView *v = [[UIView alloc] initWithFrame:CGRectZero];
+//    
+//    [myTableView setTableFooterView:v];
+//}
 
 -(UIViewController *)backViewController
 {
@@ -205,95 +247,133 @@
 
 -(void)channelLeaveMessageSend{
     
-    Channel *currentlyActiveChannel;
-    if ([ChannelHandler sharedHandler].isHost) {
-        currentlyActiveChannel = [self.currentActiveChannel geChannel:[ChannelHandler sharedHandler].currentlyActiveChannelID];
-    }
-    else{
-        currentlyActiveChannel = [self.currentActiveChannel getForeignChannel:[ChannelHandler sharedHandler].currentlyActiveChannelID];
+    int channelID = self.isPersonalChannel ? 0: [ChannelHandler sharedHandler].currentlyActiveChannelID;
+    NSString *deviceName = self.isPersonalChannel ? self.oponentUser.deviceName : [ChannelHandler sharedHandler].userNameInChannel;
+    
+    NSString *leaveMessageToSend = [[MessageHandler sharedHandler] leaveChatMessageWithChannelID:channelID  deviceName:deviceName];
+    
+    if(self.isPersonalChannel){
         
-    }
-    
-    NSString *leaveMessageToSend = [[MessageHandler sharedHandler] leaveChatMessageWithChannelID:[ChannelHandler sharedHandler].currentlyActiveChannelID  deviceName:[ChannelHandler sharedHandler].userNameInChannel];
-    
-    
-    NSLog(@"leaveMessageToSend: %@", leaveMessageToSend);
-    
-    for (int i= 0; i<currentlyActiveChannel.channelMemberIPs.count; i++) {
-        if (![[currentlyActiveChannel.channelMemberIPs objectAtIndex:i] isEqualToString:[[MessageHandler sharedHandler] getIPAddress]]) {
-            [[asyncUDPConnectionHandler sharedHandler]sendMessage:leaveMessageToSend toIPAddress:[currentlyActiveChannel.channelMemberIPs objectAtIndex:i]];
+        [[asyncUDPConnectionHandler sharedHandler]sendMessage:leaveMessageToSend toIPAddress:self.oponentUser.deviceIP];
+        
+    }else{
+        
+        Channel *currentlyActiveChannel;
+        if ([ChannelHandler sharedHandler].isHost) {
+            currentlyActiveChannel = [self.currentActiveChannel geChannel:channelID];
+        }
+        else{
+            currentlyActiveChannel = [self.currentActiveChannel getForeignChannel:channelID];
+            
         }
         
+        for (int i= 0; i<currentlyActiveChannel.channelMemberIPs.count; i++) {
+            
+            if (![[currentlyActiveChannel.channelMemberIPs objectAtIndex:i] isEqualToString:[[MessageHandler sharedHandler] getIPAddress]]) {
+                
+                [[asyncUDPConnectionHandler sharedHandler]sendMessage:leaveMessageToSend toIPAddress:[currentlyActiveChannel.channelMemberIPs objectAtIndex:i]];
+            }
+            
+        }
+        [self.currentActiveChannel removeChannelWithChannelID:currentlyActiveChannel.channelID];
     }
-    [self.currentActiveChannel removeChannelWithChannelID:currentlyActiveChannel.channelID];
+    
 }
 
 #pragma mark - UIHelpers
 
 -(void)updateUIForChatViewWithChannel:(Channel *)currentChatChannel{
 
-    //self.channelMemberListLabel.text =@"";
-
     chatRoomMemberList = [[NSMutableArray alloc] init];
     for (int i = 0; i < currentChatChannel.channelMemberIPs.count; i++) {
-        //NSMutableString *members = [[NSMutableString alloc] initWithString:self.channelMemberListLabel.text];
         if (i==0) {
             if (currentChatChannel.channelID ==1 || currentChatChannel.channelID ==2) {
-                //[members appendString:[NSString stringWithFormat:@"\n%@ Joined", [currentChatChannel.channelMemberNamess objectAtIndex:i]]];
+
                 [chatRoomMemberList addObject:[NSString stringWithFormat:@"%@ Joined", [currentChatChannel.channelMemberNamess objectAtIndex:i]]];
             }
             else{
-                //[members appendString:[NSString stringWithFormat:@"%@ Owner", [currentChatChannel.channelMemberNamess objectAtIndex:i]]];
+
                 [chatRoomMemberList addObject:[NSString stringWithFormat:@"%@ Owner", [currentChatChannel.channelMemberNamess objectAtIndex:i]]];
             }
         }
         else{
-            //[members appendString:[NSString stringWithFormat:@"\n%@ Joined", [currentChatChannel.channelMemberNamess objectAtIndex:i]]];
+
             [chatRoomMemberList addObject:[NSString stringWithFormat:@"%@ Joined", [currentChatChannel.channelMemberNamess objectAtIndex:i]]];
         }
-        //self.channelMemberListLabel.text = members;
+
     }
     
-    //[ChannelHandler sharedHandler].currentlyActiveChannel = self.currentActiveChannel;
     [self.channelMemberTableView reloadData];
 }
 
--(void)updateUIForChatMessage:(NSDictionary *)messageDic
-{
+-(void)updateUIForPersonalMessage{
+    
+    self.topSpaceConstraintOfChatTable = 0;
+    [self.view layoutIfNeeded];
+    
+    self.memberTableContainerView.hidden = YES;
+    self.channelMemberTableView.delegate =nil;
+    self.channelMemberTableView.dataSource = nil;
+    self.channelMemberTableView.hidden = YES;
+
+
+}
+
+-(void)updateUIForChatMessage:(NSDictionary *)messageDic {
     
     [chatMessageList addObject:messageDic];
-    [self.chatTableView reloadData];
-    [self.chatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:chatMessageList.count-1] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     
-
-//    [self.chatTableView setContentOffset:CGPointMake(0, CGFLOAT_MAX)];
+    NSIndexPath * indexPathOfYourCell = [NSIndexPath indexPathForRow:([chatMessageList count] -1) inSection:0];
+    
+    [self.chatTableView beginUpdates];
+    [self.chatTableView insertRowsAtIndexPaths:@[indexPathOfYourCell] withRowAnimation:UITableViewRowAnimationNone];
+    [self.chatTableView endUpdates];
+    
+    [self.chatTableView scrollToRowAtIndexPath:indexPathOfYourCell atScrollPosition:UITableViewScrollPositionBottom animated:NO];
 }
 
 #pragma mark - IBAction
 
 - (IBAction)SendButtonTapped:(id)sender {
     
-    
-    Channel *currentlyActiveChannel;
-    if ([ChannelHandler sharedHandler].isHost) {
-        currentlyActiveChannel = [self.currentActiveChannel geChannel:[ChannelHandler sharedHandler].currentlyActiveChannelID];
-    }
-    else{
-        currentlyActiveChannel = [self.currentActiveChannel getForeignChannel:[ChannelHandler sharedHandler].currentlyActiveChannelID];
+    int channelID;
+    NSString *deviceName;
+    if(self.isPersonalChannel){
+        channelID = 0;
+        deviceName = self.oponentUser.deviceName;
         
+    }else{
+        channelID = [ChannelHandler sharedHandler].currentlyActiveChannelID;
+        deviceName = [ChannelHandler sharedHandler].userNameInChannel;
     }
-    NSString *chatMessageToSend = [[MessageHandler sharedHandler] createChatMessageWithChannelID:[ChannelHandler sharedHandler].currentlyActiveChannelID  deviceName:[ChannelHandler sharedHandler].userNameInChannel chatmessage:self.chatTextField.text];
+
+    NSString *chatMessageToSend = [[MessageHandler sharedHandler] createChatMessageWithChannelID:channelID  deviceName:deviceName chatmessage:self.chatTextField.text];
     
-    
-    for (int i= 0; i<currentlyActiveChannel.channelMemberIPs.count; i++) {
-        if (![[currentlyActiveChannel.channelMemberIPs objectAtIndex:i] isEqualToString:[[MessageHandler sharedHandler] getIPAddress]]) {
-            
-            [[asyncUDPConnectionHandler sharedHandler]sendMessage:chatMessageToSend toIPAddress:[currentlyActiveChannel.channelMemberIPs objectAtIndex:i]];
+    if(self.isPersonalChannel){
+        //send message
+        [[asyncUDPConnectionHandler sharedHandler]sendMessage:chatMessageToSend toIPAddress:self.oponentUser.deviceIP];
+        
+    } else {
+        
+        Channel *currentlyActiveChannel;
+        if ([ChannelHandler sharedHandler].isHost) {
+            currentlyActiveChannel = [self.currentActiveChannel geChannel:[ChannelHandler sharedHandler].currentlyActiveChannelID];
+        }
+        else{
+            currentlyActiveChannel = [self.currentActiveChannel getForeignChannel:[ChannelHandler sharedHandler].currentlyActiveChannelID];
             
         }
-        
+        //send message to All
+        for (int i= 0; i<currentlyActiveChannel.channelMemberIPs.count; i++) {
+            if (![[currentlyActiveChannel.channelMemberIPs objectAtIndex:i] isEqualToString:[[MessageHandler sharedHandler] getIPAddress]]) {
+                
+                [[asyncUDPConnectionHandler sharedHandler]sendMessage:chatMessageToSend toIPAddress:[currentlyActiveChannel.channelMemberIPs objectAtIndex:i]];
+                
+            }
+        }
     }
     
+
     NSDictionary *messageDic = @{
                                  @"type": MesssageType_Text_Me,
                                  @"sender": @"Me",
@@ -301,6 +381,8 @@
                                  };
     [self updateUIForChatMessage:messageDic];
     
+    self.chatTextField.text = @"";
+    //[self.chatTextField becomeFirstResponder];
 }
 
 
@@ -311,6 +393,7 @@
     self.voiceMailView.hidden = NO;
     
 }
+
 - (IBAction)closeTappedOnVoiceMailView:(id)sender {
     if (self.thePlayer.isPlaying) {
         [self.thePlayer stop];
@@ -320,10 +403,6 @@
     }
     self.voiceMailView.hidden = YES;
 }
-
-
-
-
 
 
 
@@ -356,13 +435,6 @@
     //    [stopButton setEnabled:YES];
     [self.playButton setEnabled:NO];
 }
-
-//- (IBAction)stopTapped:(id)sender {
-//    [recorder stop];
-//
-//    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-//    [audioSession setActive:NO error:nil];
-//}
 
 
 - (IBAction)playTapped:(id)sender {
@@ -406,26 +478,42 @@
     
     self.sendButton.enabled = NO;
     NSString *audioFileName = [recordedAudioFileNames lastObject];
-    NSArray *voiceMessagechunkStrings = [[MessageHandler sharedHandler] voiceMessageJSONStringInChunksWithAudioFileName:audioFileName inChannel:self.currentActiveChannel.channelID];
+    
+    int ChannelID = self.isPersonalChannel ? 0 :self.currentActiveChannel.channelID;
+    NSArray *voiceMessagechunkStrings = [[MessageHandler sharedHandler] voiceMessageJSONStringInChunksWithAudioFileName:audioFileName inChannel:ChannelID];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
         NSLog(@"Data To send\npacket count %lu", (unsigned long)voiceMessagechunkStrings.count);
         
-        for (int i= 0; i<self.currentActiveChannel.channelMemberIPs.count; i++) {
-            if (![[self.currentActiveChannel.channelMemberIPs objectAtIndex:i] isEqualToString:[[MessageHandler sharedHandler] getIPAddress]]) {
-                //            [[asyncUDPConnectionHandler sharedHandler]sendMessage:voiceMessageToSend toIPAddress:[self.activeChannelInfo.channelMemberIPs objectAtIndex:i]];
-                for (int j = 0; j<voiceMessagechunkStrings.count; j++) {
-                    NSLog(@"message to send %@", [voiceMessagechunkStrings objectAtIndex:j]);
-                    if (j%5 == 0) {
-                        [NSThread sleepForTimeInterval:0.09];
-                    }
-                    //                    [NSThread sleepForTimeInterval:0.09];
-                    [[asyncUDPConnectionHandler sharedHandler] sendVoiceMessage:[voiceMessagechunkStrings objectAtIndex:j] toIPAddress:[self.currentActiveChannel.channelMemberIPs objectAtIndex:i]];
+        if (self.isPersonalChannel) {
+            
+            for (int j = 0; j<voiceMessagechunkStrings.count; j++) {
+                NSLog(@"message to send %@", [voiceMessagechunkStrings objectAtIndex:j]);
+                if (j%5 == 0) {
+                    [NSThread sleepForTimeInterval:0.09];
                 }
+                [[asyncUDPConnectionHandler sharedHandler] sendVoiceMessage:[voiceMessagechunkStrings objectAtIndex:j] toIPAddress:self.oponentUser.deviceIP];
             }
             
+        }else {
+            
+            for (int i= 0; i<self.currentActiveChannel.channelMemberIPs.count; i++) {
+                if (![[self.currentActiveChannel.channelMemberIPs objectAtIndex:i] isEqualToString:[[MessageHandler sharedHandler] getIPAddress]]) {
+                    for (int j = 0; j<voiceMessagechunkStrings.count; j++) {
+                        NSLog(@"message to send %@", [voiceMessagechunkStrings objectAtIndex:j]);
+                        if (j%5 == 0) {
+                            [NSThread sleepForTimeInterval:0.09];
+                        }
+                        //                    [NSThread sleepForTimeInterval:0.09];
+                        [[asyncUDPConnectionHandler sharedHandler] sendVoiceMessage:[voiceMessagechunkStrings objectAtIndex:j] toIPAddress:[self.currentActiveChannel.channelMemberIPs objectAtIndex:i]];
+                    }
+                }
+                
+            }
         }
+        
+
         dispatch_async(dispatch_get_main_queue(), ^{
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Done"
                                                             message: [NSString stringWithFormat:@"Sent packet count %lu", (unsigned long)voiceMessagechunkStrings.count] //@"Voice Message Sent to Channel Members!"
@@ -449,8 +537,35 @@
     
 }
 
+- (IBAction)voiceStreamButtonTapped:(id)sender {
+    
+    if (_isStreaming) {
+        //        [self.voiceStreamerButton setTitle:@"Start Streaming" forState:UIControlStateNormal];
+        [self.voiceStreamerButton setBackgroundImage:[UIImage imageNamed:@"Start Streaming Btn Normal"] forState:UIControlStateNormal];
+        [queueRecorder stopRecording];
+        [[AudioRecorderTest_StreamPlayer sharedHandler] stopMediaPlayer];
+        
+        queueRecorder = nil;
+        _isStreaming = NO;
+        
+    }
+    else{
+        _isStreaming = YES;
+        
+        queueRecorder =  [[AudioRecorderTest alloc] init];
+        [queueRecorder startRecording];
+        
+        //        [[AudioRecorderTest_StreamPlayer sharedHandler] startMediaPlayer];
+        //        [queueRecorder startMediaPlayer];
+        //        [self.voiceStreamerButton setTitle:@"Stop Streaming" forState:UIControlStateNormal];
+        [self.voiceStreamerButton setBackgroundImage:[UIImage imageNamed:@"Stop Streaming Btn normal"] forState:UIControlStateNormal];
+    }
+
+}
 
 
+
+/*
 - (IBAction)playReceivedSound:(id)sender {
     
     if (!recorder.recording){
@@ -474,34 +589,23 @@
         [session setActive:YES error:nil];
         
         self.thePlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:audioFileURL error:&error];
-        //        if (error) {
-        //            NSLog(@"Audio can't play. Error %@", [error localizedDescription]);
-        //        }
-        //        else {
-        //            [player setDelegate:self];
-        //            [player play];
-        //        }
+
         
-        //                self.thePlayer = [[AVAudioPlayer alloc] initWithData:finalAudioData error:&error];
         if (error) {
             NSLog(@"Audio can't play. Error %@", [error localizedDescription]);
         }
         else {
+            
             [self.thePlayer setDelegate:self];
             [self.thePlayer setNumberOfLoops:0];
             [self.thePlayer prepareToPlay];
             [self.thePlayer play];
         }
-        //
-        //        AVPlayer *newPlayer = [[AVPlayer alloc] initWithURL:receivedSoundURL];
-        //        [newPlayer play];
-        
-        
     }
     else{
         NSLog(@"Recorder Active For some reason!");
     }
-}
+}*/
 
 
 #pragma mark - Noticfication
@@ -513,9 +617,6 @@
     NSData* receivedData = (NSData*)userInfo[@"receievedData"];
     NSLog (@"Successfully received Chat Message notification! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
     NSDictionary *jsonDict = [NSJSONSerialization  JSONObjectWithData:receivedData options:0 error:nil];
-//    NSString *chatMessage = [jsonDict objectForKey:JSON_KEY_MESSAGE];
-//    NSString *senderName = [jsonDict objectForKey:JSON_KEY_DEVICE_NAME];
-//    NSString *FullChatMessage = [NSString stringWithFormat:@"%@:%@", senderName,chatMessage];
     
     NSDictionary *messageDic = @{
                                  @"type": MesssageType_Text_Other,
@@ -527,77 +628,92 @@
 
 
 -(void) joinChannelRequestReceived:(NSNotification*)notification{
-    NSDictionary* userInfo = notification.userInfo;
-    NSData* receivedData = (NSData*)userInfo[@"receievedData"];
-    NSLog (@"Successfully received native Channel joined notification! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
-    NSDictionary *jsonDict = [NSJSONSerialization  JSONObjectWithData:receivedData options:0 error:nil];
-//    [self addNewChannelToChannelListForJoinedChannelWithChannelData:jsonDict];
-
-    if (self.currentActiveChannel.channelID ==1 ||self.currentActiveChannel.channelID ==2) {
-        [self notifyMyPresenceInPublicChannelToNewlyJoinedIP:jsonDict];
-    }
-    else{
-        [self addNewChannelToChannelListForJoinedChannelWithChannelData:jsonDict];
-
-    }
     
+    if(self.isPersonalChannel) {
+        
+        
+    }else{
+        
+        NSDictionary* userInfo = notification.userInfo;
+        NSData* receivedData = (NSData*)userInfo[@"receievedData"];
+        NSLog (@"Successfully received native Channel joined notification! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+        NSDictionary *jsonDict = [NSJSONSerialization  JSONObjectWithData:receivedData options:0 error:nil];
+        
+        int requestChannelID = [[jsonDict objectForKey:JSON_KEY_CHANNEL] intValue];
+        
+        if(self.currentActiveChannel.channelID == requestChannelID) {
+        
+            if (self.currentActiveChannel.channelID == 1 || self.currentActiveChannel.channelID == 2) {
+                
+                [self notifyMyPresenceInPublicChannelToNewlyJoinedIP:jsonDict];
+            }
+            else{
+                [self addNewChannelToChannelListForJoinedChannelWithChannelData:jsonDict];
+                
+            }
+        }
+    }
 }
 
 -(void) ChannelLeftMessageReceieved:(NSNotification*)notification{
+    
     NSDictionary* userInfo = notification.userInfo;
     NSData* receivedData = (NSData*)userInfo[@"receievedData"];
     NSLog (@"Successfully received chat left notification! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
     NSDictionary *jsonDict = [NSJSONSerialization  JSONObjectWithData:receivedData options:0 error:nil];
-    Channel *currentlyActiveChannel;
     
-    if ([ChannelHandler sharedHandler].isHost) {
-        currentlyActiveChannel = [self.currentActiveChannel geChannel:[ChannelHandler sharedHandler].currentlyActiveChannelID];
-    }
-    else{
-        currentlyActiveChannel = [self.currentActiveChannel getForeignChannel:[ChannelHandler sharedHandler].currentlyActiveChannelID];
-    }
-    NSString *leftMemberIP;
-    NSString *leftMemberName;
-
-    if ([currentlyActiveChannel.foreignChannelHostIP isEqualToString:[jsonDict objectForKey:JSON_KEY_IP_ADDRESS]]) {
-        [self.currentActiveChannel removeChannelWithChannelID:[[jsonDict objectForKey:JSON_KEY_CHANNEL] intValue]];
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-    else{
-        if (currentlyActiveChannel.channelID == [[jsonDict objectForKey:JSON_KEY_CHANNEL] intValue]) {
-            for (int i = 0; i < currentlyActiveChannel.channelMemberIPs.count; i++) {
-                NSString *memberIP = [currentlyActiveChannel.channelMemberIPs objectAtIndex:i];
-                if ([memberIP isEqualToString:[jsonDict objectForKey:JSON_KEY_IP_ADDRESS]]) {
-                    leftMemberIP = [[currentlyActiveChannel.channelMemberIPs objectAtIndex:i] copy];
-                    leftMemberName = [[currentlyActiveChannel.channelMemberNamess objectAtIndex:i] copy];
-                    
-                    [currentlyActiveChannel.channelMemberIPs removeObjectAtIndex:i];
-                    [currentlyActiveChannel.channelMemberNamess removeObjectAtIndex:i];
-                }
-                [self.currentActiveChannel replaceForeignChannelOfID:[ChannelHandler sharedHandler].currentlyActiveChannelID withChannel:currentlyActiveChannel];
-                [self.currentActiveChannel replaceChannelOfID:[ChannelHandler sharedHandler].currentlyActiveChannelID withChannel:currentlyActiveChannel];
-                self.currentActiveChannel = currentlyActiveChannel;
-            }
-            
-            [self updateUIForChatViewWithChannel:currentlyActiveChannel];
-            
-            NSDictionary *messageDic = @{
-                                         @"type": MesssageType_Left_Channel,
-                                         @"sender": leftMemberName,
-                                         @"message": @"has left!"
-                                         };
-            [self updateUIForChatMessage:messageDic];
-            
-            
-            [chatRoomMemberList addObject:[NSString stringWithFormat:@"%@ has left!",leftMemberName]];
-            [self.channelMemberTableView reloadData];
-            
-            
-
-
-
-        }
+    
+    if(self.isPersonalChannel){
         
+        
+        NSLog(@"This user has left PersonalChannel!");
+        
+    }else {
+        
+        Channel *currentlyActiveChannel;
+        if ([ChannelHandler sharedHandler].isHost) {
+            currentlyActiveChannel = [self.currentActiveChannel geChannel:[ChannelHandler sharedHandler].currentlyActiveChannelID];
+        }
+        else{
+            currentlyActiveChannel = [self.currentActiveChannel getForeignChannel:[ChannelHandler sharedHandler].currentlyActiveChannelID];
+        }
+        NSString *leftMemberIP;
+        NSString *leftMemberName;
+        
+        if ([currentlyActiveChannel.foreignChannelHostIP isEqualToString:[jsonDict objectForKey:JSON_KEY_IP_ADDRESS]]) {
+            [self.currentActiveChannel removeChannelWithChannelID:[[jsonDict objectForKey:JSON_KEY_CHANNEL] intValue]];
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+        else{
+            if (currentlyActiveChannel.channelID == [[jsonDict objectForKey:JSON_KEY_CHANNEL] intValue]) {
+                for (int i = 0; i < currentlyActiveChannel.channelMemberIPs.count; i++) {
+                    NSString *memberIP = [currentlyActiveChannel.channelMemberIPs objectAtIndex:i];
+                    if ([memberIP isEqualToString:[jsonDict objectForKey:JSON_KEY_IP_ADDRESS]]) {
+                        leftMemberIP = [[currentlyActiveChannel.channelMemberIPs objectAtIndex:i] copy];
+                        leftMemberName = [[currentlyActiveChannel.channelMemberNamess objectAtIndex:i] copy];
+                        
+                        [currentlyActiveChannel.channelMemberIPs removeObjectAtIndex:i];
+                        [currentlyActiveChannel.channelMemberNamess removeObjectAtIndex:i];
+                    }
+                    [self.currentActiveChannel replaceForeignChannelOfID:[ChannelHandler sharedHandler].currentlyActiveChannelID withChannel:currentlyActiveChannel];
+                    [self.currentActiveChannel replaceChannelOfID:[ChannelHandler sharedHandler].currentlyActiveChannelID withChannel:currentlyActiveChannel];
+                    self.currentActiveChannel = currentlyActiveChannel;
+                }
+                
+                [self updateUIForChatViewWithChannel:currentlyActiveChannel];
+                
+                NSDictionary *messageDic = @{
+                                             @"type": MesssageType_Left_Channel,
+                                             @"sender": leftMemberName,
+                                             @"message": @"has left!"
+                                             };
+                [self updateUIForChatMessage:messageDic];
+                
+                
+                [chatRoomMemberList addObject:[NSString stringWithFormat:@"%@ has left!",leftMemberName]];
+                [self.channelMemberTableView reloadData];
+            }
+        }
     }
     
 }
@@ -621,7 +737,9 @@
     NSData* receivedData = (NSData*)userInfo[@"receievedData"];
     //    NSLog (@"Successfully received Voice Message notification! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
     NSDictionary *jsonDict = [NSJSONSerialization  JSONObjectWithData:receivedData options:0 error:nil];
-    NSArray *voiceMessagechunkStrings = [[MessageHandler sharedHandler] voiceMessageJSONStringInChunksWithAudioFileName:@"MyAudioMemo.m4a" inChannel:self.currentActiveChannel.channelID];
+    
+    int channelID = self.isPersonalChannel ? 0 :self.currentActiveChannel.channelID;
+    NSArray *voiceMessagechunkStrings = [[MessageHandler sharedHandler] voiceMessageJSONStringInChunksWithAudioFileName:@"MyAudioMemo.m4a" inChannel:channelID];
     for (int j = 0; j<voiceMessagechunkStrings.count; j++) {
         NSLog(@"message to send %@", [voiceMessagechunkStrings objectAtIndex:j]);
         //                    [NSThread sleepForTimeInterval:0.09];
@@ -703,27 +821,6 @@
     }
 }
 
-/*
- -(void)voiceMessageReceivedInTCP:(NSNotification *) notification{
- NSDictionary* userInfo = notification.userInfo;
- NSData* receivedData = (NSData*)userInfo[@"receievedData"];
- NSDictionary *jsonDict = [NSJSONSerialization  JSONObjectWithData:receivedData options:0 error:nil];
- 
- NSString *base64EncodedVoiceString = [jsonDict objectForKey:JSON_KEY_VOICE_MESSAGE];
- NSData *audioDataLocal = [[NSData alloc] initWithBase64EncodedString:base64EncodedVoiceString options:1];
- receivedFileName = [NSString stringWithFormat:@"%d.caf",arc4random_uniform(20000)];
- if ([[jsonDict objectForKey:JSON_KEY_CHANNEL] integerValue] == self.currentActiveChannel.channelID) {
- 
- }
- NSString *SoundfilePath = [[AudioFileHandler sharedHandler] saveFileAndGetSavedFilePathInDocumentsDirectoryFromData:audioDataLocal saveDataAsFileName:receivedFileName];
- NSURL *soundFileURL2 = [NSURL fileURLWithPath:SoundfilePath];
- receivedSoundURL =soundFileURL2;
- //[self updateUIForChatMessage:[NSString stringWithFormat:@"Message Received From %@",[jsonDict objectForKey:JSON_KEY_DEVICE_NAME]]];
- 
- //[self.audioReceivedButton setTitle:[NSString stringWithFormat:@"Play received %@'s VoiceMail", [jsonDict objectForKey:JSON_KEY_DEVICE_NAME]] forState:UIControlStateNormal];
- //self.audioReceivedButton.hidden = NO;
- }*/
-
 - (void)didChangePreferredContentSize:(NSNotification *)notification
 {
     [self.chatTableView reloadData];
@@ -762,12 +859,14 @@
     
     Channel *blankChannel = [[Channel alloc] init];
     [blankChannel addUserToForeignChannelWithChannelID:[[channelData objectForKey:JSON_KEY_CHANNEL] intValue] userIP:[channelData objectForKey:JSON_KEY_IP_ADDRESS] userName:[channelData objectForKey:JSON_KEY_DEVICE_NAME] userID:[channelData objectForKey:JSON_KEY_DEVICE_ID]];
+    
     NSString *confirmationMessageForJoiningChannel = [[MessageHandler sharedHandler] confirmJoiningForChannelID:[[channelData objectForKey:JSON_KEY_CHANNEL] intValue] channelName:self.currentActiveChannel.channelMemberNamess[0]];
-    [[asyncUDPConnectionHandler sharedHandler]sendMessage:confirmationMessageForJoiningChannel toIPAddress:[channelData objectForKey:JSON_KEY_IP_ADDRESS]];
+    
+    [[asyncUDPConnectionHandler sharedHandler] sendMessage:confirmationMessageForJoiningChannel toIPAddress:[channelData objectForKey:JSON_KEY_IP_ADDRESS]];
     self.currentActiveChannel = [blankChannel getForeignChannel:[[channelData objectForKey:JSON_KEY_CHANNEL] intValue]];
     [self updateUIForChatViewWithChannel:self.currentActiveChannel];
 //    Channel *currentlyactiveChannel = self.currentActiveChannel;
-
+    
 }
 
 
@@ -801,6 +900,8 @@
 }
 
 -(void) voiceStreamReceivedInChat:(NSNotification*)notification{
+    
+    
     NSDictionary* userInfo = notification.userInfo;
     NSData* receivedData = (NSData*)userInfo[@"receievedData"];
     if (_isStreaming) {
@@ -868,33 +969,7 @@
     [alert show];
 }
 
-- (IBAction)voiceStreamButtonTapped:(id)sender {
-    
-    if (_isStreaming) {
-//        [self.voiceStreamerButton setTitle:@"Start Streaming" forState:UIControlStateNormal];
-        [self.voiceStreamerButton setBackgroundImage:[UIImage imageNamed:@"Start Streaming Btn Normal"] forState:UIControlStateNormal];
-        [queueRecorder stopRecording];
-        [[AudioRecorderTest_StreamPlayer sharedHandler] stopMediaPlayer];
 
-        queueRecorder = nil;
-        _isStreaming = NO;
-        
-    }
-    else{
-        _isStreaming = YES;
-        queueRecorder =  [[AudioRecorderTest alloc] init];
-        [queueRecorder startRecording];
-//        [[AudioRecorderTest_StreamPlayer sharedHandler] startMediaPlayer];
-//        [queueRecorder startMediaPlayer];
-//        [self.voiceStreamerButton setTitle:@"Stop Streaming" forState:UIControlStateNormal];
-        [self.voiceStreamerButton setBackgroundImage:[UIImage imageNamed:@"Stop Streaming Btn normal"] forState:UIControlStateNormal];
-
-        
-    }
-
-    
-    
-}
 
 #pragma mark - UITableView
 
@@ -902,7 +977,7 @@
 {
     if ([cell isKindOfClass:[IncomingMessageCell class]]) {
         
-        NSDictionary *messageDic = [chatMessageList objectAtIndex:indexPath.section];
+        NSDictionary *messageDic = [chatMessageList objectAtIndex:indexPath.row];
         
         IncomingMessageCell *textCell = (IncomingMessageCell *)cell;
         
@@ -924,9 +999,9 @@
         }else if([messageDic[@"type"] isEqual: MesssageType_Voice_Me]) {
             
             //Do Necessary Work
-            if(![audioFileNamesDic objectForKey:@(indexPath.section)]){
+            if(![audioFileNamesDic objectForKey:@(indexPath.row)]){
                 
-                [audioFileNamesDic setObject:[recordedAudioFileNames lastObject] forKey:@(indexPath.section)];
+                [audioFileNamesDic setObject:[recordedAudioFileNames lastObject] forKey:@(indexPath.row)];
             }
             
             textCell.nameLabel.text = messageDic[@"sender"];
@@ -937,9 +1012,9 @@
         }else if([messageDic[@"type"] isEqual: MesssageType_Voice_Other]) {
             
             //Do Necessary Work
-            if(![audioFileNamesDic objectForKey:@(indexPath.section)]){
+            if(![audioFileNamesDic objectForKey:@(indexPath.row)]){
                 
-                [audioFileNamesDic setObject:[receivedAudioFileNames lastObject] forKey:@(indexPath.section)];
+                [audioFileNamesDic setObject:[receivedAudioFileNames lastObject] forKey:@(indexPath.row)];
             }
             
             textCell.nameLabel.text = messageDic[@"sender"];
@@ -971,19 +1046,16 @@
 static NSString *incomingMessageCellIdentifier = @"incomingChatMessageCellID";
 static NSString *chatmemberCellID = @"chatmemberCellID";
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    if (tableView.tag ==101) {
-       return chatMessageList.count;
-    }
-    return 1;
-}
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    
     if (tableView.tag ==102) {
         return chatRoomMemberList.count;
+        
+    }else if (tableView.tag ==101) {
+        return chatMessageList.count;
     }
+    
     return 1;
 }
 
@@ -1029,12 +1101,39 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    NSString * audioFileName = [audioFileNamesDic objectForKey:@(indexPath.section)];
+    NSString * audioFileName = [audioFileNamesDic objectForKey:@(indexPath.row)];
+    [self playAudioFileName:audioFileName];
+    
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    // This will create a "invisible" footer
+    return 0.01f;
+}
+
+-(UIView*)tableView:(UITableView*)tableView viewForHeaderInSection:(NSInteger)section
+{
+    return [[UIView alloc] initWithFrame:CGRectZero];
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    return [[UIView alloc] initWithFrame:CGRectZero];
+}
+
+
+#pragma mark Helpers
+
+- (void)playAudioFileName:(NSString *)audioFileName{
     
     if(audioFileName){
         
         if (!recorder.recording){
-
+            
             NSString *audioFilePath = [[AudioFileHandler sharedHandler] getAudioFilePathOfFilaName:audioFileName];
             NSURL *audioFileURL = [NSURL fileURLWithPath:audioFilePath];
             
@@ -1044,7 +1143,7 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
             if (!fileExists) {
                 NSLog(@"File Doesn't Exist!");
                 
-                [tableView deselectRowAtIndexPath:indexPath animated:YES];
+                
                 return;
             }
             
@@ -1059,27 +1158,12 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
                 [self.thePlayer play];
             }
         }
-        
     }
-    
-    
-    
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    return;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-{
-    UIView *view = [[UIView alloc] init];
-    
-    return view;
-}
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    // This will create a "invisible" footer
-    return 0.01f;
-}
-
-#pragma mark - observer 
+#pragma mark - Observer
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
@@ -1102,14 +1186,14 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
 -(void)keyboardWasShown:(NSNotification*)notification {
     
     
-    CGRect frame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    CGRect newFrame = [self.view convertRect:frame fromView:[[UIApplication sharedApplication] delegate].window];
-    self.bottomSpaceForSendContainer.constant = newFrame.origin.y - CGRectGetHeight(self.view.frame);;
-    [self.view layoutIfNeeded];
-    
-//    CGFloat height = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey ] CGRectValue].size.height;
-//    self.bottomSpaceForSendContainer.constant = height;
+//    CGRect frame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+//    CGRect newFrame = [self.view convertRect:frame fromView:[[UIApplication sharedApplication] delegate].window];
+//    self.bottomSpaceForSendContainer.constant = newFrame.origin.y - CGRectGetHeight(self.view.frame);;
 //    [self.view layoutIfNeeded];
+    
+    CGFloat height = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey ] CGRectValue].size.height;
+    self.bottomSpaceForSendContainer.constant = height;
+    [self.view layoutIfNeeded];
 }
 
 -(BOOL) textFieldShouldReturn:(UITextField *)textField{
@@ -1130,6 +1214,11 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
 }
+
+//-(void) updateViewConstraints {
+//    
+//    NSLog(@"fdff");
+//}
 
 
 @end

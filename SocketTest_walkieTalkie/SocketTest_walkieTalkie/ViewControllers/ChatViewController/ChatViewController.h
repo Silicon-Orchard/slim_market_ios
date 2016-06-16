@@ -13,7 +13,7 @@
 @interface ChatViewController : UIViewController <UITextFieldDelegate,AVAudioRecorderDelegate, AVAudioPlayerDelegate, UITableViewDataSource, UITableViewDelegate>
 
 
-@property BOOL isPrivateChannel;
+@property BOOL isPersonalChannel;
 @property (strong, nonatomic) User *oponentUser;
 
 @property (strong, nonatomic) Channel *currentActiveChannel;
@@ -24,10 +24,16 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *chatTextField;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomSpaceForSendContainer;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topSpaceConstraintOfChatTable;
+
+
 
 
 #pragma mark - Voice View
 @property (weak, nonatomic) IBOutlet UIView *voiceMailView;
+
+@property (weak, nonatomic) IBOutlet UIView *popupBoxView;
+
 @property (weak, nonatomic) IBOutlet UIImageView *equalizerImage;
 
 @property (weak, nonatomic) IBOutlet UIButton *recordPauseButton;
@@ -47,11 +53,16 @@
 //@property (weak, nonatomic) IBOutlet UIButton *stopButton;
 //@property (weak, nonatomic) IBOutlet UIButton *audioReceivedButton;
 
+@property (weak, nonatomic) IBOutlet UIView *memberTableContainerView;
 
+@property (weak, nonatomic) IBOutlet UIView *chatTableContainerView;
+
+
+@property (weak, nonatomic) IBOutlet UITableView *channelMemberTableView;
 
 @property (weak, nonatomic) IBOutlet UITableView *chatTableView;
-@property (weak, nonatomic) IBOutlet UIView *chatTableContainerView;
-@property (weak, nonatomic) IBOutlet UITableView *channelMemberTableView;
+
+
 
 
 

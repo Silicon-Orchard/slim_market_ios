@@ -7,11 +7,14 @@
 //
 
 #import "StartPageViewController.h"
+#import "ChatViewController.h"
 //#import "User.h"
 //#import "UserHandler.h"
 
 @interface StartPageViewController ()
+
 @property (weak, nonatomic) IBOutlet UILabel *testLabel;
+@property (strong, nonatomic) User *requesterUser;
 
 @end
 
@@ -37,6 +40,11 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeDeviceFromActiveDeviceList:) name:CHANNEL_LEFT_NOTIFICATIONKEY object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeUserFromList:) name:USER_LEFT_SYSTEM_NOTIFICATIONKEY object:nil];
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(oneToOneChatRequest:) name:ONE_TO_ONE_CHAT_REQUEST_NOTIFICATIONKEY object:nil];
+    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(oneToOneChatAccepted:) name:ONE_TO_ONE_CHAT_ACCEPT_NOTIFICATIONKEY object:nil];
+    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(oneToOneChatDeclined:) name:ONE_TO_ONE_CHAT_DECLINE_NOTIFICATIONKEY object:nil];
     
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -96,7 +104,8 @@
 }
 
 -(void)ApplicationIsInactive{
-    NSString *signOffMessage = [[MessageHandler sharedHandler] deviceSigningOffMessage];
+    
+    NSString *signOffMessage = [[MessageHandler sharedHandler] leftApplicationMessage];
     NSArray *activeIPs = [[NSUserDefaults standardUserDefaults] objectForKey:ACTIVEUSERLISTKEY];
     for (int i =0 ; i<activeIPs.count; i++) {
         NSString *ipAddressTosendData = [activeIPs objectAtIndex: i];
@@ -203,6 +212,75 @@
     [self saveForeignChannelinUserDefaultsWithChannelData:jsonDict];
 
 }
+
+- (void)oneToOneChatRequest:(NSNotification *)sender {
+    
+    
+    
+    if(![[self.navigationController visibleViewController] isKindOfClass:[ChatViewController class]]){
+        
+        NSDictionary* userInfo = sender.userInfo;
+        NSData* receivedData = (NSData*)userInfo[@"receievedData"];
+        NSDictionary *jsonDict = [NSJSONSerialization  JSONObjectWithData:receivedData options:0 error:nil];
+        
+        self.requesterUser = [[User alloc] initWithIP:[jsonDict objectForKey:JSON_KEY_IP_ADDRESS]
+                                             deviceID:[jsonDict objectForKey:JSON_KEY_DEVICE_ID]
+                                                 name:[jsonDict objectForKey:JSON_KEY_DEVICE_NAME]
+                                            andActive:YES];
+        
+        [jsonDict objectForKey:JSON_KEY_DEVICE_NAME];
+        
+        NSString *message =  [NSString stringWithFormat:@"%@ wants to chat you in personal.", [jsonDict objectForKey:JSON_KEY_DEVICE_NAME]];
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Personal Chatting Request"
+                                                        message: message
+                                                       delegate: self
+                                              cancelButtonTitle:@"Decline"
+                                              otherButtonTitles:@"Accept", nil];
+
+        alert.tag = 88;
+        [alert show];
+    }
+}
+
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    
+    if(alertView.tag == 88) {
+        
+        if(buttonIndex == 0){
+            //Decline
+            
+            
+        }else if(buttonIndex == 1){
+            //Accept
+            //send a Request to User
+            if(self.requesterUser){
+                
+                //send confirmation
+                NSString * message = [[MessageHandler sharedHandler] oneToOneChatAcceptMessage];
+                [[asyncUDPConnectionHandler sharedHandler] sendMessage:message toIPAddress:self.requesterUser.deviceIP];
+                
+                //navigate to chaview controller
+                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                ChatViewController *chatVC = (ChatViewController *)[storyboard instantiateViewControllerWithIdentifier:@"ChatViewControllerID"];
+                
+                //vc.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+                chatVC.isPersonalChannel = YES;
+                chatVC.oponentUser = self.requesterUser;
+                
+                [self.navigationController pushViewController:chatVC animated:YES];
+            }
+        }
+    }
+
+    
+}
+
+
+
+
+
 
 -(void)saveForeignChannelinUserDefaultsWithChannelData:(NSDictionary *)jsonDict{
     Channel *newChannel = [[Channel alloc] initWithChannelID:[[jsonDict objectForKey:JSON_KEY_CHANNEL] intValue]];

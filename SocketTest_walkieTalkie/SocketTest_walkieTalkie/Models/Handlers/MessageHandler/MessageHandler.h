@@ -33,7 +33,7 @@
 -(NSString *)leaveChatMessageWithChannelID:(int)channelID deviceName:(NSString *)deviceNameForChannel;
 -(NSString *)requestInfoAtStartMessage;
 -(NSString *)acknowledgeDeviceInNetwork;
--(NSString *)deviceSigningOffMessage;
+-(NSString *)leftApplicationMessage;
 -(NSString *)voiceMessageJSONStringWithAudioFileName:(NSString *)fileName;
 -(NSString *)voiceMessageJSONStringWithAudioFileName:(NSString *)fileName forChannel:(int)channelID;
 -(NSArray *)voiceMessageJSONStringInChunksWithAudioFileName:(NSString *)fileName;
@@ -41,7 +41,8 @@
 -(NSString *)repeatVoiceMessageRequest;
 -(NSString *)voiceStreamDataFromAudioBuffer:(NSData *)buffer inChannelID:(int)channelID;
 
--(NSString *)leaveSystemMessage;
-
+-(NSString *)oneToOneChatRequestMessage;
+-(NSString *)oneToOneChatAcceptMessage;
+-(NSString *)oneToOneChatDeclineMessage;
 
 @end

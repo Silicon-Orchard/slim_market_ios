@@ -28,13 +28,18 @@
 #define TYPE_RECEIVE_INFO ((int) 4)
 #define TYPE_CREATE_CHANNEL ((int) 5)
 #define TYPE_JOIN_CHANNEL ((int) 6)
-
 #define TYPE_CHANNEL_FOUND ((int) 7)
 #define TYPE_CHANNEL_DUPLICATE ((int) 8)
 #define TYPE_LEFT_CHANNEL ((int) 9)
 #define TYPE_LEFT_APPLICATION ((int) 10)
 #define TYPE_ONE_TO_ONE_CHAT_REQUEST ((int) 11)
 #define TYPE_ONE_TO_ONE_CHAT_ACCEPT ((int) 12)
+#define TYPE_ONE_TO_ONE_CHAT_DECLINE ((int) 13)
+
+
+#define TYPE_VOICE_MESSAGE ((int) 15)
+#define TYPE_VOICE_MESSAGE_REPEAT_REQUEST ((int) 16)
+#define TYPE_VOICE_STREAM ((int) 17)
 
 
 
@@ -77,6 +82,9 @@
 
 #define USER_LEFT_SYSTEM_NOTIFICATIONKEY @"userLeftSystemNotification"
 
+#define ONE_TO_ONE_CHAT_REQUEST_NOTIFICATIONKEY @"OneToOneChatRequestNotification"
+#define ONE_TO_ONE_CHAT_ACCEPT_NOTIFICATIONKEY @"OneToOneChatAcceptNotification"
+#define ONE_TO_ONE_CHAT_DECLINE_NOTIFICATIONKEY @"OneToOneChatDeclineNotification"
 
 #define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 

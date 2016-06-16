@@ -13,6 +13,7 @@
 @interface ContactListVC ()
 
 @property (nonatomic, strong) NSArray * contactListArrays;
+@property (nonatomic, strong) User *selectedUser;
 
 @end
 
@@ -26,7 +27,7 @@
 
     
     //self.navigationItem setting
-     self.navigationItem.title = @"Contact List";
+    self.title = @"Contact List";
     [self.navigationController.navigationBar setTitleTextAttributes:
      @{NSForegroundColorAttributeName:[UIColor whiteColor]}];
     
@@ -110,16 +111,21 @@ static NSString * CellID = @"ContactListCellID";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    User * user = [self.contactListArrays objectAtIndex:indexPath.row];
+    self.selectedUser = [self.contactListArrays objectAtIndex:indexPath.row];
     
-    
-    //send a Request to User
-    
-    
-    
-    
-    [self performSegueWithIdentifier:@"clientChannelSegue" sender:nil];
-    
+    if(self.selectedUser){
+        
+        //send a Request to User
+        NSString * message = [[MessageHandler sharedHandler] oneToOneChatRequestMessage];
+        [[asyncUDPConnectionHandler sharedHandler] sendMessage:message toIPAddress:self.selectedUser.deviceIP];
+        
+        
+        
+        
+        [self performSegueWithIdentifier:@"PersonalChannelSegue" sender:nil];
+        
+    }
+
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
@@ -128,14 +134,12 @@ static NSString * CellID = @"ContactListCellID";
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
-    if ([segue.identifier isEqualToString:@"clientChannelSegue"]) {
+    if ([segue.identifier isEqualToString:@"PersonalChannelSegue"]) {
         
         
         ChatViewController * chatControl = [segue destinationViewController];
-        
-        Channel *blank = [[Channel alloc] init];
-        Channel *currentChannelForeign = [blank getForeignChannel: [ChannelHandler sharedHandler].currentlyActiveChannelID];
-        chatControl.currentActiveChannel = currentChannelForeign;
+        chatControl.isPersonalChannel = YES;
+        chatControl.oponentUser = self.selectedUser;
         
         NSLog(@"client Channel Selection");
     }

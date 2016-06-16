@@ -18,7 +18,6 @@
 		5C8CE3701CDB13DB00EE532F /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C8CE36F1CDB13DB00EE532F /* AVFoundation.framework */; };
 		5C8CE3751CDB8CD400EE532F /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C8CE3741CDB8CD300EE532F /* AudioToolbox.framework */; };
 		A596D4E8BF31DBC4183CC413 /* Pods_SocketTest_walkieTalkie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AF322D7CC7055B4FE84F5E3 /* Pods_SocketTest_walkieTalkie.framework */; };
-		B23797761D0FD1B200F9F5A7 /* AudioRecorderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B23797671D0FD1B200F9F5A7 /* AudioRecorderViewController.m */; };
 		B23797771D0FD1B200F9F5A7 /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B237976A1D0FD1B200F9F5A7 /* ChatViewController.m */; };
 		B23797781D0FD1B200F9F5A7 /* CreateChannelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B237976D1D0FD1B200F9F5A7 /* CreateChannelViewController.m */; };
 		B23797791D0FD1B200F9F5A7 /* JoinChannelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B23797701D0FD1B200F9F5A7 /* JoinChannelViewController.m */; };
@@ -81,8 +80,6 @@
 		5C8CE3451CD0C1C900EE532F /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		5C8CE36F1CDB13DB00EE532F /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		5C8CE3741CDB8CD300EE532F /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
-		B23797661D0FD1B200F9F5A7 /* AudioRecorderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioRecorderViewController.h; sourceTree = "<group>"; };
-		B23797671D0FD1B200F9F5A7 /* AudioRecorderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioRecorderViewController.m; sourceTree = "<group>"; };
 		B23797691D0FD1B200F9F5A7 /* ChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewController.h; sourceTree = "<group>"; };
 		B237976A1D0FD1B200F9F5A7 /* ChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewController.m; sourceTree = "<group>"; };
 		B237976C1D0FD1B200F9F5A7 /* CreateChannelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateChannelViewController.h; sourceTree = "<group>"; };
@@ -239,7 +236,6 @@
 			isa = PBXGroup;
 			children = (
 				B23797E51D1129D500F9F5A7 /* ContactListVC */,
-				B23797651D0FD1B200F9F5A7 /* AudioRecorderViewController */,
 				B23797681D0FD1B200F9F5A7 /* ChatViewController */,
 				B237976B1D0FD1B200F9F5A7 /* CreateChannelViewController */,
 				B237976E1D0FD1B200F9F5A7 /* JoinChannelViewController */,
@@ -248,15 +244,6 @@
 				B23797751D0FD1B200F9F5A7 /* walkieTalkieViewController */,
 			);
 			path = ViewControllers;
-			sourceTree = "<group>";
-		};
-		B23797651D0FD1B200F9F5A7 /* AudioRecorderViewController */ = {
-			isa = PBXGroup;
-			children = (
-				B23797661D0FD1B200F9F5A7 /* AudioRecorderViewController.h */,
-				B23797671D0FD1B200F9F5A7 /* AudioRecorderViewController.m */,
-			);
-			path = AudioRecorderViewController;
 			sourceTree = "<group>";
 		};
 		B23797681D0FD1B200F9F5A7 /* ChatViewController */ = {
@@ -661,7 +648,6 @@
 				B23797D51D0FD78500F9F5A7 /* User.m in Sources */,
 				B23797B21D0FD56B00F9F5A7 /* MessageHandler.m in Sources */,
 				B23797B11D0FD56B00F9F5A7 /* ChatHandler.m in Sources */,
-				B23797761D0FD1B200F9F5A7 /* AudioRecorderViewController.m in Sources */,
 				B23797B91D0FD5AA00F9F5A7 /* asyncTCPConnectionHandler.m in Sources */,
 				B2FBD4021D1156DA00AC2495 /* ContactListTVC.m in Sources */,
 				B23797BA1D0FD5AA00F9F5A7 /* asyncUDPConnectionHandler.m in Sources */,

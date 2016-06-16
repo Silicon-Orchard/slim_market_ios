@@ -87,6 +87,7 @@
         
         Channel *blank = [[Channel alloc] init];
         ChatViewController * chatControl = [segue destinationViewController];
+        chatControl.isPersonalChannel = NO;
         chatControl.currentActiveChannel = [blank geChannel:[self.channel_ID_TextField.text intValue]];
     }
 }

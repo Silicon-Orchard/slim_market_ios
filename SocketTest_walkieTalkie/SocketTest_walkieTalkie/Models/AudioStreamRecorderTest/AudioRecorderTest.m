@@ -67,18 +67,25 @@ void AudioInputCallback(void * inUserData,  // Custom audio metadata
 }
 
 -(void) recorded:(NSNotification*)notification{
+    
+    NSLog(@"recorded");
+    
     NSDictionary * userInfo = notification.userInfo;
     NSData *dataToSend = [userInfo objectForKey:@"dataToSend"];
     recordedData = dataToSend;
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
+        //NSArray * AllActive
+        
+        NSLog(@"currentlyActiveChannel.channelMemberIPs.count: %d", [ChannelHandler sharedHandler].currentlyActiveChannel.channelMemberIPs.count);
         
         for (int i= 0; i<[ChannelHandler sharedHandler].currentlyActiveChannel.channelMemberIPs.count; i++) {
+            
             if (![[[ChannelHandler sharedHandler].currentlyActiveChannel.channelMemberIPs objectAtIndex:i] isEqualToString:[[MessageHandler sharedHandler] getIPAddress]]) {
                 //            [[asyncUDPConnectionHandler sharedHandler]sendMessage:voiceMessageToSend toIPAddress:[self.activeChannelInfo.channelMemberIPs objectAtIndex:i]];
                 
-                [[asyncUDPConnectionHandler sharedHandler]sendVoiceStreamData:dataToSend  toIPAddress:[[ChannelHandler sharedHandler].currentlyActiveChannel.channelMemberIPs objectAtIndex:i]];
+                [[asyncUDPConnectionHandler sharedHandler] sendVoiceStreamData: dataToSend  toIPAddress:[[ChannelHandler sharedHandler].currentlyActiveChannel.channelMemberIPs objectAtIndex:i]];
                 
             }
             

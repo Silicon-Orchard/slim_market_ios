@@ -109,11 +109,8 @@
 }
 
 -(void)sendVoiceStreamData:(NSData *)audioFile toIPAddress:(NSString *)IPAddress {
-    //    NSLog(@"data sent to %@", IPAddress);
+    NSLog(@"data sent to %@", IPAddress);
     [self.currentVoiceStreamSocket sendData:audioFile toHost:IPAddress port:WALKIETALKIE_VOICE_STREAMER_PORT withTimeout:3 tag:0];
-    
-    
-    int i = TYPE_ONE_TO_ONE_CHAT_ACCEPT;
 }
 
 
@@ -141,11 +138,12 @@
 -(void)udpSocket:(GCDAsyncUdpSocket *)sock didReceiveData:(NSData *)data fromAddress:(NSData *)address withFilterContext:(id)filterContext{
     
     NSLog(@"received");
-    NSString *sentdata = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    struct sockaddr_in *fromAddressV4 = (struct sockaddr_in *)address.bytes;
-    char *fromIPAddress = inet_ntoa(fromAddressV4 -> sin_addr);
-    NSString *ipAddress = [[NSString alloc] initWithUTF8String:fromIPAddress];
-    uint16_t port = [GCDAsyncUdpSocket portFromAddress:address];
+    //NSString *sentdata = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    //struct sockaddr_in *fromAddressV4 = (struct sockaddr_in *)address.bytes;
+    //char *fromIPAddress = inet_ntoa(fromAddressV4 -> sin_addr);
+   //NSString *ipAddress = [[NSString alloc] initWithUTF8String:fromIPAddress];
+    //uint16_t port = [GCDAsyncUdpSocket portFromAddress:address];
+    
     NSString *hostIP;
     uint16_t senderport;
     int senderSocketFamily;
@@ -162,51 +160,77 @@
     int channel_id = [channelID intValue];
     
     if (receiverPort == WALKIETALKIE_VOICE_STREAMER_PORT) {
+        
         [[NSNotificationCenter defaultCenter] postNotificationName:VOICE_STREAM_RECEIEVED_NOTIFICATIONKEY object:nil userInfo:userInfo];
+        return;
     }
     else{
         if (!type) {
             [[NSNotificationCenter defaultCenter] postNotificationName:VOICE_MESSAGE_RECEIEVED_NOTIFICATIONKEY object:nil userInfo:userInfo];
+            return;
         }
     }
 
     
     switch (type) {
-        case 1:
+            
+        case TYPE_MESSAGE:
             if (channel_id == [ChannelHandler sharedHandler].currentlyActiveChannelID) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:CHATMESSAGE_RECEIVED_NOTIFICATIONKEY object:nil userInfo:userInfo];
             }
             break;
-        case 3:
+            
+        case TYPE_REQUEST_INFO:
             [[NSNotificationCenter defaultCenter] postNotificationName:NEW_DEVICE_CONNECTED_NOTIFICATIONKEY object:nil userInfo:userInfo];
             break;
-        case 4:
+            
+        case TYPE_RECEIVE_INFO:
             [[NSNotificationCenter defaultCenter] postNotificationName:NEW_DEVICE_CONFIRMED_NOTIFICATIONKEY object:nil userInfo:userInfo];
             break;
-        case 5:
+            
+        case TYPE_CREATE_CHANNEL:
             [[NSNotificationCenter defaultCenter] postNotificationName:FOREIGN_CHANNEL_CREATED_NOTIFICATIONKEY object:nil userInfo:userInfo];
             break;
-        case 6:
+            
+        case TYPE_JOIN_CHANNEL:
             [[NSNotificationCenter defaultCenter] postNotificationName:JOINCHANNEL_REQUEST_NOTIFICATIONKEY object:nil userInfo:userInfo];
             break;
-        case 7:
+            
+        case TYPE_CHANNEL_FOUND:
             [[NSNotificationCenter defaultCenter] postNotificationName:JOINCHANNEL_CONFIRM_NOTIFICATIONKEY object:nil userInfo:userInfo];
             break;
-        case 9:
+            
+        case TYPE_LEFT_CHANNEL:
             [[NSNotificationCenter defaultCenter] postNotificationName:CHANNEL_LEFT_NOTIFICATIONKEY object:nil userInfo:userInfo];
             break;
-        case 10:
+            
+        case TYPE_LEFT_APPLICATION:
             [[NSNotificationCenter defaultCenter] postNotificationName:USER_LEFT_SYSTEM_NOTIFICATIONKEY object:nil userInfo:userInfo];
             break;
-        case 11:
+            
+        case TYPE_ONE_TO_ONE_CHAT_REQUEST:
+            [[NSNotificationCenter defaultCenter] postNotificationName:ONE_TO_ONE_CHAT_REQUEST_NOTIFICATIONKEY object:nil userInfo:userInfo];
+            break;
+        case TYPE_ONE_TO_ONE_CHAT_ACCEPT:
+            [[NSNotificationCenter defaultCenter] postNotificationName:ONE_TO_ONE_CHAT_ACCEPT_NOTIFICATIONKEY object:nil userInfo:userInfo];
+            break;
+            
+        case TYPE_ONE_TO_ONE_CHAT_DECLINE:
+            [[NSNotificationCenter defaultCenter] postNotificationName:ONE_TO_ONE_CHAT_DECLINE_NOTIFICATIONKEY object:nil userInfo:userInfo];
+            break;
+            
+        case TYPE_VOICE_MESSAGE:
             [[NSNotificationCenter defaultCenter] postNotificationName:VOICE_MESSAGE_RECEIEVED_NOTIFICATIONKEY object:nil userInfo:userInfo];
             break;
-        case 14:
+            
+        case TYPE_VOICE_MESSAGE_REPEAT_REQUEST:
             [[NSNotificationCenter defaultCenter] postNotificationName:UDP_VOICE_MESSAGE_REPEAR_REQUEST_NOTIFICATIONKEY object:nil userInfo:userInfo];
             break;
-//        case 15:
-//            [[NSNotificationCenter defaultCenter] postNotificationName:VOICE_STREAM_RECEIEVED_NOTIFICATIONKEY object:nil userInfo:userInfo];
-//            break;
+            
+        case TYPE_VOICE_STREAM:
+            [[NSNotificationCenter defaultCenter] postNotificationName:VOICE_STREAM_RECEIEVED_NOTIFICATIONKEY object:nil userInfo:userInfo];
+            break;
+            
         default:
             break;
     }
