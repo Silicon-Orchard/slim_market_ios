@@ -15,8 +15,15 @@
 @property (nonatomic, strong) NSString * userNameInChannel;
 @property (nonatomic, strong) Channel *currentlyActiveChannel;
 
+
+
 +(ChannelHandler*)sharedHandler;
 -(int)getCurrentlyActiveChatroom;
 //-(BOOL)isHost;
+
+- (BOOL)isAcceptedOponentUser:(User *) requesterUser;
+- (void)addOponetUserToAcceptedList:(User *) requesterUser;
+- (void)removeOponetUserFromAcceptedList:(User *) requesterUser;
+- (void)setActive:(BOOL)active toUser:(User *)theUser;
 
 @end

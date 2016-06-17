@@ -24,7 +24,9 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *chatTextField;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomSpaceForSendContainer;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topSpaceConstraintOfChatTable;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *heightConstraintchatMemberTable;
+//@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topSpaceConstraintOfChatTable;
+
 
 
 

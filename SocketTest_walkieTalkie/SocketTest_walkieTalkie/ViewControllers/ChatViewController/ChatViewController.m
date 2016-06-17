@@ -108,6 +108,14 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didChangePreferredContentSize:)
                                                  name:UIContentSizeCategoryDidChangeNotification object:nil];
+    
+    
+    if(self.isPersonalChannel){
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(oneToOneChatDeclined:) name:ONE_TO_ONE_CHAT_DECLINE_NOTIFICATIONKEY object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(oneToOneChatAcceptFromStartPage:) name:ONE_TO_ONE_CHAT_ACCEPT_FROM_STARTPAGE_NOTIFICATIONKEY object:nil];
+        
+    }
 
     [self.chatTableView addObserver:self forKeyPath:@"contentSize" options:0 context:NULL];
 
@@ -181,18 +189,27 @@
 
 -(void) viewWillDisappear:(BOOL)animated {
 
+    
+    if (self.isPersonalChannel) {
+        
+        
+    }
    
     if ([[self backViewController] isKindOfClass:[JoinChannelViewController class]]) {
         JoinChannelViewController *previousViewController = (JoinChannelViewController *)[self backViewController];
         previousViewController.isChatOpen = NO;
     }
-    if ([self.navigationController.viewControllers indexOfObject:self]==NSNotFound) {
+    
+    if ([self.navigationController.viewControllers indexOfObject:self] == NSNotFound) {
         // Navigation button was pressed.
-        if(self.isPersonalChannel){
-            
-        }else {
-            [self channelLeaveMessageSend];
-        }
+        
+        [self channelLeaveMessageSend];
+        
+//        if(self.isPersonalChannel){
+//            
+//        }else {
+//            
+//        }
         
     }
 }
@@ -204,8 +221,18 @@
 
 -(void)dealloc{
     
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
     [self.chatTableView removeObserver:self forKeyPath:@"contentSize"];
     [[AudioFileHandler sharedHandler] deleteAudioFileFolder];
+    
+    
+    if(self.isPersonalChannel){
+        NSLog(@"removing Oponent User from accepted list");
+        [[ChannelHandler sharedHandler] removeOponetUserFromAcceptedList:self.oponentUser];
+    }
+    
 }
 
 
@@ -308,15 +335,16 @@
 
 -(void)updateUIForPersonalMessage{
     
-    self.topSpaceConstraintOfChatTable = 0;
+    [chatRoomMemberList addObject:self.oponentUser.deviceName];
+    
+    //self.topSpaceConstraintOfChatTable = 0;
+    self.heightConstraintchatMemberTable.constant = 60.0f;
     [self.view layoutIfNeeded];
     
-    self.memberTableContainerView.hidden = YES;
-    self.channelMemberTableView.delegate =nil;
-    self.channelMemberTableView.dataSource = nil;
-    self.channelMemberTableView.hidden = YES;
-
-
+//    self.memberTableContainerView.hidden = YES;
+//    self.channelMemberTableView.delegate =nil;
+//    self.channelMemberTableView.dataSource = nil;
+//    self.channelMemberTableView.hidden = YES;
 }
 
 -(void)updateUIForChatMessage:(NSDictionary *)messageDic {
@@ -339,6 +367,20 @@
     int channelID;
     NSString *deviceName;
     if(self.isPersonalChannel){
+        
+        if(!self.oponentUser.isActive){
+            
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Not Rechable"
+                                                            message: [NSString stringWithFormat:@"%@ is not reachable right now & won't be abble to receive message.", self.oponentUser.deviceName]
+                                                           delegate: nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+            
+            
+            [alert show];
+            return;
+        }
+        
         channelID = 0;
         deviceName = self.oponentUser.deviceName;
         
@@ -668,6 +710,13 @@
         
         NSLog(@"This user has left PersonalChannel!");
         
+        User * leftUser = [[User alloc] initWithDictionary:jsonDict];
+        [[ChannelHandler sharedHandler] setActive:NO toUser:leftUser];
+        
+        self.oponentUser.isActive = NO;
+        [self.channelMemberTableView reloadData];
+
+        
     }else {
         
         Channel *currentlyActiveChannel;
@@ -827,6 +876,68 @@
     [self.chatTableView setContentOffset:CGPointMake(0, self.chatTableView.frame.size.height)];
     
 }
+
+- (void)oneToOneChatDeclined:(NSNotification *)notification {
+
+    NSDictionary* userInfo = notification.userInfo;
+    NSData* receivedData = (NSData*)userInfo[@"receievedData"];
+    NSDictionary *jsonDict = [NSJSONSerialization  JSONObjectWithData:receivedData options:0 error:nil];
+    
+    User *refuserUser = [[User alloc] initWithIP:[jsonDict objectForKey:JSON_KEY_IP_ADDRESS]
+                                          deviceID:[jsonDict objectForKey:JSON_KEY_DEVICE_ID]
+                                              name:[jsonDict objectForKey:JSON_KEY_DEVICE_NAME]
+                                         andActive:NO];
+    
+    
+    
+    if([refuserUser.deviceID isEqualToString:self.oponentUser.deviceID] && [refuserUser.deviceIP isEqualToString:self.oponentUser.deviceIP]){
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Declined"
+                                                        message: [NSString stringWithFormat:@"%@ has declined your personal chat request.", self.oponentUser.deviceName]
+                                                       delegate: self
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        
+        alert.tag = 99;
+        [alert show];
+    }
+}
+
+- (void)oneToOneChatAcceptFromStartPage:(NSNotification *)notification {
+ 
+    
+    NSDictionary* userInfo = notification.userInfo;
+    NSData* receivedData = (NSData*)userInfo[@"receievedData"];
+    NSDictionary *jsonDict = [NSJSONSerialization  JSONObjectWithData:receivedData options:0 error:nil];
+    
+    User *accepterUser = [[User alloc] initWithIP:[jsonDict objectForKey:JSON_KEY_IP_ADDRESS]
+                                        deviceID:[jsonDict objectForKey:JSON_KEY_DEVICE_ID]
+                                            name:[jsonDict objectForKey:JSON_KEY_DEVICE_NAME]
+                                       andActive:YES];
+    
+    
+    if([accepterUser.deviceID isEqualToString:self.oponentUser.deviceID] && [accepterUser.deviceIP isEqualToString:self.oponentUser.deviceIP]){
+        
+        [[ChannelHandler sharedHandler] setActive:YES toUser:accepterUser];
+        self.oponentUser.isActive = YES;
+        //reload the table
+        [self.channelMemberTableView reloadData];
+    }
+    
+    
+}
+
+#pragma mark - AlertView Delegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    
+    if(alertView.tag == 99) {
+        
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+
+
 
 
 #pragma mark Helper
@@ -1063,11 +1174,28 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
 
     
     if (tableView.tag == 102) {
+        
+        
         channelMemberActivityTableViewCell *cell2 = [tableView dequeueReusableCellWithIdentifier:chatmemberCellID forIndexPath:indexPath];
         cell2.userName.text = [chatRoomMemberList objectAtIndex:indexPath.row];
+        
+        if(self.isPersonalChannel){
+            
+            
+            
+            if(self.oponentUser.isActive){
+                NSLog(@"active");
+                cell2.presenceImage.image = [UIImage imageNamed:@"Membar active"];
+            }else{
+                NSLog(@"inactive");
+                cell2.presenceImage.image = [UIImage imageNamed:@"Membar inactive"];
+            }
+        }
+        
         return cell2;
-    }
-    else{
+        
+        
+    } else{
         
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:incomingMessageCellIdentifier forIndexPath:indexPath];
         [self configureCell:cell forRowAtIndexPath:indexPath];
@@ -1201,6 +1329,8 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
     [textField resignFirstResponder];
     return YES;
 }
+
+
 
 #pragma mark - Navigation
 

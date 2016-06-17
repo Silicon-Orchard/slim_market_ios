@@ -680,14 +680,15 @@
                                                                     <autoresizingMask key="autoresizingMask"/>
                                                                     <subviews>
                                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Membar active" translatesAutoresizingMaskIntoConstraints="NO" id="Fub-6m-Ord">
-                                                                            <rect key="frame" x="8" y="11" width="6" height="6"/>
+                                                                            <rect key="frame" x="8" y="10" width="8" height="8"/>
                                                                             <constraints>
-                                                                                <constraint firstAttribute="width" secondItem="Fub-6m-Ord" secondAttribute="height" multiplier="1:1" id="rWq-o2-LCN"/>
+                                                                                <constraint firstAttribute="width" constant="8" id="R50-CM-Xs0"/>
+                                                                                <constraint firstAttribute="height" constant="8" id="eHW-kb-grm"/>
                                                                             </constraints>
                                                                         </imageView>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ln7-fN-DlT">
-                                                                            <rect key="frame" x="18" y="4" width="309" height="20"/>
-                                                                            <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                                                            <rect key="frame" x="22" y="4" width="305" height="20"/>
+                                                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
@@ -699,18 +700,17 @@
                                                                         <constraint firstItem="Fub-6m-Ord" firstAttribute="leading" secondItem="SMl-KU-kAa" secondAttribute="leading" constant="4" id="8Ml-mF-YDZ"/>
                                                                         <constraint firstAttribute="bottomMargin" secondItem="Fub-6m-Ord" secondAttribute="bottom" constant="12" id="Auj-gu-R9l"/>
                                                                         <constraint firstAttribute="bottom" secondItem="Fub-6m-Ord" secondAttribute="bottom" constant="8" id="BTR-Yj-fC6"/>
+                                                                        <constraint firstItem="Fub-6m-Ord" firstAttribute="centerY" secondItem="SMl-KU-kAa" secondAttribute="centerY" id="JKa-Hi-YTD"/>
                                                                         <constraint firstAttribute="bottom" secondItem="Fub-6m-Ord" secondAttribute="bottom" constant="9" id="Mr7-fX-dhC"/>
                                                                         <constraint firstItem="Fub-6m-Ord" firstAttribute="leading" secondItem="SMl-KU-kAa" secondAttribute="leading" constant="8" id="VjS-FR-5he"/>
+                                                                        <constraint firstItem="Fub-6m-Ord" firstAttribute="leading" secondItem="SMl-KU-kAa" secondAttribute="leading" constant="8" id="W3c-CT-9sz"/>
+                                                                        <constraint firstItem="Ln7-fN-DlT" firstAttribute="leading" secondItem="Fub-6m-Ord" secondAttribute="trailing" constant="6" id="YrD-10-07n"/>
                                                                         <constraint firstAttribute="trailing" secondItem="Ln7-fN-DlT" secondAttribute="trailing" constant="8" id="azv-c0-9n0"/>
                                                                         <constraint firstItem="Fub-6m-Ord" firstAttribute="top" secondItem="SMl-KU-kAa" secondAttribute="top" constant="8" id="cYM-F5-grO"/>
-                                                                        <constraint firstItem="Ln7-fN-DlT" firstAttribute="leading" secondItem="Fub-6m-Ord" secondAttribute="trailing" constant="4" id="eyi-I3-gFz"/>
-                                                                        <constraint firstAttribute="bottomMargin" secondItem="Fub-6m-Ord" secondAttribute="bottom" constant="3" id="hAE-A4-WCT"/>
                                                                         <constraint firstItem="Fub-6m-Ord" firstAttribute="top" secondItem="SMl-KU-kAa" secondAttribute="topMargin" constant="12" id="k54-pA-sIh"/>
                                                                         <constraint firstAttribute="bottom" secondItem="Fub-6m-Ord" secondAttribute="bottom" constant="4" id="l0k-Gg-Mlt"/>
                                                                         <constraint firstItem="Ln7-fN-DlT" firstAttribute="top" secondItem="SMl-KU-kAa" secondAttribute="top" constant="4" id="mCK-K5-odG"/>
-                                                                        <constraint firstAttribute="leadingMargin" secondItem="Fub-6m-Ord" secondAttribute="leading" id="qKo-QA-RA5"/>
                                                                         <constraint firstItem="Fub-6m-Ord" firstAttribute="leading" secondItem="SMl-KU-kAa" secondAttribute="leading" constant="8" id="rOm-qH-eQU"/>
-                                                                        <constraint firstItem="Fub-6m-Ord" firstAttribute="top" secondItem="SMl-KU-kAa" secondAttribute="topMargin" constant="3" id="t05-TQ-cA9"/>
                                                                         <constraint firstItem="Fub-6m-Ord" firstAttribute="top" secondItem="SMl-KU-kAa" secondAttribute="top" constant="4" id="x11-Fo-yqc"/>
                                                                         <constraint firstItem="Fub-6m-Ord" firstAttribute="top" secondItem="SMl-KU-kAa" secondAttribute="top" constant="9" id="yQw-yV-cYU"/>
                                                                     </constraints>
@@ -1026,7 +1026,7 @@
                                     <constraint firstAttribute="trailing" secondItem="IAo-fc-rIm" secondAttribute="trailing" id="BF4-ZP-a28"/>
                                     <constraint firstAttribute="trailing" secondItem="THR-Kv-OXC" secondAttribute="trailing" constant="20" id="M9I-8Y-nGf"/>
                                     <constraint firstAttribute="bottom" secondItem="KJf-CI-XGK" secondAttribute="bottom" id="T1p-AW-YDs"/>
-                                    <constraint firstItem="UjG-GC-0wV" firstAttribute="top" secondItem="FAh-Zz-3Cm" secondAttribute="top" constant="170" id="ViW-RT-Edx"/>
+                                    <constraint firstItem="UjG-GC-0wV" firstAttribute="top" secondItem="THR-Kv-OXC" secondAttribute="bottom" constant="10" id="X6R-GH-uPG"/>
                                     <constraint firstItem="KJf-CI-XGK" firstAttribute="leading" secondItem="FAh-Zz-3Cm" secondAttribute="leading" id="YPB-Ws-Dsw"/>
                                     <constraint firstAttribute="trailing" secondItem="UjG-GC-0wV" secondAttribute="trailing" constant="20" id="df5-Xu-LoU"/>
                                     <constraint firstAttribute="trailing" secondItem="UdN-x5-yhB" secondAttribute="trailing" id="ejh-PO-nq4"/>
@@ -1062,12 +1062,12 @@
                         <outlet property="chatTableView" destination="hid-wM-1v0" id="F3L-mR-nWS"/>
                         <outlet property="chatTextField" destination="Nnb-bk-AeB" id="fc2-t2-quI"/>
                         <outlet property="equalizerImage" destination="nqi-gi-x7g" id="qpM-eb-RmC"/>
+                        <outlet property="heightConstraintchatMemberTable" destination="AD4-ie-Ufu" id="e0g-fi-F5V"/>
                         <outlet property="memberTableContainerView" destination="THR-Kv-OXC" id="pvB-dw-hiD"/>
                         <outlet property="playButton" destination="GqZ-Or-cWE" id="WT8-lt-Hdq"/>
                         <outlet property="popupBoxView" destination="w4q-tl-t3Q" id="bZl-yX-Dah"/>
                         <outlet property="recordPauseButton" destination="Et7-fn-rNE" id="wEa-GM-o5V"/>
                         <outlet property="sendButton" destination="aNh-Y9-OZN" id="Ph1-Lv-sTg"/>
-                        <outlet property="topSpaceConstraintOfChatTable" destination="ViW-RT-Edx" id="ydV-E1-dL1"/>
                         <outlet property="voiceMailView" destination="IAo-fc-rIm" id="SUh-TK-Kvz"/>
                         <outlet property="voiceStreamerButton" destination="adJ-RL-SWQ" id="Pcl-mf-ihI"/>
                     </connections>

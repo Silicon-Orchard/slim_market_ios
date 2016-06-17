@@ -82,9 +82,15 @@
 
 #define USER_LEFT_SYSTEM_NOTIFICATIONKEY @"userLeftSystemNotification"
 
+
+
+
+
 #define ONE_TO_ONE_CHAT_REQUEST_NOTIFICATIONKEY @"OneToOneChatRequestNotification"
 #define ONE_TO_ONE_CHAT_ACCEPT_NOTIFICATIONKEY @"OneToOneChatAcceptNotification"
 #define ONE_TO_ONE_CHAT_DECLINE_NOTIFICATIONKEY @"OneToOneChatDeclineNotification"
+
+#define ONE_TO_ONE_CHAT_ACCEPT_FROM_STARTPAGE_NOTIFICATIONKEY @"acceptMessageFromStartPageNotification"
 
 #define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 

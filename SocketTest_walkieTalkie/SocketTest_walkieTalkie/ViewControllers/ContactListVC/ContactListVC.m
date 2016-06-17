@@ -112,6 +112,7 @@ static NSString * CellID = @"ContactListCellID";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     self.selectedUser = [self.contactListArrays objectAtIndex:indexPath.row];
+    self.selectedUser.isActive = NO;
     
     if(self.selectedUser){
         
@@ -119,11 +120,10 @@ static NSString * CellID = @"ContactListCellID";
         NSString * message = [[MessageHandler sharedHandler] oneToOneChatRequestMessage];
         [[asyncUDPConnectionHandler sharedHandler] sendMessage:message toIPAddress:self.selectedUser.deviceIP];
         
-        
-        
+        //add to accepted list
+        [[ChannelHandler sharedHandler] addOponetUserToAcceptedList:self.selectedUser];
         
         [self performSegueWithIdentifier:@"PersonalChannelSegue" sender:nil];
-        
     }
 
     [tableView deselectRowAtIndexPath:indexPath animated:YES];

@@ -137,7 +137,7 @@
 
 -(void)udpSocket:(GCDAsyncUdpSocket *)sock didReceiveData:(NSData *)data fromAddress:(NSData *)address withFilterContext:(id)filterContext{
     
-    NSLog(@"received");
+    
     //NSString *sentdata = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     //struct sockaddr_in *fromAddressV4 = (struct sockaddr_in *)address.bytes;
     //char *fromIPAddress = inet_ntoa(fromAddressV4 -> sin_addr);
@@ -153,7 +153,10 @@
     NSDictionary* userInfo = @{@"receievedData": data};
     [[NSNotificationCenter defaultCenter] postNotificationName:MESSAGE_RECEIVED_NOTIFICATIONKEY object:nil userInfo:userInfo];
        NSDictionary *jsonDict = [NSJSONSerialization  JSONObjectWithData:data options:0 error:nil];
-//    NSLog(@"JsonDICT %@", jsonDict);
+   NSLog(@"received: %@", jsonDict);
+
+    
+    
     NSNumber *messageType = [jsonDict objectForKey:JSON_KEY_TYPE];
     NSNumber *channelID  = [jsonDict objectForKey:JSON_KEY_CHANNEL];
     int type = [messageType intValue];
