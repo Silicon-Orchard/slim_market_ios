@@ -153,9 +153,17 @@
         [recorder prepareToRecord];
     }
     
+    // Setup equalizerImage
+    self.equalizerImage.animationImages = [NSArray arrayWithObjects:
+                                           [UIImage imageNamed:@"recoring-timeline"],
+                                           [UIImage imageNamed:@"recoring-timeline2"],
+                                           [UIImage imageNamed:@"recoring-timeline3"],
+                                           nil];
     
-
-    // Do any additional setup after loading the view.
+    // How many seconds it should take to go through all images one time.
+    self.equalizerImage.animationDuration = 0.3;
+    // How many times to repeat the animation (0 for indefinitely).
+    self.equalizerImage.animationRepeatCount = 0;
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -172,7 +180,8 @@
 //        [self addFooterToTableView:self.channelMemberTableView];
 //    }
 //    [self addFooterToTableView:self.chatTableView];
-
+    
+    self.navigationController.navigationBar.topItem.title = @"Back";
     [self.navigationController.navigationBar setTitleTextAttributes:
      @{NSForegroundColorAttributeName:[UIColor whiteColor]}];
     self.navigationController.navigationBar.tintColor = UIColorFromRGB(0xE0362B);
@@ -360,6 +369,19 @@
     [self.chatTableView scrollToRowAtIndexPath:indexPathOfYourCell atScrollPosition:UITableViewScrollPositionBottom animated:NO];
 }
 
+-(void)startImageEqualizer{
+    
+    [self.equalizerImage stopAnimating];
+    [self.equalizerImage startAnimating];
+}
+
+-(void)stopImageEqualizer{
+    
+    [self.equalizerImage stopAnimating];
+}
+
+
+
 #pragma mark - IBAction
 
 - (IBAction)SendButtonTapped:(id)sender {
@@ -460,21 +482,21 @@
         
         // Start recording
         [recorder record];
-        //        [recordPauseButton setTitle:@"Pause" forState:UIControlStateNormal];
         [self.recordPauseButton setBackgroundImage:[UIImage imageNamed:@"Record Stop"] forState:UIControlStateNormal];
+        [self startImageEqualizer];
         
     } else {
         
-        // Pause recording
+        // stop recording
         [recorder stop];
-        //        [recordPauseButton setTitle:@"Record" forState:UIControlStateNormal];
         [self.recordPauseButton setBackgroundImage:[UIImage imageNamed:@"Record srt"] forState:UIControlStateNormal];
         
         AVAudioSession *audioSession = [AVAudioSession sharedInstance];
         [audioSession setActive:NO error:nil];
+        
+        [self stopImageEqualizer];
     }
     
-    //    [stopButton setEnabled:YES];
     [self.playButton setEnabled:NO];
 }
 
@@ -483,14 +505,11 @@
     
     if (!recorder.recording){
         
-        //NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-        //NSString *filePath = [documentsPath stringByAppendingPathComponent:recordedFileName];
         NSLog(@"recordedAudioFileNames Count: %d", [recordedAudioFileNames count]);
         NSString *audioFilePath = [[AudioFileHandler sharedHandler] getAudioFilePathOfFilaName:[recordedAudioFileNames lastObject]];
         
         NSURL *soundFileURL = [NSURL fileURLWithPath:audioFilePath];
         NSError *error = nil;
-        //NSString* foofile = [documentsPath stringByAppendingPathComponent:recordedFileName];
         
         BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:audioFilePath];
         if (!fileExists) {
@@ -501,13 +520,15 @@
         [session setActive:YES error:nil];
         
         self.thePlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:soundFileURL error:&error];
-        //        AVPlayer *newPlayer = [[AVPlayer alloc] initWithURL:soundFileURL];
+        
         if (error) {
+            
             NSLog(@"Audio can't play. Error %@", [error localizedDescription]);
-        }
-        else {
+        } else {
+            
             [self.thePlayer setDelegate:self];
             [self.thePlayer play];
+            [self startImageEqualizer];
         }
         
     }
@@ -582,14 +603,15 @@
 - (IBAction)voiceStreamButtonTapped:(id)sender {
     
     if (_isStreaming) {
-        //        [self.voiceStreamerButton setTitle:@"Start Streaming" forState:UIControlStateNormal];
-        [self.voiceStreamerButton setBackgroundImage:[UIImage imageNamed:@"Start Streaming Btn Normal"] forState:UIControlStateNormal];
+
+        
         [queueRecorder stopRecording];
         [[AudioRecorderTest_StreamPlayer sharedHandler] stopMediaPlayer];
         
         queueRecorder = nil;
         _isStreaming = NO;
-        
+        [self stopImageEqualizer];
+        [self.voiceStreamerButton setBackgroundImage:[UIImage imageNamed:@"Start Streaming Btn Normal"] forState:UIControlStateNormal];
     }
     else{
         _isStreaming = YES;
@@ -597,57 +619,11 @@
         queueRecorder =  [[AudioRecorderTest alloc] init];
         [queueRecorder startRecording];
         
-        //        [[AudioRecorderTest_StreamPlayer sharedHandler] startMediaPlayer];
-        //        [queueRecorder startMediaPlayer];
-        //        [self.voiceStreamerButton setTitle:@"Stop Streaming" forState:UIControlStateNormal];
+        [self startImageEqualizer];
         [self.voiceStreamerButton setBackgroundImage:[UIImage imageNamed:@"Stop Streaming Btn normal"] forState:UIControlStateNormal];
     }
 
 }
-
-
-
-/*
-- (IBAction)playReceivedSound:(id)sender {
-    
-    if (!recorder.recording){
-        
-        NSLog(@"Received Count: %d", [receivedAudioFileNames count]);
-        
-        NSString *audioFilePath = [[AudioFileHandler sharedHandler] getAudioFilePathOfFilaName:[receivedAudioFileNames lastObject]];
-        
-        //NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-        //NSString *filePath = [documentsPath stringByAppendingPathComponent:receivedFileName];
-        
-        NSURL *audioFileURL = [NSURL fileURLWithPath:audioFilePath];
-        NSError *error = nil;
-        
-        BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:audioFilePath];
-        if (!fileExists) {
-            NSLog(@"File Doesn't Exist!");
-            return;
-        }
-        AVAudioSession *session = [AVAudioSession sharedInstance];
-        [session setActive:YES error:nil];
-        
-        self.thePlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:audioFileURL error:&error];
-
-        
-        if (error) {
-            NSLog(@"Audio can't play. Error %@", [error localizedDescription]);
-        }
-        else {
-            
-            [self.thePlayer setDelegate:self];
-            [self.thePlayer setNumberOfLoops:0];
-            [self.thePlayer prepareToPlay];
-            [self.thePlayer play];
-        }
-    }
-    else{
-        NSLog(@"Recorder Active For some reason!");
-    }
-}*/
 
 
 #pragma mark - Noticfication
@@ -776,9 +752,11 @@
         newChannel = [self.currentActiveChannel getForeignChannel:[ChannelHandler sharedHandler].currentlyActiveChannelID];
 
     }
+    
+    
     self.currentActiveChannel = newChannel;
+    [ChannelHandler sharedHandler].currentlyActiveChannel = self.currentActiveChannel;
     [self updateUIForChatViewWithChannel:self.currentActiveChannel];
-
 }
 
 -(void)requestForRepeatVoiceMessagereceived:(NSNotification *)notification{
@@ -863,7 +841,6 @@
                 
                 NSString *repeatMessageRequestJSON = [[MessageHandler sharedHandler] repeatVoiceMessageRequest];
                 [[asyncUDPConnectionHandler sharedHandler]sendVoiceMessage:repeatMessageRequestJSON toIPAddress:[jsonDict objectForKey:JSON_KEY_IP_ADDRESS]];
-                
             }
         }
         
@@ -946,24 +923,23 @@
     
     Channel *blankChannel = [[Channel alloc] init];
     [blankChannel addUserToChannelWithChannelID:[[channelData objectForKey:JSON_KEY_CHANNEL] intValue] userIP:[channelData objectForKey:JSON_KEY_IP_ADDRESS] userName:[channelData objectForKey:JSON_KEY_DEVICE_NAME] userID:[channelData objectForKey:JSON_KEY_DEVICE_ID]];
-//    if ([[jsonDict objectForKey:JSON_KEY_CHANNEL] intValue] ==1 || [[jsonDict objectForKey:JSON_KEY_CHANNEL] intValue] ==2) {
-//       
-//    }
+
+    
     NSString *confirmationMessageForJoiningChannel = [[MessageHandler sharedHandler] confirmJoiningForChannelID:[[channelData objectForKey:JSON_KEY_CHANNEL] intValue] channelName:[channelData objectForKey:JSON_KEY_DEVICE_NAME]];
     
     Channel *currentlyActiveChannel = [blankChannel geChannel:[[channelData objectForKey:JSON_KEY_CHANNEL] intValue]];
     
     for (int i= 0; i<currentlyActiveChannel.channelMemberIPs.count; i++) {
         if (i!=0) {
-            [[asyncUDPConnectionHandler sharedHandler]sendMessage:confirmationMessageForJoiningChannel toIPAddress:[currentlyActiveChannel.channelMemberIPs objectAtIndex:i]];
+            [[asyncUDPConnectionHandler sharedHandler] sendMessage:confirmationMessageForJoiningChannel toIPAddress:[currentlyActiveChannel.channelMemberIPs objectAtIndex:i]];
         }
        
     }
     
 //    [[asyncUDPConnectionHandler sharedHandler]sendMessage:confirmationMessageForJoiningChannel toIPAddress:[channelData objectForKey:JSON_KEY_IP_ADDRESS]];
     self.currentActiveChannel = [blankChannel getForeignChannel:[[channelData objectForKey:JSON_KEY_CHANNEL] intValue]];
-     [self updateUIForChatViewWithChannel:self.currentActiveChannel];
-    
+    [ChannelHandler sharedHandler].currentlyActiveChannel = self.currentActiveChannel;
+    [self updateUIForChatViewWithChannel:self.currentActiveChannel];
 }
 
 -(void)notifyMyPresenceInPublicChannelToNewlyJoinedIP:(NSDictionary *)channelData{
@@ -974,7 +950,10 @@
     NSString *confirmationMessageForJoiningChannel = [[MessageHandler sharedHandler] confirmJoiningForChannelID:[[channelData objectForKey:JSON_KEY_CHANNEL] intValue] channelName:self.currentActiveChannel.channelMemberNamess[0]];
     
     [[asyncUDPConnectionHandler sharedHandler] sendMessage:confirmationMessageForJoiningChannel toIPAddress:[channelData objectForKey:JSON_KEY_IP_ADDRESS]];
+    
+    
     self.currentActiveChannel = [blankChannel getForeignChannel:[[channelData objectForKey:JSON_KEY_CHANNEL] intValue]];
+    [ChannelHandler sharedHandler].currentlyActiveChannel = self.currentActiveChannel;
     [self updateUIForChatViewWithChannel:self.currentActiveChannel];
 //    Channel *currentlyactiveChannel = self.currentActiveChannel;
     
@@ -986,9 +965,7 @@
 
 - (void) audioRecorderDidFinishRecording:(AVAudioRecorder *)avrecorder successfully:(BOOL)flag{
 
-    [self.recordPauseButton setTitle:@"Record" forState:UIControlStateNormal];
-    //[stopButton setEnabled:NO];
-    [self.playButton setEnabled:YES];
+
     
     
     NSData *recAudioData = [[AudioFileHandler sharedHandler] dataFromAudioFile:@"MyAudioMemo.m4a"];
@@ -1007,7 +984,11 @@
     //Save
     [recordedAudioFileNames addObject:audioFileName];
     
-    self.sendButton.enabled = YES;
+    
+    
+    [self.recordPauseButton setBackgroundImage:[UIImage imageNamed:@"Record srt"] forState:UIControlStateNormal];
+    [self.playButton setEnabled:YES];
+    [self.sendButton setEnabled:YES];
 }
 
 -(void) voiceStreamReceivedInChat:(NSNotification*)notification{
@@ -1054,7 +1035,10 @@
 #pragma mark - AVAudioPlayerDelegate
 
 - (void) audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag{
+    
+    [self stopImageEqualizer];
     [self.thePlayer stop];
+    
 //    if (receivedAudioStreamContainerArray.count > 0) {
 //        [receivedAudioStreamContainerArray removeObjectAtIndex:0];
 //        [self playAudioStream];
@@ -1062,12 +1046,6 @@
 //    else{
 //        _isPlayingStream = NO;
 //    }
-//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Done"
-//                                                    message: @"Finish playing the recording!"
-//                                                   delegate: nil
-//                                          cancelButtonTitle:@"OK"
-//                                          otherButtonTitles:nil];
-//    [alert show];
 }
 
 - (void)audioPlayerDecodeErrorDidOccur:(AVAudioPlayer *)player error:(NSError * __nullable)error{

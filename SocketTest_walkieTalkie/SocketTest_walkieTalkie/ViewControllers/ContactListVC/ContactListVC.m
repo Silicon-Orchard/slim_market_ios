@@ -28,8 +28,8 @@
     
     //self.navigationItem setting
     self.title = @"Contact List";
-    [self.navigationController.navigationBar setTitleTextAttributes:
-     @{NSForegroundColorAttributeName:[UIColor whiteColor]}];
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
+    self.navigationController.navigationBar.tintColor = UIColorFromRGB(0xE0362B);
     
     //TableView
     self.tableView.delegate = self;
@@ -43,6 +43,14 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addNewDeviceToNetWorkDeviceList:) name:NEW_DEVICE_CONNECTED_NOTIFICATIONKEY object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userLeftSystem:) name:USER_LEFT_SYSTEM_NOTIFICATIONKEY object:nil];
 }
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+    self.navigationController.navigationBar.tintColor = UIColorFromRGB(0xE0362B);
+}
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

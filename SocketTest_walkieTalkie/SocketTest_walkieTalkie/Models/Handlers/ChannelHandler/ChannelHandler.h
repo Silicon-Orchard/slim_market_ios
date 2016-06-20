@@ -16,7 +16,6 @@
 @property (nonatomic, strong) Channel *currentlyActiveChannel;
 
 
-
 +(ChannelHandler*)sharedHandler;
 -(int)getCurrentlyActiveChatroom;
 //-(BOOL)isHost;

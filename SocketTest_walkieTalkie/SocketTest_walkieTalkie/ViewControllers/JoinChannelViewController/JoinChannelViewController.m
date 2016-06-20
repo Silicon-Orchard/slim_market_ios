@@ -79,6 +79,8 @@
     NSDictionary *jsonDict = [NSJSONSerialization  JSONObjectWithData:receivedData options:0 error:nil];
     Channel *blankChannel = [[Channel alloc] init];
     Channel *joinedChannel = [blankChannel getForeignChannel:[[jsonDict objectForKey:JSON_KEY_CHANNEL] intValue]];
+    
+    
     if (joinedChannel) {
         if ([[jsonDict objectForKey:JSON_KEY_CHANNEL] intValue] ==1 || [[jsonDict objectForKey:JSON_KEY_CHANNEL] intValue] ==2) {
            
@@ -145,12 +147,11 @@
                 [ChannelHandler sharedHandler].userNameInChannel = [joinedChannel.channelMemberNamess objectAtIndex:i];
             }
         }
-//        [ChannelHandler sharedHandler].userNameInChannel = [jsonDict objectForKey:JSON_KEY_DEVICE_NAME];
 
          [self performSegueWithIdentifier:@"clientChannelSegue" sender:nil];
         self.isChatOpen = YES;
-    }
-    else{
+        
+    } else{
         if (joinedChannel.channelID == [ChannelHandler sharedHandler].currentlyActiveChannelID) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"currentChannelUpdated" object:nil userInfo:nil];
 
@@ -175,12 +176,13 @@
     Channel *foreignChannel = [newChannel getForeignChannel:channelID];
     NSString *channelJoinNotificationMessage = [[MessageHandler sharedHandler] joinChannelCreatedMessageWithChannelID:channelID deviceName:self.client_Name_textField.text];
     
-    NSString *foreignChannelOwnerIPaddress;
     
     NSArray *activeIPAddressList = [[NSUserDefaults standardUserDefaults] objectForKey:ACTIVEUSERLISTKEY];
+    
     if (foreignChannel) {
-        foreignChannelOwnerIPaddress = foreignChannel.foreignChannelHostIP;
+        
         if (foreignChannel.channelID ==1 || foreignChannel.channelID ==2) {
+            
             [[asyncUDPConnectionHandler sharedHandler] enableBroadCast];
             
             for (int i =0 ; i<activeIPAddressList.count; i++) {
@@ -192,15 +194,17 @@
             }
         }
         else{
-             [[asyncUDPConnectionHandler sharedHandler]sendMessage:channelJoinNotificationMessage toIPAddress:foreignChannelOwnerIPaddress];
+             [[asyncUDPConnectionHandler sharedHandler]sendMessage:channelJoinNotificationMessage toIPAddress:foreignChannel.foreignChannelHostIP];
         }
        
 
     }
     else{
+        
         [[asyncUDPConnectionHandler sharedHandler] enableBroadCast];
         
         for (int i =0 ; i<activeIPAddressList.count; i++) {
+            
             NSString *ipAddressTosendData = [activeIPAddressList objectAtIndex:i];
             if (![ipAddressTosendData isEqualToString:[[MessageHandler sharedHandler] getIPAddress]]) {
                 [[asyncUDPConnectionHandler sharedHandler]sendMessage:channelJoinNotificationMessage toIPAddress:ipAddressTosendData];
@@ -210,11 +214,11 @@
         
     }
 
-    
 }
 
 
 - (IBAction)joinChannelTapped:(id)sender {
+    
     [self joinChannelWithChannelID:[self.channel_ID_TextField.text intValue]];
 }
 

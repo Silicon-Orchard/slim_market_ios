@@ -42,6 +42,11 @@
 #define TYPE_VOICE_STREAM ((int) 17)
 
 
+#define TYPE_IMAGE_MESSAGE ((int) 21)
+#define TYPE_IMAGE_MESSAGE_REPEAT_REQUEST ((int) 22)
+#define TYPE_IMAGE_STREAM ((int) 23)
+
+
 
 
 #define JSON_KEY_IP_ADDRESS @"ip_address"
@@ -54,11 +59,18 @@
 #define JSON_KEY_CLIENT_PORT @"client_port"
 #define JSON_KEY_CHANNEL @"channel_id"
 #define JSON_KEY_CHANNEL_MEMBERS @"channel_members"
+
+
 #define JSON_KEY_VOICE_MESSAGE @"voice_message"
 #define JSON_KEY_VOICE_MESSAGE_CHUNKCOUNT @"voice_message_chunkCount"
 #define JSON_KEY_VOICE_MESSAGE_CURRENT_CHUNK @"voice_message_current_chunk"
 #define JSON_KEY_VOICE_MESSAGE_FILE_NAME @"voice_message_file_name"
 
+
+#define JSON_KEY_IMAGE_MESSAGE @"image_message"
+#define JSON_KEY_IMAGE_MESSAGE_CHUNKCOUNT @"image_message_chunkCount"
+#define JSON_KEY_IMAGE_MESSAGE_CURRENT_CHUNK @"image_message_current_chunk"
+#define JSON_KEY_IMAGE_MESSAGE_FILE_NAME @"image_message_file_name"
 
 #define CURRENTUSERKEY_FOR_USERDEFAULTS @"CurrentUserKey"
 #define SAVED_CHANNELS_KEY_FOR_USERDEFAULS @"myChannelsKey"

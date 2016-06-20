@@ -34,7 +34,7 @@
     
     //Simulator
     
-    return @"192.168.2.129";
+    return @"192.168.1.121";
     
 #else
     
@@ -118,6 +118,7 @@
 }
 
 -(NSString *)confirmJoiningForChannelID:(int)channelID channelName:(NSString *)channelhostName{
+    
     Channel *blankChannel = [[Channel alloc] init];
     Channel *channelToJoin = [blankChannel geChannel:channelID];
     NSString *hostIP = [self getIPAddress];

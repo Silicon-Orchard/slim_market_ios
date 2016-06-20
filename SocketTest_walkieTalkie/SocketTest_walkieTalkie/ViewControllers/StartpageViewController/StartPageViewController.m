@@ -208,6 +208,7 @@
 
 
 -(void) foreignChannelCreated:(NSNotification*)notification{
+    
     NSDictionary* userInfo = notification.userInfo;
     NSData* receivedData = (NSData*)userInfo[@"receievedData"];
     NSLog (@"Successfully received foreign Channel Created notification! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
@@ -344,6 +345,7 @@
 
 
 -(void)saveForeignChannelinUserDefaultsWithChannelData:(NSDictionary *)jsonDict{
+    
     Channel *newChannel = [[Channel alloc] initWithChannelID:[[jsonDict objectForKey:JSON_KEY_CHANNEL] intValue]];
     newChannel.foreignChannelHostDeviceID = [jsonDict objectForKey:JSON_KEY_DEVICE_ID];
     newChannel.foreignChannelHostIP = [jsonDict objectForKey:JSON_KEY_IP_ADDRESS];

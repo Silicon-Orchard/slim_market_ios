@@ -106,6 +106,7 @@
 }
 
 -(Channel *)getForeignChannel:(int)channelID{
+    
     NSMutableArray *channels = [[NSUserDefaults standardUserDefaults] objectForKey:FOREIGN_NEWLYCREATED_CHANNELS_KEY_FOR_USERDEFAULS];
     if (channels) {
         for (NSData *channelData in channels) {
