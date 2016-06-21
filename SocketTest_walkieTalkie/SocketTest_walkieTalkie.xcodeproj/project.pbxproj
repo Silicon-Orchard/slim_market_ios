@@ -47,6 +47,7 @@
 		B23797E31D0FD7CA00F9F5A7 /* SplashScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = B23797DD1D0FD7CA00F9F5A7 /* SplashScreen.png */; };
 		B23797E81D1129FE00F9F5A7 /* ContactListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = B23797E71D1129FE00F9F5A7 /* ContactListVC.m */; };
 		B240958A1D17EE2A0040DE16 /* ChannelManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B24095891D17EE2A0040DE16 /* ChannelManager.m */; };
+		B273E9351D190B160045020C /* FileHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = B273E9341D190B160045020C /* FileHandler.m */; };
 		B2FBD3FF1D113BF700AC2495 /* UserHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FBD3FE1D113BF700AC2495 /* UserHandler.m */; };
 		B2FBD4021D1156DA00AC2495 /* ContactListTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FBD4011D1156DA00AC2495 /* ContactListTVC.m */; };
 /* End PBXBuildFile section */
@@ -135,6 +136,8 @@
 		B23797E71D1129FE00F9F5A7 /* ContactListVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactListVC.m; sourceTree = "<group>"; };
 		B24095881D17EE2A0040DE16 /* ChannelManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChannelManager.h; sourceTree = "<group>"; };
 		B24095891D17EE2A0040DE16 /* ChannelManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChannelManager.m; sourceTree = "<group>"; };
+		B273E9331D190B160045020C /* FileHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileHandler.h; sourceTree = "<group>"; };
+		B273E9341D190B160045020C /* FileHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileHandler.m; sourceTree = "<group>"; };
 		B2FBD3FD1D113BF700AC2495 /* UserHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserHandler.h; sourceTree = "<group>"; };
 		B2FBD3FE1D113BF700AC2495 /* UserHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserHandler.m; sourceTree = "<group>"; };
 		B2FBD4001D1156DA00AC2495 /* ContactListTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactListTVC.h; sourceTree = "<group>"; };
@@ -335,6 +338,7 @@
 		B23797A21D0FD52E00F9F5A7 /* Handlers */ = {
 			isa = PBXGroup;
 			children = (
+				B273E9321D190B070045020C /* FileHandler */,
 				B23797C21D0FD6E500F9F5A7 /* VoiceStreamHandler */,
 				B23797B31D0FD5AA00F9F5A7 /* TCPConnectionHandler */,
 				B23797B61D0FD5AA00F9F5A7 /* UDP ConnectionHandler */,
@@ -461,6 +465,15 @@
 				B23797E71D1129FE00F9F5A7 /* ContactListVC.m */,
 			);
 			path = ContactListVC;
+			sourceTree = "<group>";
+		};
+		B273E9321D190B070045020C /* FileHandler */ = {
+			isa = PBXGroup;
+			children = (
+				B273E9331D190B160045020C /* FileHandler.h */,
+				B273E9341D190B160045020C /* FileHandler.m */,
+			);
+			path = FileHandler;
 			sourceTree = "<group>";
 		};
 		EB939EF5D9CCB4A3C8A71314 /* Pods */ = {
@@ -654,6 +667,7 @@
 				B23797B21D0FD56B00F9F5A7 /* MessageHandler.m in Sources */,
 				B23797B11D0FD56B00F9F5A7 /* ChatHandler.m in Sources */,
 				B23797B91D0FD5AA00F9F5A7 /* asyncTCPConnectionHandler.m in Sources */,
+				B273E9351D190B160045020C /* FileHandler.m in Sources */,
 				B2FBD4021D1156DA00AC2495 /* ContactListTVC.m in Sources */,
 				B23797BA1D0FD5AA00F9F5A7 /* asyncUDPConnectionHandler.m in Sources */,
 				B23797D41D0FD78500F9F5A7 /* MessageData.m in Sources */,

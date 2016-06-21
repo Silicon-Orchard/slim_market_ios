@@ -32,14 +32,19 @@
 #define TYPE_CHANNEL_DUPLICATE ((int) 8)
 #define TYPE_LEFT_CHANNEL ((int) 9)
 #define TYPE_LEFT_APPLICATION ((int) 10)
+
 #define TYPE_ONE_TO_ONE_CHAT_REQUEST ((int) 11)
 #define TYPE_ONE_TO_ONE_CHAT_ACCEPT ((int) 12)
 #define TYPE_ONE_TO_ONE_CHAT_DECLINE ((int) 13)
 
 
-#define TYPE_VOICE_MESSAGE ((int) 15)
-#define TYPE_VOICE_MESSAGE_REPEAT_REQUEST ((int) 16)
-#define TYPE_VOICE_STREAM ((int) 17)
+#define TYPE_FILE_MESSAGE ((int) 15)
+#define TYPE_FILE_REPEAT_REQUEST ((int) 16)
+
+
+#define TYPE_VOICE_MESSAGE ((int) 31)
+#define TYPE_VOICE_MESSAGE_REPEAT_REQUEST ((int) 32)
+#define TYPE_VOICE_STREAM ((int) 33)
 
 
 #define TYPE_IMAGE_MESSAGE ((int) 21)
@@ -61,16 +66,26 @@
 #define JSON_KEY_CHANNEL_MEMBERS @"channel_members"
 
 
+#define JSON_KEY_FILE_TYPE @"file_type"
+#define JSON_KEY_FILE_NAME @"file_name"
+#define JSON_KEY_FILE_MESSAGE @"file_message"
+#define JSON_KEY_FILE_CHUNK_COUNT @"file_chunk_count"
+#define JSON_KEY_FILE_CURRENT_CHUNK @"file_current_chunk"
+
+
 #define JSON_KEY_VOICE_MESSAGE @"voice_message"
 #define JSON_KEY_VOICE_MESSAGE_CHUNKCOUNT @"voice_message_chunkCount"
 #define JSON_KEY_VOICE_MESSAGE_CURRENT_CHUNK @"voice_message_current_chunk"
 #define JSON_KEY_VOICE_MESSAGE_FILE_NAME @"voice_message_file_name"
 
 
-#define JSON_KEY_IMAGE_MESSAGE @"image_message"
-#define JSON_KEY_IMAGE_MESSAGE_CHUNKCOUNT @"image_message_chunkCount"
-#define JSON_KEY_IMAGE_MESSAGE_CURRENT_CHUNK @"image_message_current_chunk"
-#define JSON_KEY_IMAGE_MESSAGE_FILE_NAME @"image_message_file_name"
+
+#define kFileTypeAudio ((int) 1)
+#define kFileTypeVideo ((int) 2)
+#define kFileTypePhoto ((int) 3)
+#define kFileTypeOthers ((int) 4)
+
+
 
 #define CURRENTUSERKEY_FOR_USERDEFAULTS @"CurrentUserKey"
 #define SAVED_CHANNELS_KEY_FOR_USERDEFAULS @"myChannelsKey"
@@ -78,6 +93,9 @@
 #define DEVICE_UUID_KEY_FORUSERDEFAULTS @"UUIDkey"
 #define ACTIVEUSERLISTKEY @"activeUserListKey"
 #define IPADDRESS_FORMATKEY @"IPAddressFormatKey"
+
+
+#pragma mark - Notification Key
 
 #define MESSAGE_RECEIVED_NOTIFICATIONKEY @"dataReceievedNotificationKey"
 #define FOREIGN_CHANNEL_CREATED_NOTIFICATIONKEY @"foreignChannelCreatedNotification"
@@ -92,8 +110,11 @@
 #define UDP_VOICE_MESSAGE_REPEAR_REQUEST_NOTIFICATIONKEY @"UDPvoiceMessageRepeatRequestNotification"
 #define VOICE_STREAM_RECEIEVED_NOTIFICATIONKEY @"voiceStreamReceivedNotification"
 
-#define USER_LEFT_SYSTEM_NOTIFICATIONKEY @"userLeftSystemNotification"
+#define FILE_RECEIEVED_NOTIFICATIONKEY @"fileReceivedNotification"
+#define FILE_REPEAT_REQUEST_NOTIFICATIONKEY @"fileRepeatRequestNotification"
 
+
+#define USER_LEFT_SYSTEM_NOTIFICATIONKEY @"userLeftSystemNotification"
 
 
 

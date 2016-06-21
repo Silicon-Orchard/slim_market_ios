@@ -71,6 +71,8 @@
     receivedAudioStreamContainerArray = [[NSMutableArray alloc] init];
     [ChannelHandler sharedHandler].currentlyActiveChannel = self.currentActiveChannel;
     
+    chunkCounter = 0;
+    
     
     //Emergency UI Update
     if(self.isPersonalChannel){
@@ -81,41 +83,14 @@
         [self updateUIForChatViewWithChannel:self.currentActiveChannel];
     }
     
-    //[[asyncTCPConnectionHandler sharedHandler] createTCPSenderSocket];
+    [self initWithNotification];
+    [self initWithConfig];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(joinChannelRequestReceived:) name:JOINCHANNEL_REQUEST_NOTIFICATIONKEY object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(channelUpdated:) name:@"currentChannelUpdated" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chatMessageReceived:) name:CHATMESSAGE_RECEIVED_NOTIFICATIONKEY object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ChannelLeftMessageReceieved:) name:CHANNEL_LEFT_NOTIFICATIONKEY object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWasShown:)
-                                                 name:UIKeyboardDidShowNotification
-                                               object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(voiceStreamReceivedInChat:) name:VOICE_STREAM_RECEIEVED_NOTIFICATIONKEY object:nil];
-
     UITapGestureRecognizer *aTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(ScreenTapped)];
     aTap.cancelsTouchesInView = NO;
     [self.view addGestureRecognizer:aTap];
     
-    //[stopButton setEnabled:NO];
     [self.playButton setEnabled:NO];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(voiceMessageReceived:) name:VOICE_MESSAGE_RECEIEVED_NOTIFICATIONKEY object:nil];
-//  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(voiceMessageReceivedInTCP:) name:TCP_VOICE_MESSAGE_RECEIEVED_NOTIFICATIONKEY object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(requestForRepeatVoiceMessagereceived:) name:UDP_VOICE_MESSAGE_REPEAR_REQUEST_NOTIFICATIONKEY object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playAudioStream) name:@"playAudioNotification" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(didChangePreferredContentSize:)
-                                                 name:UIContentSizeCategoryDidChangeNotification object:nil];
-    
-    
-    if(self.isPersonalChannel){
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(oneToOneChatDeclined:) name:ONE_TO_ONE_CHAT_DECLINE_NOTIFICATIONKEY object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(oneToOneChatAcceptFromStartPage:) name:ONE_TO_ONE_CHAT_ACCEPT_FROM_STARTPAGE_NOTIFICATIONKEY object:nil];
-        
-    }
 
     [self.chatTableView addObserver:self forKeyPath:@"contentSize" options:0 context:NULL];
 
@@ -123,47 +98,7 @@
 
     
     
-    // Set the audio file
-    NSArray *pathComponents = [NSArray arrayWithObjects:
-                               [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject],
-                               @"MyAudioMemo.m4a",
-                               nil];
-    NSURL *outputFileURL = [NSURL fileURLWithPathComponents:pathComponents];
-    
-    // Setup audio session
-    AVAudioSession *session = [AVAudioSession sharedInstance];
-    [session setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionAllowBluetooth error:nil];
-    
-    // Define the recorder setting
-    NSMutableDictionary *recordSetting = [[NSMutableDictionary alloc] init];
-    
-    [recordSetting setValue:[NSNumber numberWithInt:kAudioFormatMPEG4AAC] forKey:AVFormatIDKey];
-    [recordSetting setValue:[NSNumber numberWithFloat:44100.0] forKey:AVSampleRateKey];
-    [recordSetting setValue:[NSNumber numberWithInt: 2] forKey:AVNumberOfChannelsKey];
-    
-    // Initiate and prepare the recorder
-    NSError *error;
-    recorder = [[AVAudioRecorder alloc] initWithURL:outputFileURL settings:recordSetting error:&error];
-    if (error) {
-        NSLog(@"Record Couldn't Start . Error %@", [error localizedDescription]);
-    }
-    else{
-        recorder.delegate = self;
-        recorder.meteringEnabled = YES;
-        [recorder prepareToRecord];
-    }
-    
-    // Setup equalizerImage
-    self.equalizerImage.animationImages = [NSArray arrayWithObjects:
-                                           [UIImage imageNamed:@"recoring-timeline"],
-                                           [UIImage imageNamed:@"recoring-timeline2"],
-                                           [UIImage imageNamed:@"recoring-timeline3"],
-                                           nil];
-    
-    // How many seconds it should take to go through all images one time.
-    self.equalizerImage.animationDuration = 0.3;
-    // How many times to repeat the animation (0 for indefinitely).
-    self.equalizerImage.animationRepeatCount = 0;
+
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -176,10 +111,6 @@
     self.popupBoxView.layer.cornerRadius = 10;
     self.popupBoxView.layer.masksToBounds = YES;
     
-//    if(!self.isPersonalChannel){
-//        [self addFooterToTableView:self.channelMemberTableView];
-//    }
-//    [self addFooterToTableView:self.chatTableView];
     
     self.navigationController.navigationBar.topItem.title = @"Back";
     [self.navigationController.navigationBar setTitleTextAttributes:
@@ -214,12 +145,6 @@
         
         [self channelLeaveMessageSend];
         
-//        if(self.isPersonalChannel){
-//            
-//        }else {
-//            
-//        }
-        
     }
 }
 
@@ -234,7 +159,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     [self.chatTableView removeObserver:self forKeyPath:@"contentSize"];
-    [[AudioFileHandler sharedHandler] deleteAudioFileFolder];
+    [[FileHandler sharedHandler] deleteWalkieTalkieDirectory];
     
     
     if(self.isPersonalChannel){
@@ -246,6 +171,89 @@
 
 
 #pragma mark - Helpers
+
+-(void)initWithNotification {
+
+    //UDP Response Notification
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(joinChannelRequestReceived:) name:JOINCHANNEL_REQUEST_NOTIFICATIONKEY object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chatMessageReceived:) name:CHATMESSAGE_RECEIVED_NOTIFICATIONKEY object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ChannelLeftMessageReceieved:) name:CHANNEL_LEFT_NOTIFICATIONKEY object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(voiceStreamReceivedInChat:) name:VOICE_STREAM_RECEIEVED_NOTIFICATIONKEY object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(voiceMessageReceived:) name:VOICE_MESSAGE_RECEIEVED_NOTIFICATIONKEY object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(requestForRepeatVoiceMessagereceived:) name:UDP_VOICE_MESSAGE_REPEAR_REQUEST_NOTIFICATIONKEY object:nil];
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileMessageReceived:) name:FILE_RECEIEVED_NOTIFICATIONKEY object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileRepeatRequestReceived:) name:FILE_REPEAT_REQUEST_NOTIFICATIONKEY object:nil];
+
+
+    
+    if(self.isPersonalChannel){
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(oneToOneChatDeclined:) name:ONE_TO_ONE_CHAT_DECLINE_NOTIFICATIONKEY object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(oneToOneChatAcceptFromStartPage:) name:ONE_TO_ONE_CHAT_ACCEPT_FROM_STARTPAGE_NOTIFICATIONKEY object:nil];
+        
+    }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(channelUpdated:) name:@"currentChannelUpdated" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWasShown:) name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didChangePreferredContentSize:)
+                                                 name:UIContentSizeCategoryDidChangeNotification object:nil];
+}
+
+-(void)initWithConfig {
+    
+    // Setup audio session
+    AVAudioSession *session = [AVAudioSession sharedInstance];
+    [session setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionAllowBluetooth error:nil];
+    
+    // Set the audio file
+    NSArray *pathComponents = [NSArray arrayWithObjects:
+                               [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject],
+                               @"MyAudioMemo.m4a",
+                               nil];
+    
+    NSURL *outputFileURL = [NSURL fileURLWithPathComponents:pathComponents];
+    
+
+    
+    // Define the recorder setting
+    NSMutableDictionary *recordSetting = [[NSMutableDictionary alloc] init];
+    [recordSetting setValue:[NSNumber numberWithInt:kAudioFormatMPEG4AAC] forKey:AVFormatIDKey];
+    [recordSetting setValue:[NSNumber numberWithFloat:44100.0] forKey:AVSampleRateKey];
+    [recordSetting setValue:[NSNumber numberWithInt: 2] forKey:AVNumberOfChannelsKey];
+    
+    // Initiate and prepare the recorder
+    NSError *error;
+    recorder = [[AVAudioRecorder alloc] initWithURL:outputFileURL settings:recordSetting error:&error];
+    if (error) {
+        NSLog(@"Record Couldn't Start . Error %@", [error localizedDescription]);
+    }
+    else{
+        recorder.delegate = self;
+        recorder.meteringEnabled = YES;
+        [recorder prepareToRecord];
+    }
+    
+    // Setup equalizerImage
+    self.equalizerImage.animationImages = [NSArray arrayWithObjects:
+                                           [UIImage imageNamed:@"recoring-timeline"],
+                                           [UIImage imageNamed:@"recoring-timeline2"],
+                                           [UIImage imageNamed:@"recoring-timeline3"],
+                                           nil];
+    self.equalizerImage.animationDuration = 0.3;
+    // How many times to repeat the animation (0 for indefinitely).
+    self.equalizerImage.animationRepeatCount = 0;
+    
+    
+//    self.channelMemberTableView.backgroundView = [UIView new];
+//    self.channelMemberTableView.backgroundView.backgroundColor = [UIColor clearColor];
+//    
+//    self.chatTableView.backgroundView = [UIView new];
+//    self.chatTableView.backgroundView.backgroundColor = [UIColor clearColor];
+}
 
 -(void)setNavigationItemTitle{
     
@@ -506,7 +514,10 @@
     if (!recorder.recording){
         
         NSLog(@"recordedAudioFileNames Count: %d", [recordedAudioFileNames count]);
-        NSString *audioFilePath = [[AudioFileHandler sharedHandler] getAudioFilePathOfFilaName:[recordedAudioFileNames lastObject]];
+        NSString * fileName = [recordedAudioFileNames lastObject];
+        
+        NSString *audioFilePath = [[FileHandler sharedHandler] pathToFileWithFileName:fileName OfType:kFileTypeAudio];
+        //[[AudioFileHandler sharedHandler] getAudioFilePathOfFilaName:[recordedAudioFileNames lastObject]];
         
         NSURL *soundFileURL = [NSURL fileURLWithPath:audioFilePath];
         NSError *error = nil;
@@ -542,8 +553,8 @@
     self.sendButton.enabled = NO;
     NSString *audioFileName = [recordedAudioFileNames lastObject];
     
-    int ChannelID = self.isPersonalChannel ? 0 :self.currentActiveChannel.channelID;
-    NSArray *voiceMessagechunkStrings = [[MessageHandler sharedHandler] voiceMessageJSONStringInChunksWithAudioFileName:audioFileName inChannel:ChannelID];
+    int channelID = self.isPersonalChannel ? 0 :self.currentActiveChannel.channelID;
+    NSArray *voiceMessagechunkStrings = [[MessageHandler sharedHandler] jsonStringArrayWithFile:audioFileName OfType:kFileTypeAudio inChannel:channelID];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
@@ -766,7 +777,11 @@
     NSDictionary *jsonDict = [NSJSONSerialization  JSONObjectWithData:receivedData options:0 error:nil];
     
     int channelID = self.isPersonalChannel ? 0 :self.currentActiveChannel.channelID;
-    NSArray *voiceMessagechunkStrings = [[MessageHandler sharedHandler] voiceMessageJSONStringInChunksWithAudioFileName:@"MyAudioMemo.m4a" inChannel:channelID];
+    
+#warning TODO: audioFileName name will be received request audioFileName
+    NSString *audioFileName = [recordedAudioFileNames lastObject];
+    NSArray *voiceMessagechunkStrings = [[MessageHandler sharedHandler] jsonStringArrayWithFile:audioFileName OfType:kFileTypeAudio inChannel:channelID];
+    
     for (int j = 0; j<voiceMessagechunkStrings.count; j++) {
         NSLog(@"message to send %@", [voiceMessagechunkStrings objectAtIndex:j]);
         //                    [NSThread sleepForTimeInterval:0.09];
@@ -806,16 +821,15 @@
         if (currentChunk == chunkCount) {
             if (chunkCounter == chunkCount) {
                 
-                
-                
-                
+
                 
                 finalAudioData = [[NSData alloc] initWithData:audioData];
                 NSString * audioFileName = [jsonDict objectForKey:JSON_KEY_VOICE_MESSAGE_FILE_NAME];
-                NSString *audioFolderPath = [[AudioFileHandler sharedHandler] pathToAudioFileFolder];
+                NSString *audioFolderPath = [[FileHandler sharedHandler] pathToFileFolderOfType:kFileTypeAudio];
                 //saveAudioData
                 
-                NSString *audioFilePath = [[AudioFileHandler sharedHandler] saveAudioData:finalAudioData asFileName:audioFileName inFolderPath:audioFolderPath];
+                NSString *audioFilePath = [[FileHandler sharedHandler] writeData:finalAudioData toFileName:audioFileName ofType:kFileTypeAudio];
+                                           //saveAudioData:finalAudioData asFileName:audioFileName ofType:kFileTypeAudio];
                 //NSString *SoundfilePath = [[AudioFileHandler sharedHandler] saveFileAndGetSavedFilePathInDocumentsDirectoryFromData:finalAudioData saveDataAsFileName:receivedFileName];
                 
                 receivedSoundURL = [NSURL fileURLWithPath:audioFilePath];
@@ -904,6 +918,139 @@
     
 }
 
+- (void)fileMessageReceived:(NSNotification *)notification {
+    
+    
+    NSDictionary* userInfo = notification.userInfo;
+    NSData* receivedData = (NSData*)userInfo[@"receievedData"];
+    NSDictionary *jsonDict = [NSJSONSerialization  JSONObjectWithData:receivedData options:0 error:nil];
+
+//    NSDictionary * postDictionary = @{
+//                                      JSON_KEY_TYPE : @(TYPE_FILE_MESSAGE),
+//                                      JSON_KEY_CHANNEL: @(channelID),
+//                                      JSON_KEY_DEVICE_NAME : [UIDevice currentDevice].name,
+//                                      JSON_KEY_FILE_TYPE: @(type),
+//                                      JSON_KEY_FILE_NAME: fileName,
+//                                      JSON_KEY_FILE_MESSAGE: [encodedStringChunksArray objectAtIndex:i],
+//                                      JSON_KEY_FILE_CHUNK_COUNT: @(chunkCount),
+//                                      JSON_KEY_FILE_CURRENT_CHUNK: @(i+1)
+//                                      };
+    
+    
+    int fileType = [[jsonDict objectForKey:JSON_KEY_FILE_TYPE] intValue];
+    
+    switch (fileType) {
+        case kFileTypeAudio:
+            
+            [self voiceFileReceived:jsonDict];
+            break;
+        case kFileTypeVideo:
+            
+            
+            break;
+        case kFileTypePhoto:
+            
+            
+            break;
+        case kFileTypeOthers:
+            
+            
+            break;
+            
+        default:
+            break;
+    }
+}
+
+- (void)fileRepeatRequestReceived:(NSNotification *)notification {
+    
+    NSDictionary* userInfo = notification.userInfo;
+    NSData* receivedData = (NSData*)userInfo[@"receievedData"];
+    NSDictionary *jsonDict = [NSJSONSerialization  JSONObjectWithData:receivedData options:0 error:nil];
+    
+    int fileType = [[jsonDict objectForKey:JSON_KEY_FILE_TYPE] intValue];
+    NSString *fileName = [jsonDict objectForKey:JSON_KEY_FILE_NAME];
+    NSString *senderIP = [jsonDict objectForKey:JSON_KEY_IP_ADDRESS];
+
+    
+    int channelID = self.isPersonalChannel ? 0 :self.currentActiveChannel.channelID;
+    NSArray *chunkStringArray = [[MessageHandler sharedHandler] jsonStringArrayWithFile:fileName OfType:fileType inChannel:channelID];
+    
+    
+    if(chunkStringArray) {
+        
+        for (int j = 0; j<chunkStringArray.count; j++) {
+            
+            [[asyncUDPConnectionHandler sharedHandler] sendVoiceMessage:[chunkStringArray objectAtIndex:j] toIPAddress:senderIP];
+        }
+    }
+}
+
+
+#pragma mark Observer Helpers
+
+
+-(void)voiceFileReceived:(NSDictionary*) jsonDict{
+    
+    int fileType = [[jsonDict objectForKey: JSON_KEY_FILE_TYPE] intValue];
+    NSString * fileName = [jsonDict objectForKey: JSON_KEY_FILE_NAME];
+    NSString *senderIP = [jsonDict objectForKey:JSON_KEY_IP_ADDRESS];
+    
+    int totalChunkCount = [[jsonDict objectForKey:JSON_KEY_FILE_CHUNK_COUNT] intValue];
+    int currentChunk  = [[jsonDict objectForKey:JSON_KEY_FILE_CURRENT_CHUNK] intValue];
+    NSString *base64EncodedVoiceString = [jsonDict objectForKey:JSON_KEY_FILE_MESSAGE];
+    NSData *audioDataFromBase64String = [[NSData alloc] initWithBase64EncodedString:base64EncodedVoiceString options:1];
+    
+    
+    if (currentChunk == 1) {
+        
+        finalAudioData = nil;
+        audioData = nil;
+        chunkCounter = 1;
+        audioData = [[NSMutableData alloc] initWithData:audioDataFromBase64String];
+        
+    }else {
+        
+        chunkCounter ++;
+        [audioData appendData:audioDataFromBase64String];
+        
+        if (currentChunk == totalChunkCount) {
+            
+            
+            if (chunkCounter == totalChunkCount) {
+                
+                //clear chunkCounter
+                chunkCounter = 0;
+        
+                finalAudioData = [[NSData alloc] initWithData:audioData];
+                
+                [[FileHandler sharedHandler] writeData:finalAudioData toFileName:fileName ofType:kFileTypeAudio];
+                [receivedAudioFileNames addObject:fileName];
+
+
+                // voice message
+                NSDictionary *messageDic = @{
+                                             @"type": MesssageType_Voice_Other,
+                                             @"sender": [jsonDict objectForKey:JSON_KEY_DEVICE_NAME],
+                                             @"message": @"sent a voice message ▶️"
+                                             };
+                [self updateUIForChatMessage:messageDic];
+                
+            } else{
+                
+                //clear chunkCounter
+                chunkCounter = 0;
+                
+                NSString *repeatMessageRequestJSON = [[MessageHandler sharedHandler] repeatRequestWithFile:fileName OfType:fileType];
+                [[asyncUDPConnectionHandler sharedHandler] sendVoiceMessage:repeatMessageRequestJSON toIPAddress:senderIP];
+            }
+        }
+    }
+}
+
+
+
+
 #pragma mark - AlertView Delegate
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
@@ -966,20 +1113,14 @@
 - (void) audioRecorderDidFinishRecording:(AVAudioRecorder *)avrecorder successfully:(BOOL)flag{
 
 
+    NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString *filePath = [documentsPath stringByAppendingPathComponent:@"MyAudioMemo.m4a"];
+    NSData *recAudioData = [[FileHandler sharedHandler] dataFromFilePath:filePath];
     
+    NSString * audioFileName = [FileHandler getFileNameOfType:kFileTypeAudio];
+
     
-    NSData *recAudioData = [[AudioFileHandler sharedHandler] dataFromAudioFile:@"MyAudioMemo.m4a"];
-    
-    
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat: @"yyyyMMddHHmmss"];
-    NSString *stringFromDate = [formatter stringFromDate:[NSDate date]];
-    NSString * audioFileName = [NSString stringWithFormat:@"%@.caf",stringFromDate];
-    
-    
-    NSString *AudioFolderPath = [[AudioFileHandler sharedHandler] pathToAudioFileFolder];
-    
-    NSString *audioFilePath = [[AudioFileHandler sharedHandler] saveAudioData:recAudioData asFileName:audioFileName inFolderPath:AudioFolderPath];
+    [[FileHandler sharedHandler] writeData:recAudioData toFileName:audioFileName ofType:kFileTypeAudio];
     
     //Save
     [recordedAudioFileNames addObject:audioFileName];
@@ -1013,23 +1154,6 @@
 //        [self playAudioStream];
 //        _isPlayingStream = YES;
 //    }
-}
-
--(void)playAudioStream{
-//    NSError *error = nil;
-//        AVAudioSession *session = [AVAudioSession sharedInstance];
-//        [session setActive:YES error:nil];
-//    self.thePlayer = [[AVAudioPlayer alloc] initWithData:[receivedAudioStreamContainerArray objectAtIndex:0] error:&error];
-//    if (error) {
-//        NSLog(@"Audio can't play. Error %@", [error localizedDescription]);
-//    }
-//    else {
-//        [ self.thePlayer setDelegate:self];
-//        [ self.thePlayer setNumberOfLoops:0];
-//        [ self.thePlayer prepareToPlay];
-//        [ self.thePlayer play];
-//    }
-//    [receivedAudioStreamContainerArray removeObjectAtIndex:0];
 }
 
 #pragma mark - AVAudioPlayerDelegate
@@ -1240,7 +1364,7 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
         
         if (!recorder.recording){
             
-            NSString *audioFilePath = [[AudioFileHandler sharedHandler] getAudioFilePathOfFilaName:audioFileName];
+            NSString *audioFilePath = [[FileHandler sharedHandler] pathToFileWithFileName:audioFileName OfType:kFileTypeAudio];
             NSURL *audioFileURL = [NSURL fileURLWithPath:audioFilePath];
             
             NSError *error = nil;

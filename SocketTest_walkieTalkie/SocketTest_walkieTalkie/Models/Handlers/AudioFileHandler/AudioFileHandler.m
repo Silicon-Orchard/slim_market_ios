@@ -28,7 +28,10 @@
     NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
                                                                         NSUserDomainMask,
                                                                         YES) lastObject];
-    NSString *audioFileFolder = [documentsDirectory stringByAppendingPathComponent:@"AudioFileFolder"];
+    
+    NSString *audioFileFolder = [documentsDirectory stringByAppendingPathComponent:@"AudioFileFolder/Audio"];
+    
+    //audioFileFolder = [documentsDirectory stringByAppendingPathComponent:@"AudioFileFolder"];
     
     // Create the folder if necessary
     BOOL isDir = NO;
@@ -160,7 +163,6 @@
     [[NSFileManager defaultManager] removeItemAtPath:databasePath error:&error];
     [audioData writeToFile:databasePath atomically:YES];
     return databasePath;
-    
 }
 
 - (NSString *)bas64EncodedStringFromAudioFileDataWithFileName: (NSString *)fileName {
@@ -181,21 +183,27 @@
 -(NSArray *)base64EncodedStringChunksOfDataForFile:(NSString *)fileName{
     
     NSString *audioFilePath = [self getAudioFilePathOfFilaName:fileName];
-    
     NSData *zipFileData = [NSData dataWithContentsOfFile:audioFilePath];
+    
     int index = 0;
     int totalLen = (int)[zipFileData length];
+    
     NSMutableArray *dataChunks = [[NSMutableArray alloc ]init];
     NSMutableArray *chunkStringArray = [[NSMutableArray alloc] init];
+    
     while (index < totalLen) {
+        
         int space = (totalLen - index > CHUNKSIZE) ? CHUNKSIZE : totalLen - index;
+        
         NSData *chunk = [zipFileData subdataWithRange:NSMakeRange(index, space)];
         [dataChunks addObject:chunk];
         index += CHUNKSIZE;
     }
+    
     for (int i =0; i < dataChunks.count; i++) {
         [chunkStringArray addObject:[[dataChunks objectAtIndex:i] base64EncodedStringWithOptions:0]];
     }
+    
     return chunkStringArray;
 }
 
@@ -243,8 +251,7 @@
     // Show contents of Documents directory
 //    NSFileManager *fileMan = [NSFileManager defaultManager];
 
-    NSLog(@"Documents directory: %@",
-          [fileMan contentsOfDirectoryAtPath:documentsPath error:&error]);
+    NSLog(@"Documents directory: %@",[fileMan contentsOfDirectoryAtPath:documentsPath error:&error]);
     return filePath;
 
 }

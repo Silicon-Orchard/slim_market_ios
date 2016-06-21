@@ -234,6 +234,14 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:VOICE_STREAM_RECEIEVED_NOTIFICATIONKEY object:nil userInfo:userInfo];
             break;
             
+        case TYPE_FILE_MESSAGE:
+            [[NSNotificationCenter defaultCenter] postNotificationName:FILE_RECEIEVED_NOTIFICATIONKEY object:nil userInfo:userInfo];
+            break;
+            
+        case TYPE_FILE_REPEAT_REQUEST:
+            [[NSNotificationCenter defaultCenter] postNotificationName:FILE_REPEAT_REQUEST_NOTIFICATIONKEY object:nil userInfo:userInfo];
+            break;
+            
         default:
             break;
     }

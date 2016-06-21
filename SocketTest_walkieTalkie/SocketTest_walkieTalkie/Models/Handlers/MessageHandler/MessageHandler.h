@@ -34,12 +34,15 @@
 -(NSString *)requestInfoAtStartMessage;
 -(NSString *)acknowledgeDeviceInNetwork;
 -(NSString *)leftApplicationMessage;
--(NSString *)voiceMessageJSONStringWithAudioFileName:(NSString *)fileName;
--(NSString *)voiceMessageJSONStringWithAudioFileName:(NSString *)fileName forChannel:(int)channelID;
+
 -(NSArray *)voiceMessageJSONStringInChunksWithAudioFileName:(NSString *)fileName;
 -(NSArray *)voiceMessageJSONStringInChunksWithAudioFileName:(NSString *)fileName inChannel:(int)channelID;
 -(NSString *)repeatVoiceMessageRequest;
 -(NSString *)voiceStreamDataFromAudioBuffer:(NSData *)buffer inChannelID:(int)channelID;
+
+
+-(NSArray *)jsonStringArrayWithFile:(NSString *)fileName OfType:(int)type inChannel:(int)channelID;
+-(NSString *)repeatRequestWithFile:(NSString *)fileName OfType:(int)type;
 
 -(NSString *)oneToOneChatRequestMessage;
 -(NSString *)oneToOneChatAcceptMessage;

@@ -23,7 +23,7 @@
 #import "MessageData.h"
 #import "MessageHandler.h"
 #import "ChannelHandler.h"
-#import "AudioFileHandler.h"
+#import "FileHandler.h"
 #import "asyncTCPConnectionHandler.h"
 #import "VoiceStreamHandler.h"
 #import "AudioRecorderTest.h"

@@ -57,8 +57,7 @@
             if (chunkCounter == [[jsonDict objectForKey:JSON_KEY_VOICE_MESSAGE_CHUNKCOUNT] intValue]) {
                 
                 finalAudioData = [[NSData alloc] initWithData:audioData];
-                _SoundfilePath = [[AudioFileHandler sharedHandler] saveFileAndGetSavedFilePathInDocumentsDirectoryFromData:finalAudioData saveDataAsFileName:_receivedStreamFileName];
-//                NSURL *soundFileURL2 = [NSURL fileURLWithPath:SoundfilePath];
+
                 chunkCounter = 0;
                 AVAudioSession *session = [AVAudioSession sharedInstance];
                 [session setActive:YES error:nil];
