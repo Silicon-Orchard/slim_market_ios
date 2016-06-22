@@ -12,14 +12,21 @@
 #import "IncomingMessageCell.h"
 #import "OutGoingMessagesCell.h"
 #import "channelMemberActivityTableViewCell.h"
+#import <AssetsLibrary/AssetsLibrary.h>
+
 
 #define VoiceMessageSign @"voice&^%"
 
-#define MesssageType_Text_Me        @(0)
-#define MesssageType_Text_Other     @(1)
-#define MesssageType_Voice_Me       @(2)
-#define MesssageType_Voice_Other    @(3)
-#define MesssageType_Left_Channel    @(4)
+#define MESSAGE_SENDER_ME           @(0)
+#define MESSAGE_SENDER_OTHER        @(1)
+
+#define MESSAGE_TYPE_TEXT           @(0)
+#define MESSAGE_TYPE_AUDIO          @(1)
+#define MESSAGE_TYPE_VIDEO          @(2)
+#define MESSAGE_TYPE_PHOTO          @(3)
+#define MESSAGE_TYPE_OTHERS         @(4)
+
+#define MESSAGE_TYPE_LEFT          @(10)
 
 
 @interface ChatViewController (){
@@ -46,6 +53,10 @@
     NSMutableArray *chatRoomMemberList, *chatMessageList;
     
     BOOL addingVoiceMessage;
+    
+    
+    NSMutableData *receivedFileData;
+    NSData *finalFileData;
 }
 
 
@@ -71,6 +82,10 @@
     receivedAudioStreamContainerArray = [[NSMutableArray alloc] init];
     [ChannelHandler sharedHandler].currentlyActiveChannel = self.currentActiveChannel;
     
+    
+    receivedFileData = [NSMutableData new];
+    finalFileData = [NSData new];
+    
     chunkCounter = 0;
     
     
@@ -88,6 +103,7 @@
     
     UITapGestureRecognizer *aTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(ScreenTapped)];
     aTap.cancelsTouchesInView = NO;
+    aTap.delegate = self;
     [self.view addGestureRecognizer:aTap];
     
     [self.playButton setEnabled:NO];
@@ -447,10 +463,13 @@
     
 
     NSDictionary *messageDic = @{
-                                 @"type": MesssageType_Text_Me,
-                                 @"sender": @"Me",
+                                 @"sender": MESSAGE_SENDER_ME,
+                                 @"sender_name": @"Me",
+                                 @"type": MESSAGE_TYPE_TEXT,
                                  @"message": self.chatTextField.text
                                  };
+    
+    
     [self updateUIForChatMessage:messageDic];
     
     self.chatTextField.text = @"";
@@ -458,12 +477,9 @@
 }
 
 
-
-
-- (IBAction)voiceTapped:(id)sender {
+- (IBAction)tappedOnVoiceBtn:(id)sender {
     
     self.voiceMailView.hidden = NO;
-    
 }
 
 - (IBAction)closeTappedOnVoiceMailView:(id)sender {
@@ -513,7 +529,7 @@
     
     if (!recorder.recording){
         
-        NSLog(@"recordedAudioFileNames Count: %d", [recordedAudioFileNames count]);
+        NSLog(@"recordedAudioFileNames Count: %lu", (unsigned long)[recordedAudioFileNames count]);
         NSString * fileName = [recordedAudioFileNames lastObject];
         
         NSString *audioFilePath = [[FileHandler sharedHandler] pathToFileWithFileName:fileName OfType:kFileTypeAudio];
@@ -601,9 +617,10 @@
             
             // voice message
             NSDictionary *messageDic = @{
-                                         @"type": MesssageType_Voice_Me,
-                                         @"sender": @"Me",
-                                         @"message": @"sent a voice message ▶️"
+                                         @"sender": MESSAGE_SENDER_ME,
+                                         @"sender_name": @"Me",
+                                         @"type": MESSAGE_TYPE_PHOTO,
+                                         @"message": audioFileName
                                          };
             [self updateUIForChatMessage:messageDic];
         });
@@ -636,6 +653,69 @@
 
 }
 
+#pragma mark IBAction of AttachBtn
+
+- (IBAction)tappedOnAttachBtn:(id)sender {
+    
+    self.popupFileView.hidden = !self.popupFileView.hidden;
+    
+}
+
+- (IBAction)tappedOnFileBtn:(id)sender {
+}
+
+- (IBAction)tappedOnPhotoBtn:(id)sender {
+    
+    
+    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:@"Select Options" message:@"Either capture an image from the camera or open from the Photo Library." preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    [actionSheet addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        
+        // Cancel button tappped.
+        [self dismissViewControllerAnimated:YES completion:^{
+        }];
+    }]];
+    
+    [actionSheet addAction:[UIAlertAction actionWithTitle:@"Camera" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        
+        // Camera button tapped.
+        [self dismissViewControllerAnimated:NO completion:NULL];
+        
+        
+        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+        picker.delegate = self;
+        //picker.allowsEditing = YES;
+        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        
+        [self presentViewController:picker animated:YES completion:NULL];
+        
+    }]];
+    
+    [actionSheet addAction:[UIAlertAction actionWithTitle:@"Photo Library" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        
+        // Photo Gallery button tapped.
+        [self dismissViewControllerAnimated:NO completion:nil];
+
+        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+        picker.delegate = self;
+        //picker.allowsEditing = YES;
+        picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        
+        [self presentViewController:picker animated:YES completion:NULL];
+        
+    }]];
+    
+    // Present action sheet.
+    [self presentViewController:actionSheet animated:YES completion:nil];
+}
+
+#pragma mark IBAction of StreamBtn
+
+- (IBAction)tappedOnStreamBtn:(id)sender {
+}
+
+
+
 
 #pragma mark - Noticfication
 #pragma mark Observer
@@ -648,8 +728,9 @@
     NSDictionary *jsonDict = [NSJSONSerialization  JSONObjectWithData:receivedData options:0 error:nil];
     
     NSDictionary *messageDic = @{
-                                 @"type": MesssageType_Text_Other,
-                                 @"sender": [jsonDict objectForKey:JSON_KEY_DEVICE_NAME],
+                                 @"sender": MESSAGE_SENDER_OTHER,
+                                 @"sender_name": [jsonDict objectForKey:JSON_KEY_DEVICE_NAME],
+                                 @"type" : MESSAGE_TYPE_TEXT,
                                  @"message":[jsonDict objectForKey:JSON_KEY_MESSAGE]
                                  };
     [self updateUIForChatMessage:messageDic];
@@ -739,8 +820,9 @@
                 [self updateUIForChatViewWithChannel:currentlyActiveChannel];
                 
                 NSDictionary *messageDic = @{
-                                             @"type": MesssageType_Left_Channel,
-                                             @"sender": leftMemberName,
+                                             @"sender": MESSAGE_SENDER_OTHER,
+                                             @"sender_name": jsonDict[@"device_name"],
+                                             @"type": MESSAGE_TYPE_LEFT,
                                              @"message": @"has left!"
                                              };
                 [self updateUIForChatMessage:messageDic];
@@ -844,11 +926,14 @@
                 //                self.audioReceivedButton.hidden = NO;
                 
                 // voice message
+                
                 NSDictionary *messageDic = @{
-                                             @"type": MesssageType_Voice_Other,
-                                             @"sender": [jsonDict objectForKey:JSON_KEY_DEVICE_NAME],
-                                             @"message": @"sent a voice message ▶️"
+                                             @"sender": MESSAGE_SENDER_OTHER,
+                                             @"sender_name": [jsonDict objectForKey:JSON_KEY_DEVICE_NAME],
+                                             @"type": MESSAGE_TYPE_AUDIO,
+                                             @"message": audioFileName
                                              };
+                
                 [self updateUIForChatMessage:messageDic];
                 
             } else{
@@ -918,6 +1003,8 @@
     
 }
 
+#pragma mark File Message Received
+
 - (void)fileMessageReceived:(NSNotification *)notification {
     
     
@@ -942,7 +1029,7 @@
     switch (fileType) {
         case kFileTypeAudio:
             
-            [self voiceFileReceived:jsonDict];
+            //[self voiceFileReceived:jsonDict];
             break;
         case kFileTypeVideo:
             
@@ -960,6 +1047,65 @@
         default:
             break;
     }
+    
+    
+    int totalChunkCount = [[jsonDict objectForKey:JSON_KEY_FILE_CHUNK_COUNT] intValue];
+    int currentChunk  = [[jsonDict objectForKey:JSON_KEY_FILE_CURRENT_CHUNK] intValue];
+    NSString *base64EncodedString = [jsonDict objectForKey:JSON_KEY_FILE_MESSAGE];
+    NSData *fileDataFromBase64String = [[NSData alloc] initWithBase64EncodedString:base64EncodedString options:1];
+    
+    
+    if (currentChunk == 1) {
+        
+        finalFileData = nil;
+        receivedFileData = nil;
+        chunkCounter = 1;
+        audioData = [[NSMutableData alloc] initWithData:fileDataFromBase64String];
+        
+    }else {
+        
+        chunkCounter ++;
+        [receivedFileData appendData:fileDataFromBase64String];
+        
+        NSString * fileName = [jsonDict objectForKey: JSON_KEY_FILE_NAME];
+        NSString *senderIP = [jsonDict objectForKey:JSON_KEY_IP_ADDRESS];
+
+        
+        if (currentChunk == totalChunkCount) {
+            
+            
+            if (chunkCounter == totalChunkCount) {
+                
+                //clear chunkCounter
+                chunkCounter = 0;
+                
+                finalFileData = [[NSData alloc] initWithData:audioData];
+                
+                [[FileHandler sharedHandler] writeData:finalFileData toFileName:fileName ofType:fileType];
+                [receivedAudioFileNames addObject:fileName];
+                
+                NSDictionary *messageDic = @{
+                                             @"sender": MESSAGE_SENDER_OTHER,
+                                             @"sender_name": [jsonDict objectForKey:JSON_KEY_DEVICE_NAME],
+                                             @"type": @(fileType),
+                                             @"message": fileName
+                                             };
+                
+                [self updateUIForChatMessage:messageDic];
+                
+            } else{
+                
+                //clear chunkCounter
+                chunkCounter = 0;
+                
+                NSString *repeatMessageRequestJSON = [[MessageHandler sharedHandler] repeatRequestWithFile:fileName OfType:fileType];
+                [[asyncUDPConnectionHandler sharedHandler] sendVoiceMessage:repeatMessageRequestJSON toIPAddress:senderIP];
+            }
+        }
+    }
+    
+
+    
 }
 
 - (void)fileRepeatRequestReceived:(NSNotification *)notification {
@@ -1029,11 +1175,14 @@
 
 
                 // voice message
+                
                 NSDictionary *messageDic = @{
-                                             @"type": MesssageType_Voice_Other,
-                                             @"sender": [jsonDict objectForKey:JSON_KEY_DEVICE_NAME],
-                                             @"message": @"sent a voice message ▶️"
+                                             @"sender": MESSAGE_SENDER_OTHER,
+                                             @"sender_name": [jsonDict objectForKey:JSON_KEY_DEVICE_NAME],
+                                             @"type": MESSAGE_TYPE_AUDIO,
+                                             @"message": fileName
                                              };
+                
                 [self updateUIForChatMessage:messageDic];
                 
             } else{
@@ -1194,46 +1343,57 @@
         
         IncomingMessageCell *textCell = (IncomingMessageCell *)cell;
         
-        if([messageDic[@"type"] isEqual: MesssageType_Text_Me]) {
+        
+        if([messageDic[@"sender"] isEqual: MESSAGE_SENDER_ME]){
             
-            textCell.nameLabel.text = messageDic[@"sender"];
-            textCell.chat_Text_Label.text = messageDic[@"message"];
             textCell.nameLabel.textAlignment = NSTextAlignmentRight;
             textCell.chat_Text_Label.textAlignment = NSTextAlignmentRight;
+        }
+        
+        
+        
+        if([messageDic[@"type"] isEqual: MESSAGE_TYPE_TEXT]) {
             
-            
-        }else if([messageDic[@"type"] isEqual: MesssageType_Text_Other]) {
-            
-            textCell.nameLabel.text = messageDic[@"sender"];
+            textCell.nameLabel.text = messageDic[@"sender_name"];
             textCell.chat_Text_Label.text = messageDic[@"message"];
+            textCell.imageView.hidden = YES;
+
             
-            
-            
-        }else if([messageDic[@"type"] isEqual: MesssageType_Voice_Me]) {
+        }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_AUDIO]) {
             
             //Do Necessary Work
-            if(![audioFileNamesDic objectForKey:@(indexPath.row)]){
-                
-                [audioFileNamesDic setObject:[recordedAudioFileNames lastObject] forKey:@(indexPath.row)];
-            }
+//            if(![audioFileNamesDic objectForKey:@(indexPath.row)]){
+//                
+//                [audioFileNamesDic setObject:[recordedAudioFileNames lastObject] forKey:@(indexPath.row)];
+//            }
             
-            textCell.nameLabel.text = messageDic[@"sender"];
-            textCell.chat_Text_Label.text = messageDic[@"message"];
-            textCell.nameLabel.textAlignment = NSTextAlignmentRight;
-            textCell.chat_Text_Label.textAlignment = NSTextAlignmentRight;
+            textCell.nameLabel.text = messageDic[@"sender_name"];
+            textCell.chat_Text_Label.text = @"sent a voice message ▶️";
+            textCell.imageView.hidden = YES;
+
+        }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_VIDEO]) {
             
-        }else if([messageDic[@"type"] isEqual: MesssageType_Voice_Other]) {
             
-            //Do Necessary Work
-            if(![audioFileNamesDic objectForKey:@(indexPath.row)]){
-                
-                [audioFileNamesDic setObject:[receivedAudioFileNames lastObject] forKey:@(indexPath.row)];
-            }
             
-            textCell.nameLabel.text = messageDic[@"sender"];
-            textCell.chat_Text_Label.text = messageDic[@"message"];
+        }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_PHOTO]) {
+            textCell.chat_Text_Label.hidden = YES;
+            textCell.imageView.hidden = NO;
             
-        }else if([messageDic[@"type"] isEqual: MesssageType_Left_Channel]) {
+            //NSString *fileName = ;
+            NSString *imageFilePath = [[FileHandler sharedHandler] pathToFileWithFileName:messageDic[@"message"] OfType:kFileTypePhoto];
+            
+            UIImage * image = [UIImage imageWithContentsOfFile:imageFilePath];
+            
+            textCell.imageView.image =image;
+            
+            
+            
+            
+        }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_OTHERS]) {
+            textCell.imageView.hidden = YES;
+
+        
+        }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_LEFT]) {
             
             textCell.nameLabel.text = [NSString stringWithFormat:@"%@ %@",messageDic[@"sender"], messageDic[@"message"] ];
             textCell.chat_Text_Label.text = @"";
@@ -1331,8 +1491,34 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    NSString * audioFileName = [audioFileNamesDic objectForKey:@(indexPath.row)];
-    [self playAudioFileName:audioFileName];
+    //NSString * audioFileName = [audioFileNamesDic objectForKey:@(indexPath.row)];
+    
+    NSDictionary * messageDic = chatMessageList[indexPath.row];
+    
+    if([messageDic[@"type"] isEqual: MESSAGE_TYPE_TEXT] || [messageDic[@"type"] isEqual: MESSAGE_TYPE_LEFT]) {
+        
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        return;
+        
+    }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_AUDIO]) {
+        
+        NSString *audioFileName = messageDic[@"message"];
+        [self playAudioFileName:audioFileName];
+        
+    }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_VIDEO]) {
+        
+        
+        
+    }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_PHOTO]) {
+        
+        
+        
+    }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_OTHERS]) {
+        
+        
+        
+    }
+    
     
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -1411,6 +1597,10 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
     [self.view endEditing:YES];
     self.bottomSpaceForSendContainer.constant = 0;
     [self.view layoutIfNeeded];
+    
+    if(!self.popupFileView.hidden){
+        self.popupFileView.hidden = YES;
+    }
 }
 
 -(void)keyboardWasShown:(NSNotification*)notification {
@@ -1432,6 +1622,123 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
     return YES;
 }
 
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    
+    // Disallow recognition of tap gestures in the segmented control.
+    if (([touch.view isDescendantOfView:self.attachBtn])) {//change it to your condition
+        return NO;
+    }
+    return YES;
+}
+
+#pragma mark - Image Picker Controller delegate methods
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    
+    UIImage *image = info[UIImagePickerControllerOriginalImage];
+    [picker dismissViewControllerAnimated:YES completion:NULL];
+    
+    
+
+    
+    /*
+     NSString *extension = @"";
+    if(picker.sourceType == UIImagePickerControllerSourceTypePhotoLibrary){
+        
+        NSURL *imageFileURL = [info objectForKey:UIImagePickerControllerReferenceURL];
+        NSString *imageName = [imageFileURL lastPathComponent];
+        extension = [imageName pathExtension];
+        
+        imageData = UIImagePNGRepresentation(image);
+    }else{
+        
+        imageData = UIImagePNGRepresentation(image);
+        imageData = UIImageJPEGRepresentation(image, 0.94);
+        extension = @"PNG";
+    }
+     */
+    
+    //Save the image
+    
+   NSData *imageData = UIImageJPEGRepresentation(image, 0.94);
+    NSString *fileName = [FileHandler getFileNameOfType:kFileTypePhoto];
+    
+    [[FileHandler sharedHandler] writeData:imageData toFileName:fileName ofType:kFileTypePhoto];
+    
+    [self sendFile:fileName ofType:kFileTypePhoto];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    
+    [picker dismissViewControllerAnimated:YES completion:NULL];
+    
+}
+
+
+- (void)sendFile:(NSString *) fileName ofType:(int) fileType {
+    
+    //self.sendButton.enabled = NO;
+    
+    
+    int channelID = self.isPersonalChannel ? 0 :self.currentActiveChannel.channelID;
+    NSArray *chunkStringArray = [[MessageHandler sharedHandler] jsonStringArrayWithFile:fileName OfType:fileType inChannel:channelID];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+        if (self.isPersonalChannel) {
+            
+            for (int j = 0; j<chunkStringArray.count; j++) {
+                NSLog(@"message to send %@", [chunkStringArray objectAtIndex:j]);
+                if (j%5 == 0) {
+                    [NSThread sleepForTimeInterval:0.09];
+                }
+                [[asyncUDPConnectionHandler sharedHandler] sendVoiceMessage:[chunkStringArray objectAtIndex:j] toIPAddress:self.oponentUser.deviceIP];
+            }
+            
+        }else {
+            
+            for (int i= 0; i<self.currentActiveChannel.channelMemberIPs.count; i++) {
+                if (![[self.currentActiveChannel.channelMemberIPs objectAtIndex:i] isEqualToString:[[MessageHandler sharedHandler] getIPAddress]]) {
+                    for (int j = 0; j<chunkStringArray.count; j++) {
+                        NSLog(@"message to send %@", [chunkStringArray objectAtIndex:j]);
+                        if (j%5 == 0) {
+                            [NSThread sleepForTimeInterval:0.09];
+                        }
+                        //                    [NSThread sleepForTimeInterval:0.09];
+                        [[asyncUDPConnectionHandler sharedHandler] sendVoiceMessage:[chunkStringArray objectAtIndex:j] toIPAddress:[self.currentActiveChannel.channelMemberIPs objectAtIndex:i]];
+                    }
+                }
+                
+            }
+        }
+        
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Done"
+                                                            message: [NSString stringWithFormat:@"Sent packet count %lu", (unsigned long)chunkStringArray.count] //@"Voice Message Sent to Channel Members!"
+                                                           delegate: nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+            
+            
+            [alert show];
+            self.sendButton.enabled = YES;
+            
+            NSDictionary *messageDic = @{
+                                         @"sender": MESSAGE_SENDER_ME,
+                                         @"sender_name": @"Me",
+                                         @"type": @(fileType),
+                                         @"message": fileName
+                                         };
+            
+            [self updateUIForChatMessage:messageDic];
+
+        });
+    });
+    
+}
+
 
 
 #pragma mark - Navigation
@@ -1451,6 +1758,7 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
 //    
 //    NSLog(@"fdff");
 //}
+
 
 
 @end

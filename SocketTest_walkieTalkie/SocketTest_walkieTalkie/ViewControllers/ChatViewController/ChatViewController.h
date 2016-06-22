@@ -10,7 +10,7 @@
 #import <AVFoundation/AVFoundation.h>
 
 
-@interface ChatViewController : UIViewController <UITextFieldDelegate,AVAudioRecorderDelegate, AVAudioPlayerDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface ChatViewController : UIViewController <UITextFieldDelegate,AVAudioRecorderDelegate, AVAudioPlayerDelegate, UITableViewDataSource, UITableViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate>
 
 
 @property BOOL isPersonalChannel;
@@ -19,14 +19,9 @@
 @property (strong, nonatomic) Channel *currentActiveChannel;
 @property (nonatomic, strong) AVAudioPlayer *thePlayer;
 
-//@property (weak, nonatomic) IBOutlet UILabel *channelMemberListLabel;
-//@property (weak, nonatomic) IBOutlet UILabel *chatViewLabel;
-
 @property (weak, nonatomic) IBOutlet UITextField *chatTextField;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomSpaceForSendContainer;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *heightConstraintchatMemberTable;
-//@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topSpaceConstraintOfChatTable;
-
 
 
 
@@ -44,16 +39,26 @@
 @property (weak, nonatomic) IBOutlet UIButton *voiceStreamerButton;
 
 
-#pragma mark Action
+#pragma mark - IBAction
+#pragma mark Voice-Action
+- (IBAction)tappedOnVoiceBtn:(id)sender;
 - (IBAction)closeTappedOnVoiceMailView:(id)sender;
 - (IBAction)recordPauseTapped:(id)sender;
-//- (IBAction)stopTapped:(id)sender;
 - (IBAction)playTapped:(id)sender;
 - (IBAction)sendTapped:(id)sender;
 
+#pragma mark - File
+@property (weak, nonatomic) IBOutlet UIButton *attachBtn;
 
-//@property (weak, nonatomic) IBOutlet UIButton *stopButton;
-//@property (weak, nonatomic) IBOutlet UIButton *audioReceivedButton;
+@property (weak, nonatomic) IBOutlet UIView *popupFileView;
+
+- (IBAction)tappedOnAttachBtn:(id)sender;
+- (IBAction)tappedOnFileBtn:(id)sender;
+- (IBAction)tappedOnPhotoBtn:(id)sender;
+
+#pragma mark - Stream
+- (IBAction)tappedOnStreamBtn:(id)sender;
+
 
 @property (weak, nonatomic) IBOutlet UIView *memberTableContainerView;
 
@@ -63,6 +68,9 @@
 @property (weak, nonatomic) IBOutlet UITableView *channelMemberTableView;
 
 @property (weak, nonatomic) IBOutlet UITableView *chatTableView;
+
+
+
 
 
 

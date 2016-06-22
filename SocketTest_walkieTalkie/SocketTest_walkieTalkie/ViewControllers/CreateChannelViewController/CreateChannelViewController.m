@@ -38,7 +38,9 @@
 //[self.view addGestureRecognizer:aTap];
 
 -(void)ScreenTapped{
+    
     [self.view endEditing:YES];
+    
 }
 
 - (void)didReceiveMemoryWarning {

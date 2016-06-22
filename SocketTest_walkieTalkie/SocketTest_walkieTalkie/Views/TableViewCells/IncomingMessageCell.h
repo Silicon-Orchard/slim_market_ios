@@ -11,5 +11,6 @@
 @interface IncomingMessageCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *chat_Text_Label;
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
 
 @end

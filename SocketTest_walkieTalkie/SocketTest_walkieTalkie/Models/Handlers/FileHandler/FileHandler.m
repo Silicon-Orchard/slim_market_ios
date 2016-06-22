@@ -151,7 +151,7 @@
 
 - (NSString *)writeData:(NSData *)fileData toFileName:(NSString *)fileName ofType:(int)type {
     
-     NSString *filePath = [self pathToFileWithFileName:fileName OfType:type];
+    NSString *filePath = [self pathToFileWithFileName:fileName OfType:type];
     
     BOOL success = [fileData writeToFile:filePath atomically:YES];
     

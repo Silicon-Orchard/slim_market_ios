@@ -46,6 +46,7 @@
 		B23797E21D0FD7CA00F9F5A7 /* ic_public_channel.png in Resources */ = {isa = PBXBuildFile; fileRef = B23797DC1D0FD7CA00F9F5A7 /* ic_public_channel.png */; };
 		B23797E31D0FD7CA00F9F5A7 /* SplashScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = B23797DD1D0FD7CA00F9F5A7 /* SplashScreen.png */; };
 		B23797E81D1129FE00F9F5A7 /* ContactListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = B23797E71D1129FE00F9F5A7 /* ContactListVC.m */; };
+		B24087171D1A809300CD3341 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B24087161D1A809300CD3341 /* AssetsLibrary.framework */; };
 		B240958A1D17EE2A0040DE16 /* ChannelManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B24095891D17EE2A0040DE16 /* ChannelManager.m */; };
 		B273E9351D190B160045020C /* FileHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = B273E9341D190B160045020C /* FileHandler.m */; };
 		B2FBD3FF1D113BF700AC2495 /* UserHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FBD3FE1D113BF700AC2495 /* UserHandler.m */; };
@@ -134,6 +135,7 @@
 		B23797E41D0FD7D900F9F5A7 /* Znikomit.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Znikomit.otf; sourceTree = "<group>"; };
 		B23797E61D1129FE00F9F5A7 /* ContactListVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactListVC.h; sourceTree = "<group>"; };
 		B23797E71D1129FE00F9F5A7 /* ContactListVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactListVC.m; sourceTree = "<group>"; };
+		B24087161D1A809300CD3341 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		B24095881D17EE2A0040DE16 /* ChannelManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChannelManager.h; sourceTree = "<group>"; };
 		B24095891D17EE2A0040DE16 /* ChannelManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChannelManager.m; sourceTree = "<group>"; };
 		B273E9331D190B160045020C /* FileHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileHandler.h; sourceTree = "<group>"; };
@@ -158,6 +160,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B24087171D1A809300CD3341 /* AssetsLibrary.framework in Frameworks */,
 				5C73603E1CF47553008DD6B5 /* CoreAudio.framework in Frameworks */,
 				5C73603F1CF47553008DD6B5 /* CoreAudioKit.framework in Frameworks */,
 				5C8CE3751CDB8CD400EE532F /* AudioToolbox.framework in Frameworks */,
@@ -173,6 +176,7 @@
 		098949612D42FF573319961B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B24087161D1A809300CD3341 /* AssetsLibrary.framework */,
 				5C73603C1CF47553008DD6B5 /* CoreAudio.framework */,
 				5C73603D1CF47553008DD6B5 /* CoreAudioKit.framework */,
 				5C8CE3741CDB8CD300EE532F /* AudioToolbox.framework */,
