@@ -44,7 +44,7 @@
             extension = @".mp4";
             break;
         case kFileTypePhoto:
-            extension = @".jpg";
+            extension = @".png";
             break;
         case kFileTypeOthers:
             extension = @"";
@@ -193,6 +193,9 @@
     
     NSString *filePath = [self pathToFileWithFileName:fileName OfType:type];
     NSData *fileData = [self dataFromFilePath:filePath];
+    
+    printf("File Data Lenth : %u", [fileData length]);
+    
     
     int index = 0;
     int totalLen = (int)[fileData length];

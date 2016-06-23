@@ -187,7 +187,7 @@ void AudioInputCallback(void * inUserData,  // Custom audio metadata
 }
 
 - (void)feedSamplesToEngine:(UInt32)audioDataBytesCapacity audioData:(void *)audioData {
-    int sampleCount = audioDataBytesCapacity / sizeof(AUDIO_DATA_TYPE_FORMAT);
+    //int sampleCount = audioDataBytesCapacity / sizeof(AUDIO_DATA_TYPE_FORMAT);
 //    AUDIO_DATA_TYPE_FORMAT *samples = (AUDIO_DATA_TYPE_FORMAT*)audioData;
 //    
 //    //Do something with the samples

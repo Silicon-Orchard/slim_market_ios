@@ -22,7 +22,7 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
     NSString *myIPAddress = [[MessageHandler sharedHandler] getIPAddress];
     NSArray *Array = [myIPAddress componentsSeparatedByString:@"."];
-    NSString * lastSegment = [Array objectAtIndex:3];
+    //NSString * lastSegment = [Array objectAtIndex:3];
     NSString * threeSegments = [NSString stringWithFormat:@"%@.%@.%@.", [Array objectAtIndex:0], [Array objectAtIndex:1], [Array objectAtIndex:2]];
     [[NSUserDefaults standardUserDefaults] setObject:threeSegments forKey:IPADDRESS_FORMATKEY];
     [[NSUserDefaults standardUserDefaults] synchronize];

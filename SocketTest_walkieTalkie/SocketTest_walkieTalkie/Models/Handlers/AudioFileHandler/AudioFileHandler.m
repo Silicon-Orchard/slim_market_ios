@@ -220,11 +220,11 @@
 //        NSLog(@"File Doesn't Exist!");
 //        return nil;
 //    }
-    NSString *searchFilename = fileName; // name of the PDF you are searching for
+//NSString *searchFilename = fileName; // name of the PDF you are searching for
     
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSDirectoryEnumerator *direnum = [[NSFileManager defaultManager] enumeratorAtPath:documentsDirectory];
+    //NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    //NSString *documentsDirectory = [paths objectAtIndex:0];
+    //NSDirectoryEnumerator *direnum = [[NSFileManager defaultManager] enumeratorAtPath:documentsDirectory];
     
     NSString *documentsSubpath =  [documentsPath stringByAppendingPathComponent:fileName];;
 //    while (documentsSubpath = [direnum nextObject])

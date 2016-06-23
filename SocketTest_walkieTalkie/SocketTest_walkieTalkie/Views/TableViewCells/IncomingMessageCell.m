@@ -10,6 +10,8 @@
 
 @implementation IncomingMessageCell
 
+@synthesize imageView;
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];

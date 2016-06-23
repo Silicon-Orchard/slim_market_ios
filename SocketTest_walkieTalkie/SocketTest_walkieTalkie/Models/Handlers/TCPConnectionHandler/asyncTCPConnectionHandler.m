@@ -144,11 +144,12 @@
     NSLog(@"Data Sent!");
     [self.currentTCPSenderSocket disconnectAfterWriting];
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"data sent"
-                                                        message: @"socket Disconnected!"
-                                                       delegate: nil
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil];
+        
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"data sent"
+//                                                        message: @"socket Disconnected!"
+//                                                       delegate: nil
+//                                              cancelButtonTitle:@"OK"
+//                                              otherButtonTitles:nil];
         
         
         //            [NSThread sleepForTimeInterval:0.01];
@@ -161,11 +162,11 @@
 - (void)socketDidDisconnect:(GCDAsyncSocket *)sock withError:(NSError *)err{
     NSLog(@"Socket Disconnected with error: %@", [err localizedDescription]);
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Socket Disconnected!"
-                                                        message: @":("
-                                                       delegate: nil
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil];
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Socket Disconnected!"
+//                                                        message: @":("
+//                                                       delegate: nil
+//                                              cancelButtonTitle:@"OK"
+//                                              otherButtonTitles:nil];
         
         
         //            [NSThread sleepForTimeInterval:0.01];
@@ -183,11 +184,11 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:TCP_VOICE_MESSAGE_RECEIEVED_NOTIFICATIONKEY object:nil userInfo:userInfo];
     [self.currentTCPSenderSocket disconnectAfterReading];
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Audio Arrived"
-                                                        message: @"Data received"
-                                                       delegate: nil
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil];
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Audio Arrived"
+//                                                        message: @"Data received"
+//                                                       delegate: nil
+//                                              cancelButtonTitle:@"OK"
+//                                              otherButtonTitles:nil];
         
         
         //            [NSThread sleepForTimeInterval:0.01];
