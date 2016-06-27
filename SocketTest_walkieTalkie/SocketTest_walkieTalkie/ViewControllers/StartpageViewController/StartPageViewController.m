@@ -61,6 +61,9 @@
     [self.view addGestureRecognizer:aTap];
 
     // Do any additional setup after loading the view.
+    
+    
+    NSLog(@"%@", [[FileHandler sharedHandler] pathToFileFolderOfType:kFileTypePhoto]);
 }
 
 -(void)viewWillAppear:(BOOL)animated{

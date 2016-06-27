@@ -48,6 +48,10 @@
 		B23797E81D1129FE00F9F5A7 /* ContactListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = B23797E71D1129FE00F9F5A7 /* ContactListVC.m */; };
 		B24087171D1A809300CD3341 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B24087161D1A809300CD3341 /* AssetsLibrary.framework */; };
 		B240958A1D17EE2A0040DE16 /* ChannelManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B24095891D17EE2A0040DE16 /* ChannelManager.m */; };
+		B2507A4B1D1D36DC007921E8 /* MessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2507A451D1D36DB007921E8 /* MessageView.m */; };
+		B2507A4C1D1D36DC007921E8 /* ImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2507A471D1D36DB007921E8 /* ImageView.m */; };
+		B2507A4D1D1D36DC007921E8 /* ProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2507A491D1D36DC007921E8 /* ProgressView.m */; };
+		B25F5A501D20FCCA00C37B9F /* ProgressObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = B25F5A4F1D20FCCA00C37B9F /* ProgressObserver.m */; };
 		B273E9351D190B160045020C /* FileHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = B273E9341D190B160045020C /* FileHandler.m */; };
 		B2FBD3FF1D113BF700AC2495 /* UserHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FBD3FE1D113BF700AC2495 /* UserHandler.m */; };
 		B2FBD4021D1156DA00AC2495 /* ContactListTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FBD4011D1156DA00AC2495 /* ContactListTVC.m */; };
@@ -138,6 +142,14 @@
 		B24087161D1A809300CD3341 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		B24095881D17EE2A0040DE16 /* ChannelManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChannelManager.h; sourceTree = "<group>"; };
 		B24095891D17EE2A0040DE16 /* ChannelManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChannelManager.m; sourceTree = "<group>"; };
+		B2507A451D1D36DB007921E8 /* MessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageView.m; sourceTree = "<group>"; };
+		B2507A461D1D36DB007921E8 /* MessageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageView.h; sourceTree = "<group>"; };
+		B2507A471D1D36DB007921E8 /* ImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageView.m; sourceTree = "<group>"; };
+		B2507A481D1D36DC007921E8 /* ImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageView.h; sourceTree = "<group>"; };
+		B2507A491D1D36DC007921E8 /* ProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressView.m; sourceTree = "<group>"; };
+		B2507A4A1D1D36DC007921E8 /* ProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgressView.h; sourceTree = "<group>"; };
+		B25F5A4E1D20FCCA00C37B9F /* ProgressObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgressObserver.h; sourceTree = "<group>"; };
+		B25F5A4F1D20FCCA00C37B9F /* ProgressObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressObserver.m; sourceTree = "<group>"; };
 		B273E9331D190B160045020C /* FileHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileHandler.h; sourceTree = "<group>"; };
 		B273E9341D190B160045020C /* FileHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileHandler.m; sourceTree = "<group>"; };
 		B2FBD3FD1D113BF700AC2495 /* UserHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserHandler.h; sourceTree = "<group>"; };
@@ -319,6 +331,12 @@
 		B23797971D0FD4B400F9F5A7 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B2507A461D1D36DB007921E8 /* MessageView.h */,
+				B2507A451D1D36DB007921E8 /* MessageView.m */,
+				B2507A481D1D36DC007921E8 /* ImageView.h */,
+				B2507A471D1D36DB007921E8 /* ImageView.m */,
+				B2507A4A1D1D36DC007921E8 /* ProgressView.h */,
+				B2507A491D1D36DC007921E8 /* ProgressView.m */,
 				B23797981D0FD4D900F9F5A7 /* TableViewCells */,
 			);
 			path = Views;
@@ -445,6 +463,8 @@
 				B24095891D17EE2A0040DE16 /* ChannelManager.m */,
 				B23797D11D0FD78500F9F5A7 /* UserDataModel.h */,
 				B23797D21D0FD78500F9F5A7 /* UserDataModel.m */,
+				B25F5A4E1D20FCCA00C37B9F /* ProgressObserver.h */,
+				B25F5A4F1D20FCCA00C37B9F /* ProgressObserver.m */,
 			);
 			path = ClientDataModel;
 			sourceTree = "<group>";
@@ -663,12 +683,15 @@
 				B23797A11D0FD4D900F9F5A7 /* OutGoingMessagesCell.m in Sources */,
 				5C2079F21CCF7DB0007A5F21 /* AppDelegate.m in Sources */,
 				B237977A1D0FD1B200F9F5A7 /* StartPageViewController.m in Sources */,
+				B25F5A501D20FCCA00C37B9F /* ProgressObserver.m in Sources */,
 				B23797791D0FD1B200F9F5A7 /* JoinChannelViewController.m in Sources */,
 				B23797B01D0FD56B00F9F5A7 /* ChannelHandler.m in Sources */,
 				B23797781D0FD1B200F9F5A7 /* CreateChannelViewController.m in Sources */,
+				B2507A4D1D1D36DC007921E8 /* ProgressView.m in Sources */,
 				B23797C71D0FD6E500F9F5A7 /* VoiceStreamHandler.m in Sources */,
 				B23797D51D0FD78500F9F5A7 /* User.m in Sources */,
 				B23797B21D0FD56B00F9F5A7 /* MessageHandler.m in Sources */,
+				B2507A4C1D1D36DC007921E8 /* ImageView.m in Sources */,
 				B23797B11D0FD56B00F9F5A7 /* ChatHandler.m in Sources */,
 				B23797B91D0FD5AA00F9F5A7 /* asyncTCPConnectionHandler.m in Sources */,
 				B273E9351D190B160045020C /* FileHandler.m in Sources */,
@@ -679,6 +702,7 @@
 				B23797A01D0FD4D900F9F5A7 /* IncomingMessageCell.m in Sources */,
 				B23797C11D0FD6BA00F9F5A7 /* AudioRecorderTest_StreamPlayer.m in Sources */,
 				5C2079EF1CCF7DB0007A5F21 /* main.m in Sources */,
+				B2507A4B1D1D36DC007921E8 /* MessageView.m in Sources */,
 				B240958A1D17EE2A0040DE16 /* ChannelManager.m in Sources */,
 				B23797771D0FD1B200F9F5A7 /* ChatViewController.m in Sources */,
 			);

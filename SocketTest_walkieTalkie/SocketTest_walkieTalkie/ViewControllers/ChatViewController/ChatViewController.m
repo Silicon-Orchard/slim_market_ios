@@ -14,19 +14,24 @@
 #import "channelMemberActivityTableViewCell.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
+#import "MessageView.h"
+#import "ImageView.h"
+#import "ProgressView.h"
+
+
 
 #define VoiceMessageSign @"voice&^%"
 
 #define MESSAGE_SENDER_ME           @(0)
 #define MESSAGE_SENDER_OTHER        @(1)
 
-#define MESSAGE_TYPE_TEXT           @(0)
-#define MESSAGE_TYPE_AUDIO          @(1)
-#define MESSAGE_TYPE_VIDEO          @(2)
-#define MESSAGE_TYPE_PHOTO          @(3)
-#define MESSAGE_TYPE_OTHERS         @(4)
+#define MESSAGE_TYPE_TEXT           ((int) 0)
+#define MESSAGE_TYPE_AUDIO          ((int) 1)
+#define MESSAGE_TYPE_VIDEO          ((int) 2)
+#define MESSAGE_TYPE_PHOTO          ((int) 3)
+#define MESSAGE_TYPE_OTHERS         ((int) 4)
 
-#define MESSAGE_TYPE_LEFT          @(10)
+#define MESSAGE_TYPE_LEFT          ((int) 10)
 
 typedef void(^myCompletion)(BOOL);
 
@@ -49,7 +54,9 @@ typedef void(^myCompletion)(BOOL);
     BOOL _isStreaming, _isPlayingStream;
     AudioRecorderTest *queueRecorder;
     NSMutableArray *receivedAudioStreamContainerArray;
-    NSMutableArray *chatRoomMemberList, *chatMessageList;
+    NSMutableArray *chatRoomMemberList;
+    
+    NSMutableArray * messageDataList;
     
     BOOL addingVoiceMessage;
     
@@ -77,7 +84,7 @@ typedef void(^myCompletion)(BOOL);
     addingVoiceMessage = NO;
     audioFileNamesDic = [NSMutableDictionary new];
     
-    chatMessageList = [[NSMutableArray alloc] init];
+    messageDataList = [[NSMutableArray alloc] init];
     chatRoomMemberList = [[NSMutableArray alloc] init];
     receivedAudioStreamContainerArray = [[NSMutableArray alloc] init];
     [ChannelHandler sharedHandler].currentlyActiveChannel = self.currentActiveChannel;
@@ -108,12 +115,7 @@ typedef void(^myCompletion)(BOOL);
     
     [self.playButton setEnabled:NO];
 
-    [self.chatTableView addObserver:self forKeyPath:@"contentSize" options:0 context:NULL];
-
-
-
-    
-    
+    //[self.chatTableView addObserver:self forKeyPath:@"contentSize" options:0 context:NULL];
 
 }
 
@@ -158,7 +160,7 @@ typedef void(^myCompletion)(BOOL);
     
     if ([self.navigationController.viewControllers indexOfObject:self] == NSNotFound) {
         // Navigation button was pressed.
-        
+         
         [self channelLeaveMessageSend];
         
     }
@@ -174,7 +176,7 @@ typedef void(^myCompletion)(BOOL);
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
-    [self.chatTableView removeObserver:self forKeyPath:@"contentSize"];
+    //[self.chatTableView removeObserver:self forKeyPath:@"contentSize"];
     [[FileHandler sharedHandler] deleteWalkieTalkieDirectory];
     
     
@@ -361,17 +363,21 @@ typedef void(^myCompletion)(BOOL);
     [self.view layoutIfNeeded];
 }
 
--(void)updateUIForChatMessage:(NSDictionary *)messageDic {
+-(void)updateUIForChatMessage:(MessageData *)messagedData {
     
-    [chatMessageList addObject:messageDic];
+    [messageDataList addObject:messagedData];
     
-    NSIndexPath * indexPathOfYourCell = [NSIndexPath indexPathForRow:([chatMessageList count] -1) inSection:0];
+    NSIndexPath * indexPathOfYourCell = [NSIndexPath indexPathForRow:([messageDataList count] - 1) inSection:0];
     
     [self.chatTableView beginUpdates];
-    [self.chatTableView insertRowsAtIndexPaths:@[indexPathOfYourCell] withRowAnimation:UITableViewRowAnimationNone];
+    [self.chatTableView insertRowsAtIndexPaths:@[indexPathOfYourCell] withRowAnimation:UITableViewRowAnimationFade];
     [self.chatTableView endUpdates];
     
-    [self.chatTableView scrollToRowAtIndexPath:indexPathOfYourCell atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+    // Scroll to the bottom so we focus on the latest message
+    NSUInteger numberOfRows = [self.chatTableView numberOfRowsInSection:0];
+    if (numberOfRows) {
+        [self.chatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:(numberOfRows - 1) inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    }
 }
 
 -(void)startImageEqualizer{
@@ -442,16 +448,8 @@ typedef void(^myCompletion)(BOOL);
         }
     }
     
-
-    NSDictionary *messageDic = @{
-                                 @"sender": MESSAGE_SENDER_ME,
-                                 @"sender_name": @"Me",
-                                 @"type": MESSAGE_TYPE_TEXT,
-                                 @"message": self.chatTextField.text
-                                 };
-    
-    
-    [self updateUIForChatMessage:messageDic];
+    MessageData * messageData = [[MessageData alloc] initWithSender:@"Me"  type:MESSAGE_TYPE_TEXT message:self.chatTextField.text direction:MESSAGE_DIRECTION_SEND];
+    [self updateUIForChatMessage:messageData];
     
     self.chatTextField.text = @"";
     //[self.chatTextField becomeFirstResponder];
@@ -590,6 +588,8 @@ typedef void(^myCompletion)(BOOL);
 }
 
 - (IBAction)tappedOnFileBtn:(id)sender {
+    
+    
 }
 
 - (IBAction)tappedOnPhotoBtn:(id)sender {
@@ -654,16 +654,14 @@ typedef void(^myCompletion)(BOOL);
     
     NSDictionary* userInfo = notification.userInfo;
     NSData* receivedData = (NSData*)userInfo[@"receievedData"];
-    NSLog (@"Successfully received Chat Message notification! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
     NSDictionary *jsonDict = [NSJSONSerialization  JSONObjectWithData:receivedData options:0 error:nil];
     
-    NSDictionary *messageDic = @{
-                                 @"sender": MESSAGE_SENDER_OTHER,
-                                 @"sender_name": [jsonDict objectForKey:JSON_KEY_DEVICE_NAME],
-                                 @"type" : MESSAGE_TYPE_TEXT,
-                                 @"message":[jsonDict objectForKey:JSON_KEY_MESSAGE]
-                                 };
-    [self updateUIForChatMessage:messageDic];
+    
+    NSString *senderName = [jsonDict objectForKey:JSON_KEY_DEVICE_NAME];
+    NSString *message = [jsonDict objectForKey:JSON_KEY_MESSAGE];
+    
+    MessageData *messageData = [[MessageData alloc] initWithSender:senderName type:MESSAGE_TYPE_TEXT message:message direction:MESSAGE_DIRECTION_RECEIVE];
+    [self updateUIForChatMessage:messageData];
 }
 
 
@@ -749,13 +747,11 @@ typedef void(^myCompletion)(BOOL);
                 
                 [self updateUIForChatViewWithChannel:currentlyActiveChannel];
                 
-                NSDictionary *messageDic = @{
-                                             @"sender": MESSAGE_SENDER_OTHER,
-                                             @"sender_name": jsonDict[@"device_name"],
-                                             @"type": MESSAGE_TYPE_LEFT,
-                                             @"message": @"has left!"
-                                             };
-                [self updateUIForChatMessage:messageDic];
+                
+                NSString *senderName = jsonDict[@"device_name"];
+                NSString *message = @"has left!";
+                MessageData * messageData = [[MessageData alloc] initWithSender:senderName  type:MESSAGE_TYPE_LEFT message:message direction:MESSAGE_DIRECTION_LOCAL];
+                [self updateUIForChatMessage:messageData];
                 
                 
                 [chatRoomMemberList addObject:[NSString stringWithFormat:@"%@ has left!",leftMemberName]];
@@ -849,18 +845,6 @@ typedef void(^myCompletion)(BOOL);
     NSDictionary* userInfo = notification.userInfo;
     NSData* receivedData = (NSData*)userInfo[@"receievedData"];
     NSDictionary *jsonDict = [NSJSONSerialization  JSONObjectWithData:receivedData options:0 error:nil];
-
-//    NSDictionary * postDictionary = @{
-//                                      JSON_KEY_TYPE : @(TYPE_FILE_MESSAGE),
-//                                      JSON_KEY_CHANNEL: @(channelID),
-//                                      JSON_KEY_DEVICE_NAME : [UIDevice currentDevice].name,
-//                                      JSON_KEY_FILE_TYPE: @(type),
-//                                      JSON_KEY_FILE_NAME: fileName,
-//                                      JSON_KEY_FILE_MESSAGE: [encodedStringChunksArray objectAtIndex:i],
-//                                      JSON_KEY_FILE_CHUNK_COUNT: @(chunkCount),
-//                                      JSON_KEY_FILE_CURRENT_CHUNK: @(i+1)
-//                                      };
-    
     
     int fileType = [[jsonDict objectForKey:JSON_KEY_FILE_TYPE] intValue];
     
@@ -926,21 +910,16 @@ typedef void(^myCompletion)(BOOL);
                 
                 [[FileHandler sharedHandler] writeData:finalFileData toFileName:fileName ofType:fileType];
                 
-                NSDictionary *messageDic = @{
-                                             @"sender": MESSAGE_SENDER_OTHER,
-                                             @"sender_name": [jsonDict objectForKey:JSON_KEY_DEVICE_NAME],
-                                             @"type": @(fileType),
-                                             @"message": fileName
-                                             };
-                
-                
                 
                 
                 NSData *imageData = [NSData dataWithContentsOfFile:[[FileHandler sharedHandler] pathToFileWithFileName:fileName OfType:fileType]];
                 NSUInteger byteCount = [imageData length];
-                printf("\nReceving number of bytes: %u\n", byteCount);
+                printf("\nReceving number of bytes: %lu\n", (unsigned long)byteCount);
                 
-                [self updateUIForChatMessage:messageDic];
+                
+                NSString *senderName = [jsonDict objectForKey:JSON_KEY_DEVICE_NAME];
+                MessageData * messageData = [[MessageData alloc] initWithSender:senderName type:fileType message:fileName direction:MESSAGE_DIRECTION_RECEIVE];
+                [self updateUIForChatMessage:messageData];
                 
             } else{
                 
@@ -1074,17 +1053,6 @@ typedef void(^myCompletion)(BOOL);
         }
         [[AudioRecorderTest_StreamPlayer sharedHandler] enqueueBufferWithAudioData:receivedData];
     }
-//    [[AudioRecorderTest_StreamPlayer sharedHandler] enqueueBufferWithAudioData:receivedData];
-//    [receivedAudioStreamContainerArray addObject:receivedData];
-//    [self playAudioStream];
-
-    //    [[NSNotificationCenter defaultCenter] postNotificationName:@"playAudioNotification" object:nil];
-//    
-//    if (!_isPlayingStream) {
-////        [[NSNotificationCenter defaultCenter] postNotificationName:@"playAudioNotification" object:nil];
-//        [self playAudioStream];
-//        _isPlayingStream = YES;
-//    }
 }
 
 #pragma mark - AVAudioPlayerDelegate
@@ -1093,14 +1061,6 @@ typedef void(^myCompletion)(BOOL);
     
     [self stopImageEqualizer];
     [self.thePlayer stop];
-    
-//    if (receivedAudioStreamContainerArray.count > 0) {
-//        [receivedAudioStreamContainerArray removeObjectAtIndex:0];
-//        [self playAudioStream];
-//    }
-//    else{
-//        _isPlayingStream = NO;
-//    }
 }
 
 - (void)audioPlayerDecodeErrorDidOccur:(AVAudioPlayer *)player error:(NSError * __nullable)error{
@@ -1121,80 +1081,81 @@ typedef void(^myCompletion)(BOOL);
 {
     if ([cell isKindOfClass:[IncomingMessageCell class]]) {
         
-        NSDictionary *messageDic = [chatMessageList objectAtIndex:indexPath.row];
-        
-        IncomingMessageCell *textCell = (IncomingMessageCell *)cell;
-        
-        
-        if([messageDic[@"sender"] isEqual: MESSAGE_SENDER_ME]){
-            
-            textCell.nameLabel.textAlignment = NSTextAlignmentRight;
-            textCell.chat_Text_Label.textAlignment = NSTextAlignmentRight;
-        }
-        
-        
-        
-        if([messageDic[@"type"] isEqual: MESSAGE_TYPE_TEXT]) {
-            
-            textCell.nameLabel.text = messageDic[@"sender_name"];
-            textCell.chat_Text_Label.text = messageDic[@"message"];
-            textCell.imageView.hidden = YES;
-
-            
-        }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_AUDIO]) {
-            
-            //Do Necessary Work
-//            if(![audioFileNamesDic objectForKey:@(indexPath.row)]){
-//                
-//                [audioFileNamesDic setObject:[recordedAudioFileNames lastObject] forKey:@(indexPath.row)];
-//            }
-            
-            textCell.nameLabel.text = messageDic[@"sender_name"];
-            textCell.chat_Text_Label.text = @"sent a voice message ▶️";
-            textCell.imageView.hidden = YES;
-
-        }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_VIDEO]) {
-            
-            
-            
-        }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_PHOTO]) {
-            textCell.chat_Text_Label.hidden = YES;
-            textCell.imageView.hidden = NO;
-            
-            //NSString *fileName = ;
-            
-            NSString *imageFilePath = [[FileHandler sharedHandler] pathToFileWithFileName:messageDic[@"message"] OfType:kFileTypePhoto];
-            
-            UIImage * image = [UIImage imageWithContentsOfFile:imageFilePath];
-            
-            textCell.imageView.image =image;
-            
-            
-            
-            
-        }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_OTHERS]) {
-            textCell.imageView.hidden = YES;
-
-        
-        }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_LEFT]) {
-            
-            textCell.nameLabel.text = [NSString stringWithFormat:@"%@ %@",messageDic[@"sender"], messageDic[@"message"] ];
-            textCell.chat_Text_Label.text = @"";
-        }
-        
-        textCell.nameLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
-        textCell.chat_Text_Label.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+//        MessageData *messageData = [messageDataList objectAtIndex:indexPath.row];
+//        
+//        IncomingMessageCell *textCell = (IncomingMessageCell *)cell;
+//        
+//        
+//        if([messageDic[@"sender"] isEqual: MESSAGE_SENDER_ME]){
+//            
+//            textCell.nameLabel.textAlignment = NSTextAlignmentRight;
+//            textCell.chat_Text_Label.textAlignment = NSTextAlignmentRight;
+//        }
+//        
+//        
+//        
+//        if([messageDic[@"type"] isEqual: MESSAGE_TYPE_TEXT]) {
+//            
+//            textCell.nameLabel.text = messageDic[@"sender_name"];
+//            textCell.chat_Text_Label.text = messageDic[@"message"];
+//            textCell.imageView.hidden = YES;
+//
+//            
+//        }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_AUDIO]) {
+//            
+//            //Do Necessary Work
+////            if(![audioFileNamesDic objectForKey:@(indexPath.row)]){
+////                
+////                [audioFileNamesDic setObject:[recordedAudioFileNames lastObject] forKey:@(indexPath.row)];
+////            }
+//            
+//            textCell.nameLabel.text = messageDic[@"sender_name"];
+//            textCell.chat_Text_Label.text = @"sent a voice message ▶️";
+//            textCell.imageView.hidden = YES;
+//
+//        }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_VIDEO]) {
+//            
+//            
+//            
+//        }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_PHOTO]) {
+//            textCell.chat_Text_Label.hidden = YES;
+//            textCell.imageView.hidden = NO;
+//            
+//            //NSString *fileName = ;
+//            
+//            NSString *imageFilePath = [[FileHandler sharedHandler] pathToFileWithFileName:messageDic[@"message"] OfType:kFileTypePhoto];
+//            UIImage * image = [UIImage imageWithContentsOfFile:imageFilePath];
+//            
+//            textCell.imageView.image =image;
+//            
+//            
+//            
+//            
+//        }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_OTHERS]) {
+//            textCell.imageView.hidden = YES;
+//
+//        
+//        }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_LEFT]) {
+//            
+//            textCell.nameLabel.text = [NSString stringWithFormat:@"%@ %@",messageDic[@"sender"], messageDic[@"message"] ];
+//            textCell.chat_Text_Label.text = @"";
+//        }
+//        
+//        textCell.nameLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
+//        textCell.chat_Text_Label.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    
     }
+        
 }
 
-- (IncomingMessageCell *)prototypeCell
-{
-    if (!_prototypeCell)
-    {
-        _prototypeCell = [self.chatTableView dequeueReusableCellWithIdentifier:incomingMessageCellIdentifier];
-    }
-    return _prototypeCell;
-}
+//- (IncomingMessageCell *)prototypeCell
+//{
+//    if (!_prototypeCell)
+//    {
+//        _prototypeCell = [self.chatTableView dequeueReusableCellWithIdentifier:incomingMessageCellIdentifier];
+//    }
+//    return _prototypeCell;
+//}
 
 
 #pragma mark UITableViewDataSource
@@ -1209,7 +1170,7 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
         return chatRoomMemberList.count;
         
     }else if (tableView.tag ==101) {
-        return chatMessageList.count;
+        return messageDataList.count;
     }
     
     return 1;
@@ -1242,9 +1203,34 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
         
     } else{
         
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:incomingMessageCellIdentifier forIndexPath:indexPath];
-        [self configureCell:cell forRowAtIndexPath:indexPath];
+        // Get the transcript for this row
+        MessageData *messageData = [messageDataList objectAtIndex:indexPath.row];
+        
+
+        UITableViewCell *cell;
+        if (messageData.type == kFileTypePhoto) {
+
+            cell = [tableView dequeueReusableCellWithIdentifier:@"ImageCellID" forIndexPath:indexPath];
+            ImageView *imageView = (ImageView *)[cell viewWithTag:IMAGE_VIEW_TAG];
+            imageView.messageData = messageData;
+        }
+        else if (messageData.progress != nil) {
+
+            cell = [tableView dequeueReusableCellWithIdentifier:@"ProgressCellID" forIndexPath:indexPath];
+            ProgressView *progressView = (ProgressView *)[cell viewWithTag:PROGRESS_VIEW_TAG];
+            progressView.messageData = messageData;
+        }
+        else {
+
+            cell = [tableView dequeueReusableCellWithIdentifier:@"MessageCellID" forIndexPath:indexPath];
+            MessageView *messageView = (MessageView *)[cell viewWithTag:MESSAGE_VIEW_TAG];
+            messageView.messageData = messageData;
+        }
         return cell;
+        
+//        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:incomingMessageCellIdentifier forIndexPath:indexPath];
+//        [self configureCell:cell forRowAtIndexPath:indexPath];
+//        return cell;
 
     }
     
@@ -1253,51 +1239,66 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
     
 #pragma mark UITableViewDelegate
 
-- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return UITableViewAutomaticDimension;
-}
+//- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    return UITableViewAutomaticDimension;
+//}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (tableView.tag == 102) {
+        
         return 26;
+    } else {
+        
+        // Dynamically compute the label size based on cell type (image, image progress, or text message)
+        MessageData *messageData = [messageDataList objectAtIndex:indexPath.row];
+        if (messageData.type == kFileTypePhoto) {
+            return [ImageView viewHeightForTranscript:messageData];
+        }
+        else if (messageData.progress != nil) {
+            return [ProgressView viewHeightForTranscript:messageData];
+        }
+        else {
+            return [MessageView viewHeightForTranscript:messageData];
+        }
     }
-    [self configureCell:self.prototypeCell forRowAtIndexPath:indexPath];
-    self.prototypeCell.bounds = CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.chatTableView.bounds), CGRectGetHeight(self.prototypeCell.bounds));
-
-    [self.prototypeCell layoutIfNeeded];
-
-    CGSize size = [self.prototypeCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
-    return size.height+1;
+    
+//    [self configureCell:self.prototypeCell forRowAtIndexPath:indexPath];
+//    self.prototypeCell.bounds = CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.chatTableView.bounds), CGRectGetHeight(self.prototypeCell.bounds));
+//
+//    [self.prototypeCell layoutIfNeeded];
+//
+//    CGSize size = [self.prototypeCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+//    return size.height+1;
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    NSDictionary * messageDic = chatMessageList[indexPath.row];
+    //NSDictionary * messageDic = messageDataList[indexPath.row];
     
-    if([messageDic[@"type"] isEqual: MESSAGE_TYPE_TEXT] || [messageDic[@"type"] isEqual: MESSAGE_TYPE_LEFT]) {
-        
-
-        return nil;
-        
-    }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_AUDIO]) {
-        
-        
-        
-    }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_VIDEO]) {
-        
-        
-        
-    }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_PHOTO]) {
-        
-        
-        
-    }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_OTHERS]) {
-        
-        
-        
-    }
+//    if([messageDic[@"type"] isEqual: MESSAGE_TYPE_TEXT] || [messageDic[@"type"] isEqual: MESSAGE_TYPE_LEFT]) {
+//        
+//
+//        return nil;
+//        
+//    }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_AUDIO]) {
+//        
+//        
+//        
+//    }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_VIDEO]) {
+//        
+//        
+//        
+//    }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_PHOTO]) {
+//        
+//        
+//        
+//    }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_OTHERS]) {
+//        
+//        
+//        
+//    }
     
     return indexPath;
 }
@@ -1307,50 +1308,33 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
     
     //NSString * audioFileName = [audioFileNamesDic objectForKey:@(indexPath.row)];
     
-    NSDictionary * messageDic = chatMessageList[indexPath.row];
+    //MessageData * messageData = messageDataList[indexPath.row];
     
-    if([messageDic[@"type"] isEqual: MESSAGE_TYPE_TEXT] || [messageDic[@"type"] isEqual: MESSAGE_TYPE_LEFT]) {
-        
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        return;
-        
-    }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_AUDIO]) {
-        
-        NSString *audioFileName = messageDic[@"message"];
-        [self playAudioFileName:audioFileName];
-        
-    }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_VIDEO]) {
-        
-        
-        
-    }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_PHOTO]) {
-        
-        
-        
-    }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_OTHERS]) {
-        
-        
-        
-    }
+//    if([messageDic[@"type"] isEqual: MESSAGE_TYPE_TEXT] || [messageDic[@"type"] isEqual: MESSAGE_TYPE_LEFT]) {
+//        
+//        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+//        return;
+//        
+//    }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_AUDIO]) {
+//        
+//        NSString *audioFileName = messageDic[@"message"];
+//        [self playAudioFileName:audioFileName];
+//        
+//    }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_VIDEO]) {
+//        
+//        
+//        
+//    }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_PHOTO]) {
+//        
+//        
+//        
+//    }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_OTHERS]) {
+//        
+//        
+//        
+//    }
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-}
-
-
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    // This will create a "invisible" footer
-    return 0.01f;
-}
-
--(UIView*)tableView:(UITableView*)tableView viewForHeaderInSection:(NSInteger)section
-{
-    return [[UIView alloc] initWithFrame:CGRectZero];
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-{
-    return [[UIView alloc] initWithFrame:CGRectZero];
 }
 
 
@@ -1395,13 +1379,13 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-//    CGRect frame = self.chatTableView.frame;
-//    frame.size = self.chatTableView.contentSize;
-//    
-//    if (frame.size.height > self.chatTableContainerView.frame.size.height) {
-//        frame.size.height = self.chatTableContainerView.frame.size.height;
-//     }
-//    self.chatTableView.frame = frame;
+    //    CGRect frame = self.chatTableView.frame;
+    //    frame.size = self.chatTableView.contentSize;
+    //
+    //    if (frame.size.height > self.chatTableContainerView.frame.size.height) {
+    //        frame.size.height = self.chatTableContainerView.frame.size.height;
+    //    }
+    //    self.chatTableView.frame = frame;
 }
 
 -(void)ScreenTapped {
@@ -1416,13 +1400,7 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
 }
 
 -(void)keyboardWasShown:(NSNotification*)notification {
-    
-    
-//    CGRect frame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-//    CGRect newFrame = [self.view convertRect:frame fromView:[[UIApplication sharedApplication] delegate].window];
-//    self.bottomSpaceForSendContainer.constant = newFrame.origin.y - CGRectGetHeight(self.view.frame);;
-//    [self.view layoutIfNeeded];
-    
+
     CGFloat height = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey ] CGRectValue].size.height;
     self.bottomSpaceForSendContainer.constant = height;
     [self.view layoutIfNeeded];
@@ -1435,8 +1413,7 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
-    
-    // Disallow recognition of tap gestures in the segmented control.
+
     if (([touch.view isDescendantOfView:self.attachBtn])) {//change it to your condition
         return NO;
     }
@@ -1450,26 +1427,6 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
     UIImage *image = info[UIImagePickerControllerOriginalImage];
     [picker dismissViewControllerAnimated:YES completion:NULL];
     
-    
-
-    
-    /*
-     NSString *extension = @"";
-    if(picker.sourceType == UIImagePickerControllerSourceTypePhotoLibrary){
-        
-        NSURL *imageFileURL = [info objectForKey:UIImagePickerControllerReferenceURL];
-        NSString *imageName = [imageFileURL lastPathComponent];
-        extension = [imageName pathExtension];
-        
-        imageData = UIImagePNGRepresentation(image);
-    }else{
-        
-        imageData = UIImagePNGRepresentation(image);
-        imageData = UIImageJPEGRepresentation(image, 0.94);
-        extension = @"PNG";
-    }
-     */
-    
     //Save the image
     
     NSData *imageData = UIImagePNGRepresentation(image);
@@ -1477,16 +1434,17 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
     
     NSUInteger byteCount = [imageData length];
     
-    NSDictionary *messageDic = @{
-                                 @"sender": MESSAGE_SENDER_ME,
-                                 @"sender_name": @"Me",
-                                 @"type": MESSAGE_TYPE_TEXT,
-                                 @"message": [NSString stringWithFormat:@"Sending number of bytes: %ul", byteCount]
-                                 };
-    [self updateUIForChatMessage:messageDic];
-    
-    
-    
+//    NSDictionary *messageDic = @{
+//                                 @"sender": MESSAGE_SENDER_ME,
+//                                 @"sender_name": @"Me",
+//                                 @"type": MESSAGE_TYPE_TEXT,
+//                                 @"message":
+//                                 };
+//    [self updateUIForChatMessage:messageDic];
+
+    NSString *message = [NSString stringWithFormat:@"Sending number of bytes: %lul", (unsigned long)byteCount];
+    MessageData * messageData = [[MessageData alloc] initWithSender:@"Me"  type:MESSAGE_TYPE_TEXT message:message direction:MESSAGE_DIRECTION_SEND];
+    [self updateUIForChatMessage:messageData];
     
     
     [[FileHandler sharedHandler] writeData:imageData toFileName:fileName ofType:kFileTypePhoto];
@@ -1503,7 +1461,6 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     
     [picker dismissViewControllerAnimated:YES completion:NULL];
-    
 }
 
 
@@ -1558,42 +1515,13 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
             
             completionBlock(YES);
             
-            
-            
-            NSDictionary *messageDic = @{
-                                         @"sender": MESSAGE_SENDER_ME,
-                                         @"sender_name": @"Me",
-                                         @"type": @(fileType),
-                                         @"message": fileName
-                                         };
-            
-            [self updateUIForChatMessage:messageDic];
+            MessageData * messageData = [[MessageData alloc] initWithSender:@"Me" type:fileType message:fileName direction:MESSAGE_DIRECTION_SEND];
+            [self updateUIForChatMessage:messageData];
 
         });
     });
     
 }
-
-
-
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    
-//    if ([segue.identifier isEqualToString:@"voiceMessageSegue"]) {
-//        RecordViewController *recordControl = segue.destinationViewController;
-//        recordControl.activeChannelInfo = self.currentActiveChannel;
-//    }
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-
-//-(void) updateViewConstraints {
-//    
-//    NSLog(@"fdff");
-//}
-
 
 
 @end
