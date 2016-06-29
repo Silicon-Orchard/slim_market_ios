@@ -50,9 +50,10 @@
 
     
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(notifySelfPresenceToNetwork)
-                                                 name:UIApplicationDidBecomeActiveNotification object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(notifySelfPresenceToNetwork)
+//                                                 name:UIApplicationDidBecomeActiveNotification object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(ApplicationIsInactive)
                                                  name:UIApplicationDidEnterBackgroundNotification object:nil];
@@ -69,12 +70,11 @@
 -(void)viewWillAppear:(BOOL)animated{
     
 //    self.title = @"Main Menu";
+    
+    [self notifySelfPresenceToNetwork];
 }
 
 -(void)viewDidAppear:(BOOL)animated{
-
-    [self notifySelfPresenceToNetwork];
-
 
 }
 
@@ -94,17 +94,24 @@
 
     NSString *requestInfoMessage = [[MessageHandler sharedHandler] requestInfoAtStartMessage];
     
+    
+    NSString *ipFormat = [[NSUserDefaults standardUserDefaults] objectForKey:IPADDRESS_FORMATKEY];
+    NSString *myIP = [[MessageHandler sharedHandler] getIPAddress];
+    
     [[asyncUDPConnectionHandler sharedHandler] enableBroadCast];
+    
     for (int i =1 ; i<=254; i++) {
-        NSString *ipAddressTosendData = [NSString stringWithFormat:@"%@%d",[[NSUserDefaults standardUserDefaults] objectForKey:IPADDRESS_FORMATKEY],i];
-        if (![ipAddressTosendData isEqualToString:[[MessageHandler sharedHandler] getIPAddress]]) {
+        
+        NSString *ipAddressTosendData = [NSString stringWithFormat:@"%@%d", ipFormat, i];
+                                         
+        if (![ipAddressTosendData isEqualToString:myIP]) {
+            
             NSLog(@"ip to send %@", ipAddressTosendData);
             [[asyncUDPConnectionHandler sharedHandler]sendMessage:requestInfoMessage toIPAddress:ipAddressTosendData];
         }
     }
     
 //    [[asyncUDPConnectionHandler sharedHandler]sendMessage:requestInfoMessage toIPAddress:@"255.255.255.255"];
-
 //    [[asyncUDPConnectionHandler sharedHandler] disableBroadCast];
 
 }
@@ -139,6 +146,9 @@
     int count = [[[UserHandler sharedInstance] getUsers] count];
     NSLog(@"UserHandler Count %d", count);
     
+    
+    
+    
     NSMutableArray *networkDevices = [[NSMutableArray alloc] initWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:ACTIVEUSERLISTKEY]];
     if ([networkDevices indexOfObject:[jsonDict objectForKey:JSON_KEY_IP_ADDRESS]] == NSNotFound) {
         [networkDevices addObject:[jsonDict objectForKey:JSON_KEY_IP_ADDRESS]];
@@ -148,7 +158,7 @@
     NSLog(@"Devices %@", networkDevices);
 
     NSString *acknowledgeDeviceInNetWorkMessage = [[MessageHandler sharedHandler] acknowledgeDeviceInNetwork];
-    [[asyncUDPConnectionHandler sharedHandler]sendMessage:acknowledgeDeviceInNetWorkMessage toIPAddress:[jsonDict objectForKey:JSON_KEY_IP_ADDRESS]];
+    [[asyncUDPConnectionHandler sharedHandler] sendMessage:acknowledgeDeviceInNetWorkMessage toIPAddress:[jsonDict objectForKey:JSON_KEY_IP_ADDRESS]];
 
     self.testLabel.text = [NSString stringWithFormat:@"ipaddress added %@ acknowledgement sent \n devices %@", [jsonDict objectForKey:JSON_KEY_IP_ADDRESS ], networkDevices];
 }
@@ -216,8 +226,13 @@
     NSData* receivedData = (NSData*)userInfo[@"receievedData"];
     NSLog (@"Successfully received foreign Channel Created notification! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
     NSDictionary *jsonDict = [NSJSONSerialization  JSONObjectWithData:receivedData options:0 error:nil];
-    [self saveForeignChannelinUserDefaultsWithChannelData:jsonDict];
-
+    
+    
+    User *hostUser = [[User alloc] initWithDictionary:jsonDict];
+    int channelID = [[jsonDict objectForKey:JSON_KEY_CHANNEL] intValue];
+    Channel *personalChannel = [[Channel alloc] initChannelWithID:channelID andHost:hostUser];
+    
+    [[ChannelManager sharedInstance] saveChannel:personalChannel];
 }
 
 - (void)oneToOneChatRequest:(NSNotification *)sender {
@@ -234,7 +249,7 @@
                                              name:[jsonDict objectForKey:JSON_KEY_DEVICE_NAME]
                                         andActive:YES];
     
-    if([[ChannelHandler sharedHandler] isAcceptedOponentUser:requesterUser]){
+    if([[ChannelManager sharedInstance] isAcceptedOponentUser:requesterUser]){
         
         //Already Accepted, send confirmation
         NSString * message = [[MessageHandler sharedHandler] oneToOneChatAcceptMessage];
@@ -282,7 +297,7 @@
                                          andActive:YES];
     
     
-    [[ChannelHandler sharedHandler] setActive:YES toUser:accepterUser];
+    [[ChannelManager sharedInstance] setActive:YES toUser:accepterUser];
     
     
     [[NSNotificationCenter defaultCenter] postNotificationName:ONE_TO_ONE_CHAT_ACCEPT_FROM_STARTPAGE_NOTIFICATIONKEY object:nil userInfo:userInfo];
@@ -307,18 +322,23 @@
         }else if(buttonIndex == 1){
             
             //Accept, send confirmation
-            [[ChannelHandler sharedHandler] addOponetUserToAcceptedList:requesterUser];
+            [[ChannelManager sharedInstance] addOponetUserToAcceptedList:requesterUser];
 
             NSString * message = [[MessageHandler sharedHandler] oneToOneChatAcceptMessage];
             [[asyncUDPConnectionHandler sharedHandler] sendMessage:message toIPAddress:requesterUser.deviceIP];
+            
+            
+            Channel *privateChannel = [[Channel alloc] initChannelWithID:kChannelIDPersonal];
+            [privateChannel addMember:requesterUser];
             
             //navigate to chatview controller
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
             ChatViewController *chatVC = (ChatViewController *)[storyboard instantiateViewControllerWithIdentifier:@"ChatViewControllerID"];
             
             //vc.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-            chatVC.isPersonalChannel = YES;
+            chatVC.isPrivateChannel = YES;
             chatVC.oponentUser = requesterUser;
+            chatVC.currentActiveChannel = privateChannel;
             
             [self.navigationController pushViewController:chatVC animated:YES];
         }
@@ -343,18 +363,6 @@
 }
 
 
-
-
-
-
--(void)saveForeignChannelinUserDefaultsWithChannelData:(NSDictionary *)jsonDict{
-    
-    Channel *newChannel = [[Channel alloc] initWithChannelID:[[jsonDict objectForKey:JSON_KEY_CHANNEL] intValue]];
-    newChannel.foreignChannelHostDeviceID = [jsonDict objectForKey:JSON_KEY_DEVICE_ID];
-    newChannel.foreignChannelHostIP = [jsonDict objectForKey:JSON_KEY_IP_ADDRESS];
-    newChannel.foreignChannelHostName = [jsonDict objectForKey:JSON_KEY_DEVICE_NAME];
-    [newChannel saveForeignChannel:newChannel];
-}
 
 -(BOOL) textFieldShouldReturn:(UITextField *)textField{
     

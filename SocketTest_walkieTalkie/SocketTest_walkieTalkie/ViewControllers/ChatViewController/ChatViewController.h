@@ -8,22 +8,23 @@
 
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
+#import "IPChangeNotifier.h"
 
 
-@interface ChatViewController : UIViewController <UITextFieldDelegate,AVAudioRecorderDelegate, AVAudioPlayerDelegate, UITableViewDataSource, UITableViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate>
+@interface ChatViewController : UIViewController <UITextFieldDelegate,AVAudioRecorderDelegate, AVAudioPlayerDelegate, UITableViewDataSource, UITableViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, IPChangeNotifierDelegate>
 
 
-@property BOOL isPersonalChannel;
+@property BOOL isPrivateChannel;
 @property (strong, nonatomic) User *oponentUser;
 
 @property (strong, nonatomic) Channel *currentActiveChannel;
 @property (nonatomic, strong) AVAudioPlayer *thePlayer;
 
+
+@property (weak, nonatomic) IBOutlet UIButton *textSendBtn;
 @property (weak, nonatomic) IBOutlet UITextField *chatTextField;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomSpaceForSendContainer;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *heightConstraintchatMemberTable;
-
-
 
 
 #pragma mark - Voice View

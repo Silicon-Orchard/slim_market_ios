@@ -25,8 +25,9 @@
 
 +(MessageHandler*)sharedHandler;
 -(NSString *)newChannelCreatedMessageWithChannelID:(int) channelID deviceName:(NSString *)deviceNameForChannel;
--(NSString *)joinChannelCreatedMessageWithChannelID:(int) channelID deviceName:(NSString *)deviceNameForChannel;
--(NSString *)confirmJoiningForChannelID:(int)channelID channelName:(NSString *)channelhostName;
+-(NSString *)joiningChannelMessageOf:(int) channelID deviceName:(NSString *)deviceNameForChannel;
+-(NSString *)joiningChannelConfirmationMessageOf:(int)channelID channelName:(NSString *)channelhostName;
+
 -(NSString *)getUUID;
 -(NSString *)getIPAddress;
 -(NSString *)createChatMessageWithChannelID:(int) channelID deviceName:(NSString *)deviceNameForChannel chatmessage:(NSString *)message;

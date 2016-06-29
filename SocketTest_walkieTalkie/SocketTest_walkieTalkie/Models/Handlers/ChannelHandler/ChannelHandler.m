@@ -90,8 +90,4 @@
     //[self.acceptedOponentUsers removeObject:requesterUser];
 }
 
-//-(BOOL)isHost{
-//    return self.isHost;
-//}
-
 @end

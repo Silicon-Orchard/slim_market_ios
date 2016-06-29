@@ -11,31 +11,45 @@
 
 @interface Channel : NSObject
 
-
-
-
-#pragma mark - Old Setup
 @property (nonatomic, assign) int channelID;
-@property (nonatomic, strong) NSMutableArray *channelMemberIPs;
-@property (nonatomic, strong) NSMutableArray *channelMemberIDs;
-@property (nonatomic, strong) NSMutableArray *channelMemberNamess;
-@property (nonatomic, strong) NSString *foreignChannelHostIP;
-@property (nonatomic, strong) NSString *foreignChannelHostDeviceID;
-@property (nonatomic, strong) NSString *foreignChannelHostName;
+@property (nonatomic, assign) BOOL isHost;
+@property (nonatomic, strong) User *hostUser;
 
--(id)initWithChannelID:(int)channelID;
--(void)saveChannel:(Channel *)channelToSave;
--(void)saveForeignChannel:(Channel *)channelToSave;
 
--(Channel *)geChannel:(int)channelID;
--(Channel *)getForeignChannel:(int)channelID;
 
--(void)addUserToChannelWithChannelID:(int)channelID userIP:(NSString *)userIP userName:(NSString *)userName userID:(NSString *)userID;
 
--(void)addUserToForeignChannelWithChannelID:(int)channelID userIP:(NSString *)userIP userName:(NSString *)userName userID:(NSString *)userID;
+#pragma mark - New Setup
 
--(void)replaceForeignChannelOfID:(int)channelID withChannel:(Channel *)channel;
--(void)replaceChannelOfID:(int)channelID withChannel:(Channel *)channel;
--(void)removeChannelWithChannelID:(int)channelID;
+-(id)initChannelWithID:(int)channelID;
+-(id)initChannelWithID:(int)channelID andHost:(User *)host;
+
+#pragma mark - Getter Method
+- (NSArray *)getMembers;
+- (NSArray *)getAllMemberIPs;
+- (User *)getMemberWithIP:(NSString *)ip deviceID:(NSString* )deviceID;
+
+#pragma mark - Setter Method
+-(void)addMember:(User *)member;
+-(void)addMemberWithIP:(NSString *)ip deviceID:(NSString* )deviceID name:(NSString*)name andActive:(BOOL)active;
+-(void)removeMember:(User *)member;
+-(void)removeMemberOfIP:(NSString *)ip andDeviceID:(NSString *)deviceID;
+
+-(void) clearAll;
+
+#pragma mark - Public Channel
+- (BOOL)isPublicChannel;
+
+
+#pragma mark - Private Channel
+- (BOOL)isPrivateChannelWith:(User *) member;
+
+- (BOOL)isAcceptedOponentUser:(User *) requesterUser;
+- (void)addOponetUserToAcceptedList:(User *) requesterUser;
+- (void)removeOponetUserFromAcceptedList:(User *) requesterUser;
+- (void)setActive:(BOOL)active toUser:(User *)theUser;
+
+
+#pragma mark - Personal Channel
+- (BOOL)isPersonalChannel;
 
 @end

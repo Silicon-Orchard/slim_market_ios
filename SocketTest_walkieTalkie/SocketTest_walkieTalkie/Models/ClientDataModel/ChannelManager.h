@@ -10,31 +10,27 @@
 
 @interface ChannelManager : NSObject
 
-+(UserHandler*) sharedInstance;
+@property (nonatomic, strong) Channel *currentChannel;
+
+@property (nonatomic, assign) int currentChannelID;
+@property (nonatomic, assign) BOOL isHost;
+@property (nonatomic, strong) User *hostUser;
+
 
 
 #pragma mark - New Setup
 
-@property (nonatomic, assign) int channelID;
-@property (nonatomic, assign) BOOL isHost;
++(ChannelManager*) sharedInstance;
 
-//@property (nonatomic, strong) NSString * userNameInChannel;
-//@property (nonatomic, strong) Channel *currentlyActiveChannel;
-//-(void)initChannelWithID:(NSInteger)ID;
-//-(void)initChannelWithID:(NSInteger)ID andHost:(User *)host;
 
-- (NSArray *)getMembers;
-- (NSArray *)getAllMemberIPs;
-
--(void)addMember:(User *)member;
--(void)addMemberWithIP:(NSString *)ip deviceID:(NSString* )deviceID name:(NSString*)name andActive:(BOOL)active;
--(void)removeMember:(User *)member;
--(void)removeMemberOfIP:(NSString *)ip andDeviceID:(NSString *)deviceID;
+-(Channel *)getChannel:(int)channelID;
+-(void)saveChannel:(Channel *)channel;
 
 -(void) clearAll;
 
 
-#pragma mark - Personal Chatting Code
+#pragma mark - One to One
+
 - (BOOL)isAcceptedOponentUser:(User *) requesterUser;
 - (void)addOponetUserToAcceptedList:(User *) requesterUser;
 - (void)removeOponetUserFromAcceptedList:(User *) requesterUser;

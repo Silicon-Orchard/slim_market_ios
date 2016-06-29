@@ -57,10 +57,10 @@
 #define DETAIL_TEXT_LABEL_WIDTH (220.0)
 #define NAME_OFFSET_ADJUST      (4.0)
 
-#define BALLOON_INSET_TOP    (30 / 2)
+#define BALLOON_INSET_TOP    (46 / 2)
 #define BALLOON_INSET_LEFT   (36 / 2)
 #define BALLOON_INSET_BOTTOM (30 / 2)
-#define BALLOON_INSET_RIGHT  (46 / 2)
+#define BALLOON_INSET_RIGHT  (36 / 2)
 
 #define BALLOON_INSET_WIDTH (BALLOON_INSET_LEFT + BALLOON_INSET_RIGHT)
 #define BALLOON_INSET_HEIGHT (BALLOON_INSET_TOP + BALLOON_INSET_BOTTOM)
@@ -70,7 +70,7 @@
 
 #define BALLOON_MIN_HEIGHT (BALLOON_INSET_HEIGHT + BALLOON_MIDDLE_HEIGHT)
 
-#define BALLOON_HEIGHT_PADDING (10)
+#define BALLOON_HEIGHT_PADDING (20)
 #define BALLOON_WIDTH_PADDING (30)
 
 @interface MessageView ()
@@ -109,7 +109,7 @@
         self.balloonImageLeft = [UIImage imageNamed:@"bubble-left.png"];
         self.balloonImageRight = [UIImage imageNamed:@"bubble-right.png"];
 
-        _balloonInsetsLeft = UIEdgeInsetsMake(BALLOON_INSET_TOP, BALLOON_INSET_RIGHT, BALLOON_INSET_BOTTOM, BALLOON_INSET_LEFT);
+        _balloonInsetsLeft = UIEdgeInsetsMake(BALLOON_INSET_TOP, BALLOON_INSET_LEFT, BALLOON_INSET_BOTTOM, BALLOON_INSET_RIGHT);
         _balloonInsetsRight = UIEdgeInsetsMake(BALLOON_INSET_TOP, BALLOON_INSET_LEFT, BALLOON_INSET_BOTTOM, BALLOON_INSET_RIGHT);
 
         // Add to parent view
@@ -161,14 +161,14 @@
             _nameLabel.text = nameText;
         }
         // Set text color
-        _messageLabel.textColor = [UIColor darkTextColor];
+        _messageLabel.textColor = [UIColor whiteColor];
         // Set resizeable image
         _balloonView.image = [self.balloonImageLeft resizableImageWithCapInsets:_balloonInsetsLeft];
     }
 
     // Set the dynamic frames
-    _messageLabel.frame = CGRectMake(xOffsetLabel, yOffset + 5, labelSize.width, labelSize.height);
     _balloonView.frame = CGRectMake(xOffsetBalloon, yOffset, balloonSize.width, balloonSize.height);
+    _messageLabel.frame = CGRectMake(xOffsetLabel, yOffset + 12, labelSize.width, labelSize.height);
     _nameLabel.frame = CGRectMake(0, 1, nameSize.width, nameSize.height);
 }
 

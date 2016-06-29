@@ -37,7 +37,7 @@
     
     //Simulator
     
-    return @"192.168.1.124";
+    return @"192.168.1.107";
     
 #else
     
@@ -149,7 +149,7 @@
 }
 
 
--(NSString *)joinChannelCreatedMessageWithChannelID:(int) channelID deviceName:(NSString *)deviceNameForChannel{
+-(NSString *)joiningChannelMessageOf:(int) channelID deviceName:(NSString *)deviceNameForChannel{
     
     NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[[NSUserDefaults standardUserDefaults] objectForKey:DEVICE_UUID_KEY_FORUSERDEFAULTS], deviceNameForChannel, [self getIPAddress ],[NSNumber numberWithInt:TYPE_JOIN_CHANNEL], [NSNumber numberWithInt:channelID], nil]
                                                                 forKeys:[NSArray arrayWithObjects:JSON_KEY_DEVICE_ID, JSON_KEY_DEVICE_NAME,JSON_KEY_IP_ADDRESS, JSON_KEY_TYPE, JSON_KEY_CHANNEL,  nil]];
@@ -161,19 +161,35 @@
     
 }
 
--(NSString *)confirmJoiningForChannelID:(int)channelID channelName:(NSString *)channelhostName{
+-(NSString *)joiningChannelConfirmationMessageOf:(int)channelID channelName:(NSString *)deviceNameForChannel{
     
-    Channel *blankChannel = [[Channel alloc] init];
-    Channel *channelToJoin = [blankChannel geChannel:channelID];
-    NSString *hostIP = [self getIPAddress];
+//    Channel *blankChannel = [[Channel alloc] init];
+//    Channel *channelToJoin = [blankChannel geChannel:channelID];
+//    NSString *hostIP = [self getIPAddress];
     
-    NSString *hostName = channelhostName;
-    NSMutableArray *channelMembers = [[NSMutableArray alloc] initWithCapacity:channelToJoin.channelMemberIPs.count];
-    for (int i =0 ; i<channelToJoin.channelMemberIPs.count; i++) {
-        NSDictionary *channelMember = [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:[channelToJoin.channelMemberIPs objectAtIndex:i],[channelToJoin.channelMemberNamess objectAtIndex:i], nil] forKeys:[NSArray arrayWithObjects:JSON_KEY_IP_ADDRESS,JSON_KEY_DEVICE_NAME, nil]];
+    //NSString *hostName = channelhostName;
+    
+    Channel * currentChannel = [[ChannelManager sharedInstance] currentChannel];
+    NSArray *channelMemberUsers = [currentChannel getMembers];
+    
+    
+    NSMutableArray *channelMembers = [[NSMutableArray alloc] init];
+    
+    for (User *member in channelMemberUsers) {
+        
+        NSDictionary *channelMember = [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:member.deviceIP, member.deviceName, nil]
+                                                                    forKeys:[NSArray arrayWithObjects:JSON_KEY_IP_ADDRESS,JSON_KEY_DEVICE_NAME, nil]];
         [channelMembers addObject:channelMember];
     }
-    NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[[NSUserDefaults standardUserDefaults] objectForKey:DEVICE_UUID_KEY_FORUSERDEFAULTS], hostName, [self getIPAddress ],[NSNumber numberWithInt:TYPE_CHANNEL_FOUND], [NSNumber numberWithInt:channelID], channelMembers,nil]
+    
+//    NSMutableArray *channelMembers = [[NSMutableArray alloc] initWithCapacity:channelToJoin.channelMemberIPs.count];
+//    for (int i =0 ; i<channelToJoin.channelMemberIPs.count; i++) {
+//        NSDictionary *channelMember = [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:[channelToJoin.channelMemberIPs objectAtIndex:i],[channelToJoin.channelMemberNamess objectAtIndex:i], nil] forKeys:[NSArray arrayWithObjects:JSON_KEY_IP_ADDRESS,JSON_KEY_DEVICE_NAME, nil]];
+//        [channelMembers addObject:channelMember];
+//    }
+    
+    
+    NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[[NSUserDefaults standardUserDefaults] objectForKey:DEVICE_UUID_KEY_FORUSERDEFAULTS], deviceNameForChannel, [self getIPAddress ],[NSNumber numberWithInt:TYPE_JOIN_CHANNEL_CONFIRM], [NSNumber numberWithInt:channelID], channelMembers,nil]
                                                                 forKeys:[NSArray arrayWithObjects:JSON_KEY_DEVICE_ID, JSON_KEY_DEVICE_NAME,JSON_KEY_IP_ADDRESS, JSON_KEY_TYPE, JSON_KEY_CHANNEL, JSON_KEY_CHANNEL_MEMBERS, nil]];
     
     NSError * error = nil;

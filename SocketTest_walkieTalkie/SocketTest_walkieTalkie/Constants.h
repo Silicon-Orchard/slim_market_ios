@@ -28,7 +28,7 @@
 #define TYPE_RECEIVE_INFO ((int) 4)
 #define TYPE_CREATE_CHANNEL ((int) 5)
 #define TYPE_JOIN_CHANNEL ((int) 6)
-#define TYPE_CHANNEL_FOUND ((int) 7)
+#define TYPE_JOIN_CHANNEL_CONFIRM ((int) 7)
 #define TYPE_CHANNEL_DUPLICATE ((int) 8)
 #define TYPE_LEFT_CHANNEL ((int) 9)
 #define TYPE_LEFT_APPLICATION ((int) 10)
@@ -84,6 +84,17 @@
 #define kFileTypeVideo ((int) 2)
 #define kFileTypePhoto ((int) 3)
 #define kFileTypeOthers ((int) 4)
+
+
+#define kChannelIDPersonal ((int) 0)
+#define kChannelIDPublicA ((int) 1)
+#define kChannelIDPublicB ((int) 2)
+
+#define kChannelTypePublic ((int) 0)
+#define kChannelTypePersonal ((int) 1)
+#define kChannelTypePrivate ((int) 2)
+
+
 
 
 

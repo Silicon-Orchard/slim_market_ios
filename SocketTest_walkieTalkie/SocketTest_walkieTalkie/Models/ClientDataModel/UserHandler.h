@@ -13,6 +13,8 @@
 
 + (UserHandler*) sharedInstance;
 
+@property (nonatomic, strong) User *mySelf;
+
 
 - (NSArray *)getUsers;
 - (NSArray *)getAllUserIPs;

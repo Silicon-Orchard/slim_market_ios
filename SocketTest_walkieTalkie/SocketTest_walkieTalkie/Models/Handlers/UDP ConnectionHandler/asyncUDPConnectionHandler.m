@@ -178,7 +178,7 @@
     switch (type) {
             
         case TYPE_MESSAGE:
-            if (channel_id == [ChannelHandler sharedHandler].currentlyActiveChannelID) {
+            if (channel_id == [ChannelManager sharedInstance].currentChannelID) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:CHATMESSAGE_RECEIVED_NOTIFICATIONKEY object:nil userInfo:userInfo];
             }
             break;
@@ -199,7 +199,7 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:JOINCHANNEL_REQUEST_NOTIFICATIONKEY object:nil userInfo:userInfo];
             break;
             
-        case TYPE_CHANNEL_FOUND:
+        case TYPE_JOIN_CHANNEL_CONFIRM:
             [[NSNotificationCenter defaultCenter] postNotificationName:JOINCHANNEL_CONFIRM_NOTIFICATIONKEY object:nil userInfo:userInfo];
             break;
             

@@ -129,7 +129,7 @@ static NSString * CellID = @"ContactListCellID";
         [[asyncUDPConnectionHandler sharedHandler] sendMessage:message toIPAddress:self.selectedUser.deviceIP];
         
         //add to accepted list
-        [[ChannelHandler sharedHandler] addOponetUserToAcceptedList:self.selectedUser];
+        [[ChannelManager sharedInstance] addOponetUserToAcceptedList:self.selectedUser];
         
         [self performSegueWithIdentifier:@"PersonalChannelSegue" sender:nil];
     }
@@ -145,11 +145,15 @@ static NSString * CellID = @"ContactListCellID";
     if ([segue.identifier isEqualToString:@"PersonalChannelSegue"]) {
         
         
-        ChatViewController * chatControl = [segue destinationViewController];
-        chatControl.isPersonalChannel = YES;
-        chatControl.oponentUser = self.selectedUser;
+        ChatViewController * chatViewController = [segue destinationViewController];
         
-        NSLog(@"client Channel Selection");
+        Channel *privateChannel = [[Channel alloc] initChannelWithID:kChannelIDPersonal];
+        [privateChannel addMember: self.selectedUser];
+        
+        chatViewController.isPrivateChannel = YES;
+        chatViewController.oponentUser = self.selectedUser;
+        chatViewController.currentActiveChannel = privateChannel;
+        [[ChannelManager sharedInstance] setCurrentChannel:privateChannel];
     }
 }
 

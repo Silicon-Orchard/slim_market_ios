@@ -48,56 +48,86 @@
     // Dispose of any resources that can be recreated.
 }
 
-
--(void)createChannelWithChannelID:(int)channelID{
+-(void) createPersonalChannelWith:(int)channelID{
     
-    Channel *newChannel = [[Channel alloc] initWithChannelID:channelID];
-    newChannel.channelMemberIDs = [[NSMutableArray alloc] initWithObjects:[[NSUserDefaults standardUserDefaults] objectForKey:DEVICE_UUID_KEY_FORUSERDEFAULTS], nil];
-    newChannel.channelMemberIPs = [[NSMutableArray alloc] initWithObjects:[[MessageHandler sharedHandler] getIPAddress], nil];
-    newChannel.channelMemberNamess = [[NSMutableArray alloc] initWithObjects:self.hostNameTextField.text, nil];
-    newChannel.foreignChannelHostDeviceID = [[NSUserDefaults standardUserDefaults] objectForKey:DEVICE_UUID_KEY_FORUSERDEFAULTS];
-    newChannel.foreignChannelHostIP = [[MessageHandler sharedHandler] getIPAddress];
-    newChannel.foreignChannelHostName = self.hostNameTextField.text;
-
-
+    User *mySelf = [UserHandler sharedInstance].mySelf;
     
-    [newChannel saveChannel:newChannel];
+    Channel *personalChannel = [[Channel alloc] initChannelWithID:channelID andHost:mySelf];
+    personalChannel.isHost = YES;
+    [[ChannelManager sharedInstance] saveChannel:personalChannel];
+    [[ChannelManager sharedInstance] setCurrentChannel:personalChannel];
+    
     
     NSString *channelCreatNotificationMessage = [[MessageHandler sharedHandler] newChannelCreatedMessageWithChannelID:channelID deviceName:self.hostNameTextField.text];
+    NSArray * activeAllUserIPs = [[UserHandler sharedInstance] getAllUserIPs];
     
     [[asyncUDPConnectionHandler sharedHandler] enableBroadCast];
-    for (int i =1 ; i<=254; i++) {
-        [[asyncUDPConnectionHandler sharedHandler]sendMessage:channelCreatNotificationMessage toIPAddress:[NSString stringWithFormat:@"%@%d",[[NSUserDefaults standardUserDefaults] objectForKey:IPADDRESS_FORMATKEY],i]];
+    
+    
+    for (NSString *ipAdrress in activeAllUserIPs) {
+        
+        [[asyncUDPConnectionHandler sharedHandler]sendMessage:channelCreatNotificationMessage toIPAddress:ipAdrress];
     }
-//    [[asyncUDPConnectionHandler sharedHandler] disableBroadCast];
-    [ChannelHandler sharedHandler].currentlyActiveChannelID = channelID;
-    [ChannelHandler sharedHandler].isHost = YES;
-    [ChannelHandler sharedHandler].userNameInChannel = self.hostNameTextField.text;
+    
+    //[[asyncUDPConnectionHandler sharedHandler] disableBroadCast];
     
     [self performSegueWithIdentifier:@"hostChannelSegue" sender:nil];
-       
 }
+
+
+
+
+//-(void)createChannelWithChannelID:(int)channelID{
+//    
+//    Channel *newChannel = [[Channel alloc] initWithChannelID:channelID];
+//    newChannel.channelMemberIDs = [[NSMutableArray alloc] initWithObjects:[[NSUserDefaults standardUserDefaults] objectForKey:DEVICE_UUID_KEY_FORUSERDEFAULTS], nil];
+//    newChannel.channelMemberIPs = [[NSMutableArray alloc] initWithObjects:[[MessageHandler sharedHandler] getIPAddress], nil];
+//    newChannel.channelMemberNamess = [[NSMutableArray alloc] initWithObjects:self.hostNameTextField.text, nil];
+//    newChannel.foreignChannelHostDeviceID = [[NSUserDefaults standardUserDefaults] objectForKey:DEVICE_UUID_KEY_FORUSERDEFAULTS];
+//    newChannel.foreignChannelHostIP = [[MessageHandler sharedHandler] getIPAddress];
+//    newChannel.foreignChannelHostName = self.hostNameTextField.text;
+//
+//
+//    
+//    [newChannel saveChannel:newChannel];
+//    
+//    NSString *channelCreatNotificationMessage = [[MessageHandler sharedHandler] newChannelCreatedMessageWithChannelID:channelID deviceName:self.hostNameTextField.text];
+//    
+//    [[asyncUDPConnectionHandler sharedHandler] enableBroadCast];
+//    for (int i =1 ; i<=254; i++) {
+//        [[asyncUDPConnectionHandler sharedHandler]sendMessage:channelCreatNotificationMessage toIPAddress:[NSString stringWithFormat:@"%@%d",[[NSUserDefaults standardUserDefaults] objectForKey:IPADDRESS_FORMATKEY],i]];
+//    }
+////    [[asyncUDPConnectionHandler sharedHandler] disableBroadCast];
+//    [ChannelHandler sharedHandler].currentlyActiveChannelID = channelID;
+//    [ChannelHandler sharedHandler].isHost = YES;
+//    [ChannelHandler sharedHandler].userNameInChannel = self.hostNameTextField.text;
+//    
+//    [self performSegueWithIdentifier:@"hostChannelSegue" sender:nil];
+//       
+//}
 
 
 #pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    
+
     if ([segue.identifier isEqualToString:@"hostChannelSegue"]) {
         
-        Channel *blank = [[Channel alloc] init];
-        ChatViewController * chatControl = [segue destinationViewController];
-        chatControl.isPersonalChannel = NO;
-        chatControl.currentActiveChannel = [blank geChannel:[self.channel_ID_TextField.text intValue]];
+        ChatViewController * chatVC = [segue destinationViewController];
+        
+        chatVC.currentActiveChannel = [[ChannelManager sharedInstance] currentChannel];
+        chatVC.isPrivateChannel = NO;
+        [UserHandler sharedInstance].mySelf.deviceName = self.hostNameTextField.text;
     }
 }
 
 
 
 - (IBAction)createChannelButtonTapped:(id)sender {
-    [self createChannelWithChannelID:[self.channel_ID_TextField.text intValue]];
+    
+    [self createPersonalChannelWith:[self.channel_ID_TextField.text intValue]];
 
 }
 

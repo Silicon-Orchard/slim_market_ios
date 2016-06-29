@@ -78,28 +78,16 @@ void AudioInputCallback(void * inUserData,  // Custom audio metadata
         
         //NSArray * AllActive
         
-        NSLog(@"currentlyActiveChannel.channelMemberIPs.count: %d", [ChannelHandler sharedHandler].currentlyActiveChannel.channelMemberIPs.count);
         
-        for (int i= 0; i<[ChannelHandler sharedHandler].currentlyActiveChannel.channelMemberIPs.count; i++) {
-            
-            if (![[[ChannelHandler sharedHandler].currentlyActiveChannel.channelMemberIPs objectAtIndex:i] isEqualToString:[[MessageHandler sharedHandler] getIPAddress]]) {
-                //            [[asyncUDPConnectionHandler sharedHandler]sendMessage:voiceMessageToSend toIPAddress:[self.activeChannelInfo.channelMemberIPs objectAtIndex:i]];
-                
-                [[asyncUDPConnectionHandler sharedHandler] sendVoiceStreamData: dataToSend  toIPAddress:[[ChannelHandler sharedHandler].currentlyActiveChannel.channelMemberIPs objectAtIndex:i]];
-                
-            }
-            
+        Channel * currentChannel = [[ChannelManager sharedInstance] currentChannel];
+        NSArray *currentMemberIPs = [currentChannel getAllMemberIPs];
+        
+        for (NSString *ipAddress in currentMemberIPs) {
+
+            [[asyncUDPConnectionHandler sharedHandler] sendVoiceStreamData: dataToSend  toIPAddress:ipAddress];
         }
         
-        
     });
-//    [self.recordedAudioDataArray addObject:dataToSend];
-//    if (self.recordedAudioDataArray.count > 10) {
-//        [self.recordedAudioDataArray removeObjectAtIndex:0];
-//    }
-//    [[AudioRecorderTest_StreamPlayer sharedHandler] enqueueBufferWithAudioData:dataToSend];
-    
-//    [self startMediaPlayer];
     
 }
 

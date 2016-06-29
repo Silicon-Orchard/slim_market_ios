@@ -10,8 +10,8 @@
 
 @interface ChannelManager ()
 
-@property (nonatomic, strong) NSMutableArray *memberList;
-//@property (nonatomic, strong) NSMutableArray * acceptedOponentUsers;
+@property (nonatomic, strong) NSMutableArray *channelList;
+@property (nonatomic, strong) NSMutableArray * acceptedOponentUsers;
 
 @end
 
@@ -34,113 +34,56 @@
     
     if(self = [super init]){
         // Do any other initialisation stuff here
-        self.memberList = [NSMutableArray new];
+        self.channelList = [NSMutableArray new];
+        self.acceptedOponentUsers = [NSMutableArray new];
 
     }
     
     return  self;
 }
 
+- (void)setCurrentChannel:(Channel *) channel{
 
-
-
-
-- (NSArray *)getMembers {
-    
-    return self.memberList;
+    _currentChannel = channel;
+    _currentChannelID = channel.channelID;
+    _hostUser = channel.hostUser;
+    _isHost = channel.isHost;
 }
 
-- (NSArray *)getAllMemberIPs {
+
+-(Channel *)getChannel:(int)channelID{
     
-    NSMutableArray *ipArray = [NSMutableArray new];
-    
-    for (User * user in self.memberList) {
+    for (Channel * channel in self.channelList) {
         
-        [ipArray addObject:user.deviceIP];
-    }
-    
-    return ipArray;
-}
-
--(User *)getUserOfIndex:(NSUInteger)index {
-    
-    User * user = (User *)self.memberList[index];
-    return user;
-}
-
--(void)addMember:(User *)member {
-    
-    if(![self isMemberAlreadyInListOfIP:member.deviceIP andDeviceID:member.deviceID]){
-        
-        [self.memberList addObject:member];
-    }
-}
-
--(void)addMemberWithIP:(NSString *)ip deviceID:(NSString* )deviceID name:(NSString*)name andActive:(BOOL)active{
-    
-    
-    if(![self isMemberAlreadyInListOfIP:ip andDeviceID:deviceID]){
-        
-        User * member = [[User alloc] initWithIP:(NSString *)ip deviceID:(NSString* )deviceID name:(NSString*)name andActive:(BOOL)active];
-        [self.memberList addObject:member];
-    }
-}
-
-
--(void)removeMember:(User *)member {
-    
-    [self removeMemberOfIP:member.deviceIP andDeviceID:member.deviceID];
-}
-
--(void)removeMemberOfIP:(NSString *)ip andDeviceID:(NSString *)deviceID {
-    
-    for (User * member in self.memberList) {
-        
-        if([member.deviceIP isEqualToString:ip] && [member.deviceID isEqualToString:deviceID] ){
+        if (channel.channelID == channelID) {
             
-            [self.memberList removeObject:member];
+            return channel;
         }
     }
+    
+    return nil;
+}
+
+-(void)saveChannel:(Channel *)channel{
+    
+    [self.channelList addObject:channel];
 }
 
 - (void)clearAll {
     
-    [self.memberList removeAllObjects];
+    [self.channelList removeAllObjects];
     
-    self.channelID = 0;
+    self.currentChannelID = 0;
     self.isHost = NO;
+    self.hostUser = nil;
 }
 
 
-#pragma mark - Private Helpers
-
-
--(BOOL)isMemberAlreadyInListOfIP:(NSString *)ip andDeviceID:(NSString *)deviceID {
-    
-    for (User * member in self.memberList) {
-        
-        if([member.deviceIP isEqualToString:ip] && [member.deviceID isEqualToString:deviceID] ){
-            
-            return YES;
-        }
-    }
-    
-    return NO;
-}
-
-
-
-
-
-
-
-
-
-#pragma mark - Personal Chatting Code
+#pragma mark - One to One
 
 - (BOOL)isAcceptedOponentUser:(User *) requesterUser {
     
-    for (User *user in self.memberList) {
+    for (User *user in self.acceptedOponentUsers) {
         
         if([user.deviceID isEqualToString:requesterUser.deviceID] && [user.deviceIP isEqualToString:requesterUser.deviceIP]){
             
@@ -155,7 +98,7 @@
     
     if(![self isAcceptedOponentUser:requesterUser]){
         
-        [self.memberList addObject:requesterUser];
+        [self.acceptedOponentUsers addObject:requesterUser];
     }
 }
 
@@ -163,13 +106,13 @@
     
     theUser.isActive = active;
     
-    for (int index= 0; index < self.memberList.count; index++) {
+    for (int index= 0; index < self.acceptedOponentUsers.count; index++) {
         
-        User *user = self.memberList[index];
+        User *user = self.acceptedOponentUsers[index];
         
         if([user.deviceID isEqualToString:theUser.deviceID] && [user.deviceIP isEqualToString:theUser.deviceIP]){
             
-            [self.memberList replaceObjectAtIndex:index withObject:theUser];
+            [self.acceptedOponentUsers replaceObjectAtIndex:index withObject:theUser];
         }
     }
 }
@@ -177,17 +120,15 @@
 
 - (void)removeOponetUserFromAcceptedList:(User *) requesterUser{
     
-    for (int i= 0; i < self.memberList.count; i++) {
-        User *user = self.memberList[i];
+    for (int i= 0; i < self.acceptedOponentUsers.count; i++) {
+        User *user = self.acceptedOponentUsers[i];
         if([user.deviceID isEqualToString:requesterUser.deviceID] && [user.deviceIP isEqualToString:requesterUser.deviceIP]){
             
-            [self.memberList removeObjectAtIndex:i];
+            [self.acceptedOponentUsers removeObjectAtIndex:i];
         }
     }
+    
+    //[self.acceptedOponentUsers removeObject:requesterUser];
 }
-
-
-
-
 
 @end

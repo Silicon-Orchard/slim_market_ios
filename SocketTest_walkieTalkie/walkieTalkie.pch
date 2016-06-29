@@ -29,4 +29,6 @@
 #import "AudioRecorderTest.h"
 #import "AudioRecorderTest_StreamPlayer.h"
 
+#import "ChannelManager.h"
+
 #endif /* walkieTalkie_pch */

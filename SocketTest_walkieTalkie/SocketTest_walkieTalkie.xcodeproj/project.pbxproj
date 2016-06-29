@@ -51,6 +51,7 @@
 		B2507A4B1D1D36DC007921E8 /* MessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2507A451D1D36DB007921E8 /* MessageView.m */; };
 		B2507A4C1D1D36DC007921E8 /* ImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2507A471D1D36DB007921E8 /* ImageView.m */; };
 		B2507A4D1D1D36DC007921E8 /* ProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2507A491D1D36DC007921E8 /* ProgressView.m */; };
+		B2584C291D2279EA00D37D8B /* IPChangeNotifier.m in Sources */ = {isa = PBXBuildFile; fileRef = B2584C281D2279EA00D37D8B /* IPChangeNotifier.m */; };
 		B25F5A501D20FCCA00C37B9F /* ProgressObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = B25F5A4F1D20FCCA00C37B9F /* ProgressObserver.m */; };
 		B273E9351D190B160045020C /* FileHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = B273E9341D190B160045020C /* FileHandler.m */; };
 		B2FBD3FF1D113BF700AC2495 /* UserHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FBD3FE1D113BF700AC2495 /* UserHandler.m */; };
@@ -73,7 +74,7 @@
 /* Begin PBXFileReference section */
 		2AF322D7CC7055B4FE84F5E3 /* Pods_SocketTest_walkieTalkie.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SocketTest_walkieTalkie.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C12E1641CE4368800F0EE61 /* Wallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wallet.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		5C2079EA1CCF7DB0007A5F21 /* WalkieTalkie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WalkieTalkie.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5C2079EA1CCF7DB0007A5F21 /* SILM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SILM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C2079EE1CCF7DB0007A5F21 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		5C2079F01CCF7DB0007A5F21 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		5C2079F11CCF7DB0007A5F21 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -148,6 +149,8 @@
 		B2507A481D1D36DC007921E8 /* ImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageView.h; sourceTree = "<group>"; };
 		B2507A491D1D36DC007921E8 /* ProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressView.m; sourceTree = "<group>"; };
 		B2507A4A1D1D36DC007921E8 /* ProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgressView.h; sourceTree = "<group>"; };
+		B2584C271D2279EA00D37D8B /* IPChangeNotifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IPChangeNotifier.h; sourceTree = "<group>"; };
+		B2584C281D2279EA00D37D8B /* IPChangeNotifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IPChangeNotifier.m; sourceTree = "<group>"; };
 		B25F5A4E1D20FCCA00C37B9F /* ProgressObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgressObserver.h; sourceTree = "<group>"; };
 		B25F5A4F1D20FCCA00C37B9F /* ProgressObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressObserver.m; sourceTree = "<group>"; };
 		B273E9331D190B160045020C /* FileHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileHandler.h; sourceTree = "<group>"; };
@@ -211,7 +214,7 @@
 		5C2079EB1CCF7DB0007A5F21 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5C2079EA1CCF7DB0007A5F21 /* WalkieTalkie.app */,
+				5C2079EA1CCF7DB0007A5F21 /* SILM.app */,
 				5C12E1641CE4368800F0EE61 /* Wallet.app */,
 			);
 			name = Products;
@@ -360,6 +363,7 @@
 		B23797A21D0FD52E00F9F5A7 /* Handlers */ = {
 			isa = PBXGroup;
 			children = (
+				B2584C261D2279D600D37D8B /* IPChangeNotifier */,
 				B273E9321D190B070045020C /* FileHandler */,
 				B23797C21D0FD6E500F9F5A7 /* VoiceStreamHandler */,
 				B23797B31D0FD5AA00F9F5A7 /* TCPConnectionHandler */,
@@ -491,6 +495,15 @@
 			path = ContactListVC;
 			sourceTree = "<group>";
 		};
+		B2584C261D2279D600D37D8B /* IPChangeNotifier */ = {
+			isa = PBXGroup;
+			children = (
+				B2584C271D2279EA00D37D8B /* IPChangeNotifier.h */,
+				B2584C281D2279EA00D37D8B /* IPChangeNotifier.m */,
+			);
+			path = IPChangeNotifier;
+			sourceTree = "<group>";
+		};
 		B273E9321D190B070045020C /* FileHandler */ = {
 			isa = PBXGroup;
 			children = (
@@ -547,7 +560,7 @@
 			);
 			name = SocketTest_walkieTalkie;
 			productName = SocketTest_walkieTalkie;
-			productReference = 5C2079EA1CCF7DB0007A5F21 /* WalkieTalkie.app */;
+			productReference = 5C2079EA1CCF7DB0007A5F21 /* SILM.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -696,6 +709,7 @@
 				B23797B91D0FD5AA00F9F5A7 /* asyncTCPConnectionHandler.m in Sources */,
 				B273E9351D190B160045020C /* FileHandler.m in Sources */,
 				B2FBD4021D1156DA00AC2495 /* ContactListTVC.m in Sources */,
+				B2584C291D2279EA00D37D8B /* IPChangeNotifier.m in Sources */,
 				B23797BA1D0FD5AA00F9F5A7 /* asyncUDPConnectionHandler.m in Sources */,
 				B23797D41D0FD78500F9F5A7 /* MessageData.m in Sources */,
 				B2FBD3FF1D113BF700AC2495 /* UserHandler.m in Sources */,
@@ -849,7 +863,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.siliconOrchard.walkieTalkie;
-				PRODUCT_NAME = WalkieTalkie;
+				PRODUCT_NAME = SILM;
 				PROVISIONING_PROFILE = "e3253401-c74c-4eeb-8ffd-b091c0b40907";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -870,7 +884,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.siliconOrchard.walkieTalkie;
-				PRODUCT_NAME = WalkieTalkie;
+				PRODUCT_NAME = SILM;
 				PROVISIONING_PROFILE = "e3253401-c74c-4eeb-8ffd-b091c0b40907";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

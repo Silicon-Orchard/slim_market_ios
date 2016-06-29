@@ -137,15 +137,14 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
         
-        for (int i= 0; i<[ChannelHandler sharedHandler].currentlyActiveChannel.channelMemberIPs.count; i++) {
-            if (![[[ChannelHandler sharedHandler].currentlyActiveChannel.channelMemberIPs objectAtIndex:i] isEqualToString:[[MessageHandler sharedHandler] getIPAddress]]) {
-                //            [[asyncUDPConnectionHandler sharedHandler]sendMessage:voiceMessageToSend toIPAddress:[self.activeChannelInfo.channelMemberIPs objectAtIndex:i]];
-                
-                    [[asyncUDPConnectionHandler sharedHandler]sendVoiceStreamData:zipFileData  toIPAddress:[[ChannelHandler sharedHandler].currentlyActiveChannel.channelMemberIPs objectAtIndex:i]];
-                
-            }
-            
-        }
+//        for (int i= 0; i<[ChannelHandler sharedHandler].currentlyActiveChannel.channelMemberIPs.count; i++) {
+//            if (![[[ChannelHandler sharedHandler].currentlyActiveChannel.channelMemberIPs objectAtIndex:i] isEqualToString:[[MessageHandler sharedHandler] getIPAddress]]) {
+//                
+//                    [[asyncUDPConnectionHandler sharedHandler]sendVoiceStreamData:zipFileData  toIPAddress:[[ChannelHandler sharedHandler].currentlyActiveChannel.channelMemberIPs objectAtIndex:i]];
+//                
+//            }
+//        }
+        
         [recordedDataContainerArray removeObjectAtIndex:0];
         
         

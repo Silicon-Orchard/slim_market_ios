@@ -20,7 +20,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(joinCHannelConfirmed:) name:JOINCHANNEL_CONFIRM_NOTIFICATIONKEY object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(joinChannelConfirmed:) name:JOINCHANNEL_CONFIRM_NOTIFICATIONKEY object:nil];
     UITapGestureRecognizer *aTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(ScreenTapped)];
     [self.view addGestureRecognizer:aTap];
     
@@ -71,202 +71,204 @@
 
 }
 
--(void) joinCHannelConfirmed:(NSNotification*)notification{
+-(void) joinChannelConfirmed:(NSNotification*)notification{
     
-    NSDictionary* userInfo = notification.userInfo;
-    NSData* receivedData = (NSData*)userInfo[@"receievedData"];
-    NSLog (@"Successfully received foreign Channel Join Confirmed notification! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
-    NSDictionary *jsonDict = [NSJSONSerialization  JSONObjectWithData:receivedData options:0 error:nil];
-    Channel *blankChannel = [[Channel alloc] init];
-    Channel *joinedChannel = [blankChannel getForeignChannel:[[jsonDict objectForKey:JSON_KEY_CHANNEL] intValue]];
-    
-    
-    if (joinedChannel) {
-        if ([[jsonDict objectForKey:JSON_KEY_CHANNEL] intValue] ==1 || [[jsonDict objectForKey:JSON_KEY_CHANNEL] intValue] ==2) {
-           
-            [joinedChannel.channelMemberIPs addObject:[jsonDict objectForKey:JSON_KEY_IP_ADDRESS]];
-            [joinedChannel.channelMemberNamess addObject:[jsonDict objectForKey:JSON_KEY_DEVICE_NAME]];
-            [joinedChannel replaceForeignChannelOfID:[[jsonDict objectForKey:JSON_KEY_CHANNEL] intValue] withChannel:joinedChannel];
+    NSLog(@"joinCHannelConfirmed");
 
-            
-        }
-        else{
-            NSArray *channelmembers  = [jsonDict objectForKey:JSON_KEY_CHANNEL_MEMBERS];
-            NSMutableArray *channelmemberIPs = [[NSMutableArray alloc] init];
-            NSMutableArray *channelmemberNames = [[NSMutableArray alloc] init];
-            
-            for (int i = 0; i < channelmembers.count; i++) {
-                NSDictionary *channelMember = [channelmembers objectAtIndex:i];
-                [channelmemberIPs addObject:[channelMember objectForKey:JSON_KEY_IP_ADDRESS]];
-                [channelmemberNames addObject:[channelMember objectForKey:JSON_KEY_DEVICE_NAME]];
-            }
-            
-            joinedChannel.channelMemberIPs = channelmemberIPs;
-            joinedChannel.channelMemberNamess = channelmemberNames;
-            
-            [joinedChannel replaceForeignChannelOfID:[[jsonDict objectForKey:JSON_KEY_CHANNEL] intValue] withChannel:joinedChannel];
-            
-            
-            NSLog(@"JOined channel");
-        
-        }
-
-        
-        
-
-    }
-    else{
-        joinedChannel = [[Channel alloc] initWithChannelID:[[jsonDict objectForKey:JSON_KEY_CHANNEL] intValue]];
-        NSArray *channelmembers  = [jsonDict objectForKey:JSON_KEY_CHANNEL_MEMBERS];
-        NSMutableArray *channelmemberIPs = [[NSMutableArray alloc] initWithCapacity:channelmembers.count];
-        NSMutableArray *channelmemberNames = [[NSMutableArray alloc] initWithCapacity:channelmembers.count];
-        
-        for (int i = 0; i < channelmembers.count; i++) {
-            NSDictionary *channelMember = [channelmembers objectAtIndex:i];
-            [channelmemberIPs addObject:[channelMember objectForKey:JSON_KEY_IP_ADDRESS]];
-            [channelmemberNames addObject:[channelMember objectForKey:JSON_KEY_DEVICE_NAME]];
-        }
-        if ([[jsonDict objectForKey:JSON_KEY_CHANNEL] intValue] ==1 || [[jsonDict objectForKey:JSON_KEY_CHANNEL] intValue] ==2) {
-            [channelmemberIPs addObject:[jsonDict objectForKey:JSON_KEY_IP_ADDRESS]];
-            [channelmemberNames addObject:[jsonDict objectForKey:JSON_KEY_DEVICE_NAME]];
-        }
-        
-        joinedChannel.channelMemberIPs = channelmemberIPs;
-        joinedChannel.channelMemberNamess = channelmemberNames;
-        joinedChannel.foreignChannelHostIP = [joinedChannel.channelMemberIPs objectAtIndex:0];
-        joinedChannel.foreignChannelHostName = [joinedChannel.channelMemberNamess objectAtIndex:0];
-        [blankChannel saveForeignChannel:joinedChannel];
-    }
+//    NSDictionary* userInfo = notification.userInfo;
+//    NSData* receivedData = (NSData*)userInfo[@"receievedData"];
+//    NSLog (@"Successfully received foreign Channel Join Confirmed notification! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
+//    NSDictionary *jsonDict = [NSJSONSerialization  JSONObjectWithData:receivedData options:0 error:nil];
     
     
-    if (!self.isChatOpen) {
-        [ChannelHandler sharedHandler].currentlyActiveChannelID = [[jsonDict objectForKey:JSON_KEY_CHANNEL] intValue];
-        [ChannelHandler sharedHandler].isHost = NO;
-        for (int i = 0; i<joinedChannel.channelMemberIPs.count; i++) {
-            if ([[joinedChannel.channelMemberIPs objectAtIndex:i] isEqualToString:[[MessageHandler sharedHandler] getIPAddress]]) {
-                [ChannelHandler sharedHandler].userNameInChannel = [joinedChannel.channelMemberNamess objectAtIndex:i];
-            }
-        }
-
-         [self performSegueWithIdentifier:@"clientChannelSegue" sender:nil];
-        self.isChatOpen = YES;
-        
-    } else{
-        if (joinedChannel.channelID == [ChannelHandler sharedHandler].currentlyActiveChannelID) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"currentChannelUpdated" object:nil userInfo:nil];
-
-        }
-    }
-   
+    
+#warning For the love of God fix this
+    
+    //int channelID = [jsonDict objectForKey:JSON_KEY_CHANNEL];
+    //Channel *personalChannel = [[ChannelManager sharedInstance] getChannel:channelID];
+    //NSString *hostIP = personalChannel.hostUser.deviceIP;
+    
+    
+//    NSArray *channelmembers  = [jsonDict objectForKey:JSON_KEY_CHANNEL_MEMBERS];
+//    NSMutableArray *channelmemberIPs = [[NSMutableArray alloc] init];
+//    NSMutableArray *channelmemberNames = [[NSMutableArray alloc] init];
+//    
+//    for (int i = 0; i < channelmembers.count; i++) {
+//        NSDictionary *channelMember = [channelmembers objectAtIndex:i];
+//        [channelmemberIPs addObject:[channelMember objectForKey:JSON_KEY_IP_ADDRESS]];
+//        [channelmemberNames addObject:[channelMember objectForKey:JSON_KEY_DEVICE_NAME]];
+//    }
+    
 
     
+//    joinedChannel.channelMemberIPs = channelmemberIPs;
+//    joinedChannel.channelMemberNamess = channelmemberNames;
+//    
+//    [joinedChannel replaceForeignChannelOfID:[[jsonDict objectForKey:JSON_KEY_CHANNEL] intValue] withChannel:joinedChannel];
+//    
+//    
+//    NSLog(@"JOined channel");
+//    
+//    if (!self.isChatOpen) {
+//        [ChannelHandler sharedHandler].currentlyActiveChannelID = [[jsonDict objectForKey:JSON_KEY_CHANNEL] intValue];
+//        [ChannelHandler sharedHandler].isHost = NO;
+//        for (int i = 0; i<joinedChannel.channelMemberIPs.count; i++) {
+//            if ([[joinedChannel.channelMemberIPs objectAtIndex:i] isEqualToString:[[MessageHandler sharedHandler] getIPAddress]]) {
+//                [ChannelHandler sharedHandler].userNameInChannel = [joinedChannel.channelMemberNamess objectAtIndex:i];
+//            }
+//        }
+//        
+//        [self performSegueWithIdentifier:@"clientChannelSegue" sender:nil];
+//        self.isChatOpen = YES;
+//        
+//    } else{
+//        if (joinedChannel.channelID == [ChannelHandler sharedHandler].currentlyActiveChannelID) {
+//            [[NSNotificationCenter defaultCenter] postNotificationName:@"currentChannelUpdated" object:nil userInfo:nil];
+//            
+//        }
+//    }
+    
+    
+//
+//
+//    if (joinedChannel) {
+//        if ([[jsonDict objectForKey:JSON_KEY_CHANNEL] intValue] ==1 || [[jsonDict objectForKey:JSON_KEY_CHANNEL] intValue] ==2) {
+//           
+//            [joinedChannel.channelMemberIPs addObject:[jsonDict objectForKey:JSON_KEY_IP_ADDRESS]];
+//            [joinedChannel.channelMemberNamess addObject:[jsonDict objectForKey:JSON_KEY_DEVICE_NAME]];
+//            [joinedChannel replaceForeignChannelOfID:[[jsonDict objectForKey:JSON_KEY_CHANNEL] intValue] withChannel:joinedChannel];
+//
+//            
+//        }
+//        else{
+//            NSArray *channelmembers  = [jsonDict objectForKey:JSON_KEY_CHANNEL_MEMBERS];
+//            NSMutableArray *channelmemberIPs = [[NSMutableArray alloc] init];
+//            NSMutableArray *channelmemberNames = [[NSMutableArray alloc] init];
+//            
+//            for (int i = 0; i < channelmembers.count; i++) {
+//                NSDictionary *channelMember = [channelmembers objectAtIndex:i];
+//                [channelmemberIPs addObject:[channelMember objectForKey:JSON_KEY_IP_ADDRESS]];
+//                [channelmemberNames addObject:[channelMember objectForKey:JSON_KEY_DEVICE_NAME]];
+//            }
+//            
+//            joinedChannel.channelMemberIPs = channelmemberIPs;
+//            joinedChannel.channelMemberNamess = channelmemberNames;
+//            
+//            [joinedChannel replaceForeignChannelOfID:[[jsonDict objectForKey:JSON_KEY_CHANNEL] intValue] withChannel:joinedChannel];
+//            
+//            
+//            NSLog(@"JOined channel");
+//        
+//        }
+//
+//        
+//        
+//
+//    }
+//    else{
+//        joinedChannel = [[Channel alloc] initWithChannelID:[[jsonDict objectForKey:JSON_KEY_CHANNEL] intValue]];
+//        NSArray *channelmembers  = [jsonDict objectForKey:JSON_KEY_CHANNEL_MEMBERS];
+//        NSMutableArray *channelmemberIPs = [[NSMutableArray alloc] initWithCapacity:channelmembers.count];
+//        NSMutableArray *channelmemberNames = [[NSMutableArray alloc] initWithCapacity:channelmembers.count];
+//        
+//        for (int i = 0; i < channelmembers.count; i++) {
+//            NSDictionary *channelMember = [channelmembers objectAtIndex:i];
+//            [channelmemberIPs addObject:[channelMember objectForKey:JSON_KEY_IP_ADDRESS]];
+//            [channelmemberNames addObject:[channelMember objectForKey:JSON_KEY_DEVICE_NAME]];
+//        }
+//        if ([[jsonDict objectForKey:JSON_KEY_CHANNEL] intValue] ==1 || [[jsonDict objectForKey:JSON_KEY_CHANNEL] intValue] ==2) {
+//            [channelmemberIPs addObject:[jsonDict objectForKey:JSON_KEY_IP_ADDRESS]];
+//            [channelmemberNames addObject:[jsonDict objectForKey:JSON_KEY_DEVICE_NAME]];
+//        }
+//        
+//        joinedChannel.channelMemberIPs = channelmemberIPs;
+//        joinedChannel.channelMemberNamess = channelmemberNames;
+//        joinedChannel.foreignChannelHostIP = [joinedChannel.channelMemberIPs objectAtIndex:0];
+//        joinedChannel.foreignChannelHostName = [joinedChannel.channelMemberNamess objectAtIndex:0];
+//        [blankChannel saveForeignChannel:joinedChannel];
+//    }
+//    
+//    
+//    if (!self.isChatOpen) {
+//        [ChannelHandler sharedHandler].currentlyActiveChannelID = [[jsonDict objectForKey:JSON_KEY_CHANNEL] intValue];
+//        [ChannelHandler sharedHandler].isHost = NO;
+//        for (int i = 0; i<joinedChannel.channelMemberIPs.count; i++) {
+//            if ([[joinedChannel.channelMemberIPs objectAtIndex:i] isEqualToString:[[MessageHandler sharedHandler] getIPAddress]]) {
+//                [ChannelHandler sharedHandler].userNameInChannel = [joinedChannel.channelMemberNamess objectAtIndex:i];
+//            }
+//        }
+//
+//         [self performSegueWithIdentifier:@"clientChannelSegue" sender:nil];
+//        self.isChatOpen = YES;
+//        
+//    } else{
+//        if (joinedChannel.channelID == [ChannelHandler sharedHandler].currentlyActiveChannelID) {
+//            [[NSNotificationCenter defaultCenter] postNotificationName:@"currentChannelUpdated" object:nil userInfo:nil];
+//
+//        }
+//    }
+//
+
+
 }
 
 
--(void)startHostChannelChatForChannelData:(NSData *)channelData{
 
+-(void)sendJoiningChannelMessageOf:(int)channelID ofType:(int)type{
     
-
-}
-
--(void)joinChannelWithChannelID:(int)channelID{
-    
-    Channel *newChannel = [[Channel alloc] init];
-    
-    Channel *foreignChannel = [newChannel getForeignChannel:channelID];
-    NSString *channelJoinNotificationMessage = [[MessageHandler sharedHandler] joinChannelCreatedMessageWithChannelID:channelID deviceName:self.client_Name_textField.text];
+    NSString *channelJoinNotificationMessage = [[MessageHandler sharedHandler] joiningChannelMessageOf:channelID deviceName:self.client_Name_textField.text];
     
     
-    NSArray *activeIPAddressList = [[NSUserDefaults standardUserDefaults] objectForKey:ACTIVEUSERLISTKEY];
-    
-    if (foreignChannel) {
+    if (type == kChannelTypePublic) {
         
-        if (foreignChannel.channelID ==1 || foreignChannel.channelID ==2) {
-            
-            [[asyncUDPConnectionHandler sharedHandler] enableBroadCast];
-            
-            for (int i =0 ; i<activeIPAddressList.count; i++) {
-                NSString *ipAddressTosendData = [activeIPAddressList objectAtIndex:i];
-                if (![ipAddressTosendData isEqualToString:[[MessageHandler sharedHandler] getIPAddress]]) {
-                    [[asyncUDPConnectionHandler sharedHandler]sendMessage:channelJoinNotificationMessage toIPAddress:ipAddressTosendData];
-                }
-                
-            }
-        }
-        else{
-             [[asyncUDPConnectionHandler sharedHandler]sendMessage:channelJoinNotificationMessage toIPAddress:foreignChannel.foreignChannelHostIP];
-        }
-       
-
-    }
-    else{
+        NSArray *currentAllUserIPs = [[UserHandler sharedInstance] getAllUserIPs];
         
         [[asyncUDPConnectionHandler sharedHandler] enableBroadCast];
         
-        for (int i =0 ; i<activeIPAddressList.count; i++) {
+        for (NSString *ipAddress in currentAllUserIPs) {
             
-            NSString *ipAddressTosendData = [activeIPAddressList objectAtIndex:i];
-            if (![ipAddressTosendData isEqualToString:[[MessageHandler sharedHandler] getIPAddress]]) {
-                [[asyncUDPConnectionHandler sharedHandler]sendMessage:channelJoinNotificationMessage toIPAddress:ipAddressTosendData];
-            }
-            
+            [[asyncUDPConnectionHandler sharedHandler] sendMessage:channelJoinNotificationMessage toIPAddress:ipAddress];
         }
         
+    }else if (type == kChannelTypePersonal) {
+        
+        Channel *personalChannel = [[ChannelManager sharedInstance] getChannel:channelID];
+        NSString *hostIP = personalChannel.hostUser.deviceIP;
+        
+        [[asyncUDPConnectionHandler sharedHandler] sendMessage:channelJoinNotificationMessage toIPAddress:hostIP];
     }
-
 }
 
 
 - (IBAction)joinChannelTapped:(id)sender {
     
-    [self joinChannelWithChannelID:[self.channel_ID_TextField.text intValue]];
+
+    int channelID = [self.channel_ID_TextField.text intValue];
+    [self sendJoiningChannelMessageOf:channelID ofType:kChannelTypePersonal];
 }
 
 - (IBAction)joinPublicChannelA:(id)sender {
     
-    [ChannelHandler sharedHandler].currentlyActiveChannelID = 1;
-    [ChannelHandler sharedHandler].isHost = NO;
-    [ChannelHandler sharedHandler].userNameInChannel = self.client_Name_textField.text;
     
-    [self joinChannelWithChannelID:1];
-    Channel *publicChannelA = [[Channel alloc] initWithChannelID:1];
-    NSMutableArray *channelmemberIPs = [[NSMutableArray alloc] init];
-    NSMutableArray *channelmemberNames = [[NSMutableArray alloc] init];
+    Channel *publicChannelA = [[Channel alloc] initChannelWithID:kChannelIDPublicA];
+    [[ChannelManager sharedInstance] setCurrentChannel:publicChannelA];
+    
+    [self sendJoiningChannelMessageOf:kChannelIDPublicA ofType:kChannelTypePublic];
 
-    [channelmemberIPs addObject:[[MessageHandler sharedHandler] getIPAddress]];
-    [channelmemberNames addObject:self.client_Name_textField.text];
-    publicChannelA.channelMemberNamess = channelmemberNames;
-    publicChannelA.channelMemberIPs = channelmemberIPs;
-    [publicChannelA saveChannel:publicChannelA];
-    [publicChannelA replaceForeignChannelOfID:1 withChannel:publicChannelA];
-
-
+    
     self.isChatOpen = YES;
     [self performSegueWithIdentifier:@"clientChannelSegue" sender:nil];
-    
-    
 }
+
 - (IBAction)joinPublicChannelB:(id)sender {
     
-    [ChannelHandler sharedHandler].currentlyActiveChannelID = 2;
-    [ChannelHandler sharedHandler].isHost = NO;
-    [ChannelHandler sharedHandler].userNameInChannel = self.client_Name_textField.text;
-    [self joinChannelWithChannelID:2];
-    Channel *publicChannelB = [[Channel alloc] initWithChannelID:2];
-    NSMutableArray *channelmemberIPs = [[NSMutableArray alloc] init];
-    NSMutableArray *channelmemberNames = [[NSMutableArray alloc] init];
+    Channel *publicChannelB = [[Channel alloc] initChannelWithID:kChannelIDPublicB];
+    [[ChannelManager sharedInstance] setCurrentChannel:publicChannelB];
     
-    [channelmemberIPs addObject:[[MessageHandler sharedHandler] getIPAddress]];
-    [channelmemberNames addObject:self.client_Name_textField.text];
-    publicChannelB.channelMemberNamess = channelmemberNames;
-    publicChannelB.channelMemberIPs = channelmemberIPs;
-    [publicChannelB saveChannel:publicChannelB];
-    [publicChannelB replaceForeignChannelOfID:2 withChannel:publicChannelB];
-
+    [self sendJoiningChannelMessageOf:kChannelIDPublicB ofType:kChannelTypePublic];
+    
     self.isChatOpen = YES;
-
     [self performSegueWithIdentifier:@"clientChannelSegue" sender:nil];
-    
 }
 
 -(BOOL) textFieldShouldReturn:(UITextField *)textField{
@@ -275,29 +277,20 @@
     return YES;
 }
 
+#pragma mark _ Navigation
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+
+    
     if ([segue.identifier isEqualToString:@"clientChannelSegue"]) {
         
-        Channel *blank = [[Channel alloc] init];
-        ChatViewController * chatControl = [segue destinationViewController];
-        Channel *currentChannelForeign = [blank getForeignChannel: [ChannelHandler sharedHandler].currentlyActiveChannelID];
-        chatControl.currentActiveChannel = currentChannelForeign;
-        chatControl.isPersonalChannel = NO;
-        NSLog(@"client Channel Selection");
+        ChatViewController *chatVC = [segue destinationViewController];
+        
+        chatVC.currentActiveChannel = [[ChannelManager sharedInstance] currentChannel];
+        chatVC.isPrivateChannel = NO;
+        
+        [UserHandler sharedInstance].mySelf.deviceName = self.client_Name_textField.text;
     }
 }
-
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

@@ -18,27 +18,40 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
 //    [[NSUserDefaults standardUserDefaults] objectForKey:curr];
+    
+    NSString *myIPAddress = [[MessageHandler sharedHandler] getIPAddress];
+    NSString *uuidForDevice = [[NSUserDefaults standardUserDefaults] objectForKey:DEVICE_UUID_KEY_FORUSERDEFAULTS];
+    NSString *myDeviceName = [UIDevice currentDevice].name;
+        
+    if (!uuidForDevice) {
+        uuidForDevice = [[NSUUID UUID]  UUIDString];
+        [[NSUserDefaults standardUserDefaults] setObject:uuidForDevice forKey:DEVICE_UUID_KEY_FORUSERDEFAULTS];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+    
+    [UserHandler sharedInstance].mySelf = [[User alloc] initWithIP:myIPAddress deviceID:uuidForDevice name:myDeviceName andActive:YES];
+    
+    
     [[NSUserDefaults standardUserDefaults] setObject:nil forKey:ACTIVEUSERLISTKEY];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    NSString *myIPAddress = [[MessageHandler sharedHandler] getIPAddress];
+    
     NSArray *Array = [myIPAddress componentsSeparatedByString:@"."];
     //NSString * lastSegment = [Array objectAtIndex:3];
     NSString * threeSegments = [NSString stringWithFormat:@"%@.%@.%@.", [Array objectAtIndex:0], [Array objectAtIndex:1], [Array objectAtIndex:2]];
     [[NSUserDefaults standardUserDefaults] setObject:threeSegments forKey:IPADDRESS_FORMATKEY];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
-    NSString *uuidForDevice = [[NSUserDefaults standardUserDefaults] objectForKey:DEVICE_UUID_KEY_FORUSERDEFAULTS];
-    if (!uuidForDevice) {
-        [[NSUserDefaults standardUserDefaults] setObject:[[NSUUID UUID]UUIDString] forKey:DEVICE_UUID_KEY_FORUSERDEFAULTS];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    }
+
     
+    
+    //UI
     [[UINavigationBar appearance] setBackgroundImage:[UIImage new]
                                        forBarMetrics:UIBarMetricsDefault];
     [UINavigationBar appearance].shadowImage = [UIImage new];
     [UINavigationBar appearance].translucent = YES;
     return YES;
 }
+
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
