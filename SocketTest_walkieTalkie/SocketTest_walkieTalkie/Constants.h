@@ -31,7 +31,11 @@
 #define TYPE_JOIN_CHANNEL_CONFIRM ((int) 7)
 #define TYPE_CHANNEL_DUPLICATE ((int) 8)
 #define TYPE_LEFT_CHANNEL ((int) 9)
+#define TYPE_DESTROY_CHANNEL ((int) 99)
+
 #define TYPE_LEFT_APPLICATION ((int) 10)
+
+
 
 #define TYPE_ONE_TO_ONE_CHAT_REQUEST ((int) 11)
 #define TYPE_ONE_TO_ONE_CHAT_ACCEPT ((int) 12)
@@ -64,6 +68,7 @@
 #define JSON_KEY_CLIENT_PORT @"client_port"
 #define JSON_KEY_CHANNEL @"channel_id"
 #define JSON_KEY_CHANNEL_MEMBERS @"channel_members"
+#define JSON_KEY_HOST @"host"
 
 
 #define JSON_KEY_FILE_TYPE @"file_type"
@@ -114,6 +119,8 @@
 #define JOINCHANNEL_CONFIRM_NOTIFICATIONKEY @"JoinChannelConfirmationReceivedNotification"
 #define CHATMESSAGE_RECEIVED_NOTIFICATIONKEY @"ChatMessageReceivedNotification"
 #define CHANNEL_LEFT_NOTIFICATIONKEY @"leaveChannelMessageReceivedNotification"
+#define CHANNEL_DUPLICATE_NOTIFICATIONKEY @"DuplicateChannelMessageReceivedNotification"
+
 #define NEW_DEVICE_CONNECTED_NOTIFICATIONKEY @"newdeviceConnectedNotification"
 #define NEW_DEVICE_CONFIRMED_NOTIFICATIONKEY @"newdeviceConfirmedNotification"
 #define VOICE_MESSAGE_RECEIEVED_NOTIFICATIONKEY @"voiceMessageReceivedNotification"

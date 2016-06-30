@@ -10,7 +10,9 @@
 #import "ChatViewController.h"
 
 @interface JoinChannelViewController (){
-    }
+    
+    int requestedChannelID;
+}
 @property (weak, nonatomic) IBOutlet UITextField *client_Name_textField;
 @property (weak, nonatomic) IBOutlet UITextField *channel_ID_TextField;
 
@@ -46,17 +48,20 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
     
-//    self.title = @"Join Channel";
-    self.client_Name_textField.text = [UIDevice currentDevice].name;
-    self.navigationController.navigationBar.tintColor = UIColorFromRGB(0xE0362B);
+    self.title = @"Join Channel";
 
+    
+    self.client_Name_textField.text = [UIDevice currentDevice].name;
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
+    self.title = @"Back";
+    
     self.publicchannelACenterYConstraint.constant = 0;
     [self.view layoutIfNeeded];
-
+    
 }
 
 
@@ -75,29 +80,64 @@
     
     NSLog(@"joinCHannelConfirmed");
 
-//    NSDictionary* userInfo = notification.userInfo;
-//    NSData* receivedData = (NSData*)userInfo[@"receievedData"];
-//    NSLog (@"Successfully received foreign Channel Join Confirmed notification! %@", [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
-//    NSDictionary *jsonDict = [NSJSONSerialization  JSONObjectWithData:receivedData options:0 error:nil];
+    NSDictionary* userInfo = notification.userInfo;
+    NSData* receivedData = (NSData*)userInfo[@"receievedData"];
+    NSDictionary *jsonDict = [NSJSONSerialization  JSONObjectWithData:receivedData options:0 error:nil];
     
     
     
-#warning For the love of God fix this
+    int channelID = [[jsonDict objectForKey:JSON_KEY_CHANNEL] intValue];
+    Channel *personalChannel = [[ChannelManager sharedInstance] getChannel:channelID];
     
-    //int channelID = [jsonDict objectForKey:JSON_KEY_CHANNEL];
-    //Channel *personalChannel = [[ChannelManager sharedInstance] getChannel:channelID];
+    if(requestedChannelID == channelID && personalChannel){
+        //Personal Channel
+        
+//        User *hostMember = [[User alloc] initWithIP:[jsonDict objectForKey:JSON_KEY_IP_ADDRESS]
+//                                         deviceID:[jsonDict objectForKey:JSON_KEY_DEVICE_ID]
+//                                             name:[jsonDict objectForKey:JSON_KEY_DEVICE_NAME]
+//                                        andActive:YES];
+        
+        personalChannel.hostUser.isActive = YES;
+        [personalChannel addMember:personalChannel.hostUser];
+        
+        NSArray *channelMembers  = [jsonDict objectForKey:JSON_KEY_CHANNEL_MEMBERS];
+        
+        User *mySlefMember = [UserHandler sharedInstance].mySelf;
+        for (NSDictionary *channelMember in channelMembers) {
+            
+            NSString *memberIP = [channelMember objectForKey:JSON_KEY_IP_ADDRESS];
+            NSString *memberID = [channelMember objectForKey:JSON_KEY_DEVICE_ID];
+            NSString *memberName = [channelMember objectForKey:JSON_KEY_DEVICE_NAME];
+            
+            if( !([mySlefMember.deviceIP isEqualToString:memberIP] && [mySlefMember.deviceID isEqualToString:memberID]) ){
+                
+                User * aMember = [[User alloc] initWithIP:memberIP
+                                                 deviceID:memberID
+                                                     name:memberName
+                                                andActive:YES];
+                
+                [personalChannel addMember:aMember];
+            }
+
+        }
+        
+        // Go to the personal channel
+        [[ChannelManager sharedInstance] setCurrentChannel:personalChannel];
+        
+#warning close HUD
+        [self performSegueWithIdentifier:@"clientChannelSegue" sender:nil];
+        
+        
+    } else {
+        
+    }
+    
+    
+    
     //NSString *hostIP = personalChannel.hostUser.deviceIP;
     
     
-//    NSArray *channelmembers  = [jsonDict objectForKey:JSON_KEY_CHANNEL_MEMBERS];
-//    NSMutableArray *channelmemberIPs = [[NSMutableArray alloc] init];
-//    NSMutableArray *channelmemberNames = [[NSMutableArray alloc] init];
-//    
-//    for (int i = 0; i < channelmembers.count; i++) {
-//        NSDictionary *channelMember = [channelmembers objectAtIndex:i];
-//        [channelmemberIPs addObject:[channelMember objectForKey:JSON_KEY_IP_ADDRESS]];
-//        [channelmemberNames addObject:[channelMember objectForKey:JSON_KEY_DEVICE_NAME]];
-//    }
+
     
 
     
@@ -216,14 +256,17 @@
 
 -(void)sendJoiningChannelMessageOf:(int)channelID ofType:(int)type{
     
+#warning show HUD
+    
+    
+    
     NSString *channelJoinNotificationMessage = [[MessageHandler sharedHandler] joiningChannelMessageOf:channelID deviceName:self.client_Name_textField.text];
     
+    [[asyncUDPConnectionHandler sharedHandler] enableBroadCast];
     
     if (type == kChannelTypePublic) {
         
         NSArray *currentAllUserIPs = [[UserHandler sharedInstance] getAllUserIPs];
-        
-        [[asyncUDPConnectionHandler sharedHandler] enableBroadCast];
         
         for (NSString *ipAddress in currentAllUserIPs) {
             
@@ -233,9 +276,22 @@
     }else if (type == kChannelTypePersonal) {
         
         Channel *personalChannel = [[ChannelManager sharedInstance] getChannel:channelID];
-        NSString *hostIP = personalChannel.hostUser.deviceIP;
         
-        [[asyncUDPConnectionHandler sharedHandler] sendMessage:channelJoinNotificationMessage toIPAddress:hostIP];
+        if(personalChannel){
+            
+            NSString *hostIP = personalChannel.hostUser.deviceIP;
+            [[asyncUDPConnectionHandler sharedHandler] sendMessage:channelJoinNotificationMessage toIPAddress:hostIP];
+        }else{
+            
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Not Found"
+                                                            message: @"Sorry, the requested channel not found. Please check the channel number and try again."
+                                                           delegate: nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+            [alert show];
+        }
+        
+
     }
 }
 
@@ -244,6 +300,21 @@
     
 
     int channelID = [self.channel_ID_TextField.text intValue];
+    
+    int digitNumber = floor (log10 (abs (channelID))) + 1;
+    
+    if(digitNumber != 4){
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Enter four digit channel number"
+                                                        message: @""
+                                                       delegate: nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+        return;
+    }
+    
+    requestedChannelID = channelID;
     [self sendJoiningChannelMessageOf:channelID ofType:kChannelTypePersonal];
 }
 

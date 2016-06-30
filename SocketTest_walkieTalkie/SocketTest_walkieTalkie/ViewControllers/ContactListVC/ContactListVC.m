@@ -26,11 +26,6 @@
     self.contactListArrays = [NSArray arrayWithArray:[[UserHandler sharedInstance] getUsers]];
 
     
-    //self.navigationItem setting
-    self.title = @"Contact List";
-    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
-    self.navigationController.navigationBar.tintColor = UIColorFromRGB(0xE0362B);
-    
     //TableView
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -47,7 +42,14 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
-    self.navigationController.navigationBar.tintColor = UIColorFromRGB(0xE0362B);
+    self.title = @"Contact List";
+}
+
+-(void)viewWillDisappear:(BOOL)animated{
+    
+    self.title = @"Back";
+    
+    [super viewWillDisappear:animated];
 }
 
 

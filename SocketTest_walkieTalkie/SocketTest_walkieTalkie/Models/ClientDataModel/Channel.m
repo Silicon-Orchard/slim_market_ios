@@ -84,6 +84,9 @@
     if(![self isMemberAlreadyInListOfIP:member.deviceIP andDeviceID:member.deviceID]){
         
         [self.memberList addObject:member];
+    }else{
+        
+        [self updateMember:member];
     }
 }
 
@@ -138,6 +141,18 @@
     }
     
     return NO;
+}
+
+-(void)updateMember:(User *)theMember{
+    
+    for (int i = 0; i< self.memberList.count; i++) {
+        User *aMember = self.memberList[i];
+        
+        if([aMember.deviceIP isEqualToString:theMember.deviceIP] && [aMember.deviceID isEqualToString:theMember.deviceIP] ){
+            
+            [self.memberList replaceObjectAtIndex:i withObject:theMember];
+        }
+    }
 }
 
 
@@ -223,7 +238,7 @@
 
 - (BOOL)isPersonalChannel{
     
-    if( self.channelID == kChannelIDPublicA || self.channelID == kChannelIDPublicB ){
+    if( !(self.channelID == kChannelIDPublicA || self.channelID == kChannelIDPublicB) ){
         
         if([ChannelManager sharedInstance].hostUser){
             

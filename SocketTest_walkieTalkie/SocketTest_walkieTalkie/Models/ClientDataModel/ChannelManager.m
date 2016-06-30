@@ -64,9 +64,48 @@
     return nil;
 }
 
+-(BOOL)hasFoundChannelWith:(int)channelID{
+    
+    for (Channel * channel in self.channelList) {
+        
+        if (channel.channelID == channelID) {
+            
+            return YES;
+        }
+    }
+    
+    return NO;
+}
+
 -(void)saveChannel:(Channel *)channel{
     
     [self.channelList addObject:channel];
+}
+
+-(void)updateChannel:(Channel *)channel ofChannelID:(int)channelID{
+    
+    for (int i = 0; i< self.channelList.count; i++) {
+        Channel * channel = self.channelList[i];
+        
+        if(channel.channelID == channelID){
+            
+            [self.channelList replaceObjectAtIndex:i withObject:channel];
+        }
+    }
+}
+
+-(void)removeChannel:(int)channelID{
+    
+    
+    for (int i = 0; i< self.channelList.count; i++) {
+        Channel * channel = self.channelList[i];
+        
+        if(channel.channelID == channelID){
+            
+            [self.channelList removeObjectAtIndex:i];
+            return;
+        }
+    }
 }
 
 - (void)clearAll {

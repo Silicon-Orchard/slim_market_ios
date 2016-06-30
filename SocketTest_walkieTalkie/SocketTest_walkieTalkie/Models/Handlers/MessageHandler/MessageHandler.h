@@ -27,6 +27,8 @@
 -(NSString *)newChannelCreatedMessageWithChannelID:(int) channelID deviceName:(NSString *)deviceNameForChannel;
 -(NSString *)joiningChannelMessageOf:(int) channelID deviceName:(NSString *)deviceNameForChannel;
 -(NSString *)joiningChannelConfirmationMessageOf:(int)channelID channelName:(NSString *)channelhostName;
+-(NSString *)duplicateChannelMessageOf:(int) channelID channelName:(NSString *)deviceNameForChannel andHost:(User *)hostUser;
+
 
 -(NSString *)getUUID;
 -(NSString *)getIPAddress;

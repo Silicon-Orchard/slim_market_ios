@@ -155,6 +155,11 @@
     
     BOOL success = [fileData writeToFile:filePath atomically:YES];
     
+    if(!success){
+        //show Alert
+        
+    }
+    
     return filePath;
 }
 
@@ -194,7 +199,7 @@
     NSString *filePath = [self pathToFileWithFileName:fileName OfType:type];
     NSData *fileData = [self dataFromFilePath:filePath];
     
-    printf("File Data Lenth : %u", [fileData length]);
+    printf("File Data Lenth : %lu", (unsigned long)[fileData length]);
     
     
     int index = 0;

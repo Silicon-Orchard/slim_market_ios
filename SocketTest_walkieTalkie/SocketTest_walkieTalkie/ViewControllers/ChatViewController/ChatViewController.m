@@ -131,10 +131,8 @@ typedef void(^myCompletion)(BOOL);
     self.popupBoxView.layer.masksToBounds = YES;
     
     
-    self.navigationController.navigationBar.topItem.title = @"Back";
-    [self.navigationController.navigationBar setTitleTextAttributes:
-     @{NSForegroundColorAttributeName:[UIColor whiteColor]}];
-    self.navigationController.navigationBar.tintColor = UIColorFromRGB(0xE0362B);
+    //self.navigationController.navigationBar.topItem.title = @"Back";
+
 
 }
 
@@ -147,6 +145,35 @@ typedef void(^myCompletion)(BOOL);
 }
 
 -(void) viewWillDisappear:(BOOL)animated {
+    
+    NSUInteger numberOfViewControllersOnStack = [self.navigationController.viewControllers count];
+    
+    if(numberOfViewControllersOnStack > 1){
+        
+        UIViewController *parentViewController = self.navigationController.viewControllers[numberOfViewControllersOnStack - 1];
+        Class parentVCClass = [parentViewController class];
+        NSString *className = NSStringFromClass(parentVCClass);
+        
+        
+//        if([className isEqualToString:@"CreateChannelViewController"]){
+//            
+//            //self.title =
+//            self.navigationController.navigationBar.topItem.title = @"Create Channel";
+//            
+//        }else if ([className isEqualToString:@"JoinChannelViewController"]){
+//            
+//            self.navigationController.navigationBar.topItem.title = @"Join Channel";
+//            
+//        }else if ([className isEqualToString:@"ContactListVC"]){
+//            
+//            self.navigationController.navigationBar.topItem.title = @"Contact List";
+//        }
+        
+        NSLog(@"%@", className);
+    }
+
+    
+    
 
     
     if (self.isPrivateChannel) {
@@ -196,6 +223,8 @@ typedef void(^myCompletion)(BOOL);
     //UDP Response Notification
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(joinChannelRequestReceived:) name:JOINCHANNEL_REQUEST_NOTIFICATIONKEY object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(joinChannelConfirmation:) name:JOINCHANNEL_CONFIRM_NOTIFICATIONKEY object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(duplicateChannelReceived:) name:CHANNEL_DUPLICATE_NOTIFICATIONKEY object:nil];
+    
     
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chatMessageReceived:) name:CHATMESSAGE_RECEIVED_NOTIFICATIONKEY object:nil];
@@ -330,10 +359,10 @@ typedef void(^myCompletion)(BOOL);
 
     
     User *mySelf = [UserHandler sharedInstance].mySelf;
-    if([ChannelManager sharedInstance].isHost){
-        
-        mySelf.deviceName = [NSString stringWithFormat:@"%@ Owner", mySelf.deviceName];
-    }
+//    if([ChannelManager sharedInstance].isHost){
+//        
+//        mySelf.deviceName = [NSString stringWithFormat:@"%@ Owner", mySelf.deviceName];
+//    }
     [chatRoomMemberList addObject:mySelf];
     
     NSArray *members =  [self.currentActiveChannel getMembers];
@@ -736,6 +765,47 @@ typedef void(^myCompletion)(BOOL);
 }
 
 
+-(void) duplicateChannelReceived:(NSNotification*)notification{
+    
+    NSDictionary* userInfo = notification.userInfo;
+    NSData* receivedData = (NSData*)userInfo[@"receievedData"];
+    NSDictionary *jsonDict = [NSJSONSerialization  JSONObjectWithData:receivedData options:0 error:nil];
+    
+    int duplicateChannelID = [jsonDict[@"channel_id"] intValue];
+    
+    
+    if(duplicateChannelID == self.currentActiveChannel.channelID){
+        
+        //duplicate channel, so leave
+        
+        //NSString *message;
+        User *currentChannelHostUser = self.currentActiveChannel.hostUser;
+        User *mySelfUser = [UserHandler sharedInstance].mySelf;
+        
+        if([currentChannelHostUser.deviceID isEqualToString:mySelfUser.deviceID] && [currentChannelHostUser.deviceIP isEqualToString:mySelfUser.deviceIP]){
+            
+            //update channel
+            NSDictionary *hostDic = jsonDict[JSON_KEY_HOST];
+            User *hostUser = [[User alloc] initWithDictionary:hostDic andActive:YES];
+            Channel *channel = [[Channel alloc] initChannelWithID:duplicateChannelID andHost:hostUser];
+            [[ChannelManager sharedInstance] updateChannel:channel ofChannelID:duplicateChannelID];
+            
+            
+            //show alert and then quit thi VC
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Duplicate Channel!!!"
+                                                            message: @"You have created a channel with duplicate channel number. Please create channel with different channel number."
+                                                           delegate: self
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+            
+            alert.tag = 99;
+            [alert show];
+        }
+        
+    }
+}
+
+
 -(void) ChannelLeftMessageReceieved:(NSNotification*)notification{
     
     NSDictionary* userInfo = notification.userInfo;
@@ -758,6 +828,9 @@ typedef void(^myCompletion)(BOOL);
         if( (hostUser.deviceID == leftMember.deviceID) && (hostUser.deviceIP == leftMember.deviceIP) ){
             // channel owner left the channel, Show Alert & leave the channel
             
+            //remove channel
+            [[ChannelManager sharedInstance] removeChannel:self.currentActiveChannel.channelID];
+            
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Channel Owner Left!"
                                                             message: [NSString stringWithFormat:@"Channel owner,  %@ has left his private channel. You are suppposed to leave this channel by confirming OK.", leftMember.deviceName]
                                                            delegate: self
@@ -773,11 +846,6 @@ typedef void(^myCompletion)(BOOL);
     
     //Update the Chat member Table
     [self updateChannelMemberTable];
-    //[self.channelMemberTableView reloadData];
-    
-//    MessageData * messageData = [[MessageData alloc] initWithSender:leftMember.deviceName type:MESSAGE_TYPE_LEFT message:@"has left!" direction:MESSAGE_DIRECTION_LOCAL];
-//    [self updateUIForChatMessage:messageData];
-    
     
     
 //    if(self.isPrivateChannel){
@@ -1051,9 +1119,8 @@ typedef void(^myCompletion)(BOOL);
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     
     if(alertView.tag == 99) {
-        // Decline alert, Private Channel Owner left
+        // Decline alert, Private Channel Owner left,
         [self.navigationController popViewControllerAnimated:YES];
-        
     }
 }
 

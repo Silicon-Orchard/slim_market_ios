@@ -49,6 +49,10 @@
                                        forBarMetrics:UIBarMetricsDefault];
     [UINavigationBar appearance].shadowImage = [UIImage new];
     [UINavigationBar appearance].translucent = YES;
+    
+    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
+    [[UINavigationBar appearance] setTintColor:UIColorFromRGB(0xE0362B)];
+    
     return YES;
 }
 

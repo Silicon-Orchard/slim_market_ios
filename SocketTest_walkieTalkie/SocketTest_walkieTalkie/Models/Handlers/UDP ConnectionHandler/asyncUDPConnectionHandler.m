@@ -207,6 +207,10 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:CHANNEL_LEFT_NOTIFICATIONKEY object:nil userInfo:userInfo];
             break;
             
+        case TYPE_CHANNEL_DUPLICATE:
+            [[NSNotificationCenter defaultCenter] postNotificationName:CHANNEL_DUPLICATE_NOTIFICATIONKEY object:nil userInfo:userInfo];
+            break;
+            
         case TYPE_LEFT_APPLICATION:
             [[NSNotificationCenter defaultCenter] postNotificationName:USER_LEFT_SYSTEM_NOTIFICATIONKEY object:nil userInfo:userInfo];
             break;

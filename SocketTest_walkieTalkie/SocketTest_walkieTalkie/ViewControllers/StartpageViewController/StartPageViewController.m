@@ -69,9 +69,14 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     
-//    self.title = @"Main Menu";
+    self.title = @"Main Menu";
     
     [self notifySelfPresenceToNetwork];
+}
+
+-(void)viewWillDisappear:(BOOL)animated{
+    
+    self.title = @"Back";
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -143,8 +148,8 @@
                                       andActive:YES];
     
     
-    int count = [[[UserHandler sharedInstance] getUsers] count];
-    NSLog(@"UserHandler Count %d", count);
+    NSUInteger count = [[[UserHandler sharedInstance] getUsers] count];
+    NSLog(@"UserHandler Count %lu", (unsigned long)count);
     
     
     
@@ -228,8 +233,24 @@
     NSDictionary *jsonDict = [NSJSONSerialization  JSONObjectWithData:receivedData options:0 error:nil];
     
     
-    User *hostUser = [[User alloc] initWithDictionary:jsonDict];
     int channelID = [[jsonDict objectForKey:JSON_KEY_CHANNEL] intValue];
+    
+    Channel *channel = [[ChannelManager sharedInstance] getChannel:channelID];
+    if(channel){
+        // send duplicate channel Message
+        
+        NSString *requesterIP = jsonDict[JSON_KEY_IP_ADDRESS];
+        NSString *myName = [UserHandler sharedInstance].mySelf.deviceName;
+        
+        NSString * duplicateChannelMessage = [[MessageHandler sharedHandler] duplicateChannelMessageOf:channelID channelName:myName andHost:channel.hostUser];
+        
+        [[asyncUDPConnectionHandler sharedHandler] enableBroadCast];
+        [[asyncUDPConnectionHandler sharedHandler] sendMessage:duplicateChannelMessage toIPAddress:requesterIP];
+        
+        return;
+    }
+    
+    User *hostUser = [[User alloc] initWithDictionary:jsonDict];
     Channel *personalChannel = [[Channel alloc] initChannelWithID:channelID andHost:hostUser];
     
     [[ChannelManager sharedInstance] saveChannel:personalChannel];

@@ -21,12 +21,21 @@
     return self;
 }
 
--(instancetype)initWithDictionary:(NSDictionary *)jsonDict{
+-(instancetype)initWithDictionary:(NSDictionary *)jsonDict {
     
     return [self initWithIP:[jsonDict objectForKey:JSON_KEY_IP_ADDRESS]
                    deviceID:[jsonDict objectForKey:JSON_KEY_DEVICE_ID]
                        name:[jsonDict objectForKey:JSON_KEY_DEVICE_NAME]
                   andActive:NO];
+}
+
+
+-(instancetype)initWithDictionary:(NSDictionary *)jsonDict andActive:(BOOL)active{
+    
+    return [self initWithIP:[jsonDict objectForKey:JSON_KEY_IP_ADDRESS]
+                   deviceID:[jsonDict objectForKey:JSON_KEY_DEVICE_ID]
+                       name:[jsonDict objectForKey:JSON_KEY_DEVICE_NAME]
+                  andActive:active];
 }
 
 

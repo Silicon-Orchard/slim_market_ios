@@ -24,14 +24,22 @@
     [self.view addGestureRecognizer:aTap];
 
     // Do any additional setup after loading the view.
+
+    self.hostNameTextField.text = [UIDevice currentDevice].name;
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-//    self.navigationController.navigationBar.barStyle = UIBarStyleDefault;
-    self.navigationController.navigationBar.tintColor = UIColorFromRGB(0xE0362B);
-//    self.title = @"Create Channel";
-    self.hostNameTextField.text = [UIDevice currentDevice].name;
+//  self.navigationController.navigationBar.barStyle = UIBarStyleDefault;
+    [super viewWillAppear:animated];
+    
+    self.title = @"Create Channel";
+}
 
+-(void) viewWillDisappear:(BOOL)animated{
+    
+    self.title = @"Back";
+    
+    [super viewWillDisappear:animated];
 }
 
 //UITapGestureRecognizer *aTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(ScreenTapped)];
@@ -127,8 +135,23 @@
 
 - (IBAction)createChannelButtonTapped:(id)sender {
     
-    [self createPersonalChannelWith:[self.channel_ID_TextField.text intValue]];
-
+    int channelID = [self.channel_ID_TextField.text intValue];
+    
+    Channel *channel = [[ChannelManager sharedInstance] getChannel:channelID];
+    
+    if(channel){
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Already Exists!!!"
+                                                        message: @"Channel number already exists. Please Choose different channel number."
+                                                       delegate: nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+        
+        return;
+    }
+    
+    [self createPersonalChannelWith:channelID];
 }
 
 -(BOOL) textFieldShouldReturn:(UITextField *)textField{

@@ -24,7 +24,11 @@
 
 
 -(Channel *)getChannel:(int)channelID;
+-(BOOL)hasFoundChannelWith:(int)channelID;
+
 -(void)saveChannel:(Channel *)channel;
+-(void)updateChannel:(Channel *)channel ofChannelID:(int)channelID;
+-(void)removeChannel:(int)channelID;
 
 -(void) clearAll;
 

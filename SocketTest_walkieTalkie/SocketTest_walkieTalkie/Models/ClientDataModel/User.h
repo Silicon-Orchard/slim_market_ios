@@ -16,7 +16,8 @@
 @property BOOL isActive;
 
 
--(instancetype)initWithDictionary:(NSDictionary *)dic;
+-(instancetype)initWithDictionary:(NSDictionary *)jsonDict;
+-(instancetype)initWithDictionary:(NSDictionary *)jsonDict andActive:(BOOL)active;
 -(instancetype)initWithIP:(NSString *)ip deviceID:(NSString* )ID name:(NSString*)name andActive:(BOOL)active;
 
 
