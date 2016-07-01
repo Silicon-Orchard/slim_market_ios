@@ -8,13 +8,20 @@
 
 #import "JoinChannelViewController.h"
 #import "ChatViewController.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface JoinChannelViewController (){
     
     int requestedChannelID;
+    
+    UITextField * activeField;
 }
 @property (weak, nonatomic) IBOutlet UITextField *client_Name_textField;
 @property (weak, nonatomic) IBOutlet UITextField *channel_ID_TextField;
+
+@property (weak, nonatomic) IBOutlet UIView *contentView;
+
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 
 @end
 
@@ -26,26 +33,91 @@
     UITapGestureRecognizer *aTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(ScreenTapped)];
     [self.view addGestureRecognizer:aTap];
     
+    
+    // Do any additional setup after loading the view.
+    [self configUI];
+    [self registerForKeyboardNotifications];
+    
+}
+-(void)configUI{
+    
+    self.client_Name_textField.layer.borderColor = [[UIColor colorWithRed:192.0f/255.0f green:192.0f/255.0f blue:192.0f/255.0f alpha:1.0] CGColor];
+    self.client_Name_textField.layer.borderWidth = 1.0;
+    self.client_Name_textField.layer.cornerRadius = 5;
+    
+    //    NSAttributedString *str = [[NSAttributedString alloc] initWithString:@"Some Text" attributes:@{ NSForegroundColorAttributeName : [UIColor redColor] }];
+    //    self.hostNameTextField.attributedPlaceholder = str;
+    
+    
+    self.channel_ID_TextField.layer.borderColor = [[UIColor colorWithRed:192.0f/255.0f green:192.0f/255.0f blue:192.0f/255.0f alpha:1.0] CGColor];
+    self.channel_ID_TextField.layer.borderWidth = 1.0;
+    self.channel_ID_TextField.layer.cornerRadius = 5;
+    
+    
+    self.btnAView.layer.borderColor = [[UIColor colorWithRed:192.0f/255.0f green:192.0f/255.0f blue:192.0f/255.0f alpha:1.0] CGColor];
+    self.btnAView.layer.borderWidth = 1.0f;
+    self.btnAView.layer.cornerRadius = 5;
+    
+    self.btnBView.layer.borderColor = [[UIColor colorWithRed:192.0f/255.0f green:192.0f/255.0f blue:192.0f/255.0f alpha:1.0] CGColor];
+    self.btnBView.layer.borderWidth = 1.0f;
+    self.btnBView.layer.cornerRadius = 5;
+    
+}
+
+// Call this method somewhere in your view controller setup code.
+- (void)registerForKeyboardNotifications
+{
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWasShown:)
-                                                 name:UIKeyboardDidShowNotification
-                                               object:nil];
-
-
-    // Do any additional setup after loading the view.
+                                                 name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillBeHidden:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
 }
 
--(void)keyboardWasShown:(NSNotification*)notification
+// Called when the UIKeyboardDidShowNotification is sent.
+- (void)keyboardWasShown:(NSNotification*)aNotification
 {
-    CGFloat height = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey ] CGRectValue].size.height;
+    NSDictionary* info = [aNotification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
+    self.scrollView.contentInset = contentInsets;
+    self.scrollView.scrollIndicatorInsets = contentInsets;
     
-    if (self.isViewLoaded && self.view.window) {
-        // viewController is visible
-        self.publicchannelACenterYConstraint.constant -= height;
-
+    // If active text field is hidden by keyboard, scroll it so it's visible
+    // Your application might not need or want this behavior.
+    CGRect aRect = self.view.frame;
+    aRect.size.height -= kbSize.height;
+    if (!CGRectContainsPoint(aRect, activeField.frame.origin) ) {
+        CGPoint scrollPoint = CGPointMake(0.0, activeField.frame.origin.y-kbSize.height);
+        [self.scrollView setContentOffset:scrollPoint animated:YES];
     }
-//    [self.view layoutSubviews];
 }
+
+// Called when the UIKeyboardWillHideNotification is sent
+- (void)keyboardWillBeHidden:(NSNotification*)aNotification
+{
+    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    self.scrollView.contentInset = contentInsets;
+    self.scrollView.scrollIndicatorInsets = contentInsets;
+}
+
+
+#pragma mark - TextFieldDelegate
+
+-(void)textFieldDidBeginEditing:(UITextField *)textField{
+    
+    activeField = textField;
+}
+
+-(BOOL) textFieldShouldReturn:(UITextField *)textField{
+    
+    [textField resignFirstResponder];
+    return YES;
+}
+
+
+
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
@@ -342,11 +414,6 @@
     [self performSegueWithIdentifier:@"clientChannelSegue" sender:nil];
 }
 
--(BOOL) textFieldShouldReturn:(UITextField *)textField{
-    
-    [textField resignFirstResponder];
-    return YES;
-}
 
 #pragma mark _ Navigation
 

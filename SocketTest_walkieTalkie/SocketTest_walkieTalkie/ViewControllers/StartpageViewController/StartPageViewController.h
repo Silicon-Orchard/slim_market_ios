@@ -12,4 +12,9 @@
 
 
 
+@property (weak, nonatomic) IBOutlet UIView *joinChannelBtnView;
+@property (weak, nonatomic) IBOutlet UIView *contactListBtnView;
+
+
+
 @end

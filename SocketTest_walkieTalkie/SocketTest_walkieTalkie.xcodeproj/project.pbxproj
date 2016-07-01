@@ -52,6 +52,8 @@
 		B2507A4C1D1D36DC007921E8 /* ImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2507A471D1D36DB007921E8 /* ImageView.m */; };
 		B2507A4D1D1D36DC007921E8 /* ProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2507A491D1D36DC007921E8 /* ProgressView.m */; };
 		B2584C291D2279EA00D37D8B /* IPChangeNotifier.m in Sources */ = {isa = PBXBuildFile; fileRef = B2584C281D2279EA00D37D8B /* IPChangeNotifier.m */; };
+		B25D515D1D266B03009D6837 /* VoiceTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = B25D515C1D266B03009D6837 /* VoiceTVC.m */; };
+		B25D51601D266BF4009D6837 /* VoiceView.m in Sources */ = {isa = PBXBuildFile; fileRef = B25D515F1D266BF4009D6837 /* VoiceView.m */; };
 		B25F5A501D20FCCA00C37B9F /* ProgressObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = B25F5A4F1D20FCCA00C37B9F /* ProgressObserver.m */; };
 		B273E9351D190B160045020C /* FileHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = B273E9341D190B160045020C /* FileHandler.m */; };
 		B2FBD3FF1D113BF700AC2495 /* UserHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = B2FBD3FE1D113BF700AC2495 /* UserHandler.m */; };
@@ -151,6 +153,10 @@
 		B2507A4A1D1D36DC007921E8 /* ProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgressView.h; sourceTree = "<group>"; };
 		B2584C271D2279EA00D37D8B /* IPChangeNotifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IPChangeNotifier.h; sourceTree = "<group>"; };
 		B2584C281D2279EA00D37D8B /* IPChangeNotifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IPChangeNotifier.m; sourceTree = "<group>"; };
+		B25D515B1D266B03009D6837 /* VoiceTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VoiceTVC.h; sourceTree = "<group>"; };
+		B25D515C1D266B03009D6837 /* VoiceTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VoiceTVC.m; sourceTree = "<group>"; };
+		B25D515E1D266BF4009D6837 /* VoiceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VoiceView.h; sourceTree = "<group>"; };
+		B25D515F1D266BF4009D6837 /* VoiceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VoiceView.m; sourceTree = "<group>"; };
 		B25F5A4E1D20FCCA00C37B9F /* ProgressObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgressObserver.h; sourceTree = "<group>"; };
 		B25F5A4F1D20FCCA00C37B9F /* ProgressObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressObserver.m; sourceTree = "<group>"; };
 		B273E9331D190B160045020C /* FileHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileHandler.h; sourceTree = "<group>"; };
@@ -340,6 +346,8 @@
 				B2507A471D1D36DB007921E8 /* ImageView.m */,
 				B2507A4A1D1D36DC007921E8 /* ProgressView.h */,
 				B2507A491D1D36DC007921E8 /* ProgressView.m */,
+				B25D515E1D266BF4009D6837 /* VoiceView.h */,
+				B25D515F1D266BF4009D6837 /* VoiceView.m */,
 				B23797981D0FD4D900F9F5A7 /* TableViewCells */,
 			);
 			path = Views;
@@ -356,6 +364,8 @@
 				B237979E1D0FD4D900F9F5A7 /* OutGoingMessagesCell.m */,
 				B2FBD4001D1156DA00AC2495 /* ContactListTVC.h */,
 				B2FBD4011D1156DA00AC2495 /* ContactListTVC.m */,
+				B25D515B1D266B03009D6837 /* VoiceTVC.h */,
+				B25D515C1D266B03009D6837 /* VoiceTVC.m */,
 			);
 			path = TableViewCells;
 			sourceTree = "<group>";
@@ -696,6 +706,7 @@
 				B23797A11D0FD4D900F9F5A7 /* OutGoingMessagesCell.m in Sources */,
 				5C2079F21CCF7DB0007A5F21 /* AppDelegate.m in Sources */,
 				B237977A1D0FD1B200F9F5A7 /* StartPageViewController.m in Sources */,
+				B25D515D1D266B03009D6837 /* VoiceTVC.m in Sources */,
 				B25F5A501D20FCCA00C37B9F /* ProgressObserver.m in Sources */,
 				B23797791D0FD1B200F9F5A7 /* JoinChannelViewController.m in Sources */,
 				B23797B01D0FD56B00F9F5A7 /* ChannelHandler.m in Sources */,
@@ -710,6 +721,7 @@
 				B273E9351D190B160045020C /* FileHandler.m in Sources */,
 				B2FBD4021D1156DA00AC2495 /* ContactListTVC.m in Sources */,
 				B2584C291D2279EA00D37D8B /* IPChangeNotifier.m in Sources */,
+				B25D51601D266BF4009D6837 /* VoiceView.m in Sources */,
 				B23797BA1D0FD5AA00F9F5A7 /* asyncUDPConnectionHandler.m in Sources */,
 				B23797D41D0FD78500F9F5A7 /* MessageData.m in Sources */,
 				B2FBD3FF1D113BF700AC2495 /* UserHandler.m in Sources */,
@@ -783,7 +795,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Abdullah Al Mahmood (3TC5LJ6B2U)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Abdullah Al Mahmood (3TC5LJ6B2U)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -805,6 +818,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "f5967791-f572-45d9-97fd-f9a18817c18b";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -827,7 +841,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Abdullah Al Mahmood (3TC5LJ6B2U)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Abdullah Al Mahmood (3TC5LJ6B2U)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -842,6 +857,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PROVISIONING_PROFILE = "f5967791-f572-45d9-97fd-f9a18817c18b";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -853,7 +869,7 @@
 			baseConfigurationReference = FDE5C871A6A380334B15EF9D /* Pods-SocketTest_walkieTalkie.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Abdullah Al Mahmood (Z92ZJ7WG7F)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Abdullah Al Mahmood (3TC5LJ6B2U)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/SocketTest_walkieTalkie/AsyncSocket",
@@ -864,7 +880,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.siliconOrchard.walkieTalkie;
 				PRODUCT_NAME = SILM;
-				PROVISIONING_PROFILE = "e3253401-c74c-4eeb-8ffd-b091c0b40907";
+				PROVISIONING_PROFILE = "f5967791-f572-45d9-97fd-f9a18817c18b";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -874,7 +890,7 @@
 			baseConfigurationReference = C4EFF460277EBE1426537B4F /* Pods-SocketTest_walkieTalkie.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Abdullah Al Mahmood (Z92ZJ7WG7F)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Abdullah Al Mahmood (3TC5LJ6B2U)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/SocketTest_walkieTalkie/AsyncSocket",
@@ -885,7 +901,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.siliconOrchard.walkieTalkie;
 				PRODUCT_NAME = SILM;
-				PROVISIONING_PROFILE = "e3253401-c74c-4eeb-8ffd-b091c0b40907";
+				PROVISIONING_PROFILE = "f5967791-f572-45d9-97fd-f9a18817c18b";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

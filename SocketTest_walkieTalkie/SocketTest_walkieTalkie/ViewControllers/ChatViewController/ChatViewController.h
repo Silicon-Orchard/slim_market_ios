@@ -40,6 +40,9 @@
 @property (weak, nonatomic) IBOutlet UIButton *voiceStreamerButton;
 
 
+@property (weak, nonatomic) IBOutlet UIButton *streamBtn;
+
+
 #pragma mark - IBAction
 #pragma mark Voice-Action
 - (IBAction)tappedOnVoiceBtn:(id)sender;

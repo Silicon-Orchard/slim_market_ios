@@ -13,5 +13,8 @@
 @property(nonatomic, assign) BOOL isChatOpen;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *publicchannelACenterYConstraint;
 
+@property (weak, nonatomic) IBOutlet UIView *btnAView;
+@property (weak, nonatomic) IBOutlet UIView *btnBView;
+
 
 @end

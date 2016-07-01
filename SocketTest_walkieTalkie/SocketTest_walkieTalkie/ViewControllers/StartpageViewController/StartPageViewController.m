@@ -63,8 +63,7 @@
 
     // Do any additional setup after loading the view.
     
-    
-    NSLog(@"%@", [[FileHandler sharedHandler] pathToFileFolderOfType:kFileTypePhoto]);
+    [self configUI];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -87,6 +86,20 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+
+-(void)configUI{
+    
+    
+    self.joinChannelBtnView.layer.borderColor = [[UIColor colorWithRed:192.0f/255.0f green:192.0f/255.0f blue:192.0f/255.0f alpha:1.0] CGColor];
+    self.joinChannelBtnView.layer.borderWidth = 1.0f;
+    self.joinChannelBtnView.layer.cornerRadius = 5;
+    
+    self.contactListBtnView.layer.borderColor = [[UIColor colorWithRed:192.0f/255.0f green:192.0f/255.0f blue:192.0f/255.0f alpha:1.0] CGColor];
+    self.contactListBtnView.layer.borderWidth = 1.0f;
+    self.contactListBtnView.layer.cornerRadius = 5;
+    
 }
 
 

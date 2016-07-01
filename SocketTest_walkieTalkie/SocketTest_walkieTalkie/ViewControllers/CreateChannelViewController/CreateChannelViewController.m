@@ -8,10 +8,21 @@
 
 #import "CreateChannelViewController.h"
 #import "ChatViewController.h"
+#import <QuartzCore/QuartzCore.h>
 
-@interface CreateChannelViewController ()
+@interface CreateChannelViewController (){
+    
+    UITextField * selectedTextField;
+    CGFloat storedHeight;
+    BOOL heightChanged;
+
+}
 @property (weak, nonatomic) IBOutlet UITextField *hostNameTextField;
 @property (weak, nonatomic) IBOutlet UITextField *channel_ID_TextField;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomConstraintChannelNum;
+
+//@property (weak, nonatomic) NSLayoutConstraint *bottomConstraintChannelNum;
 
 @end
 
@@ -24,8 +35,29 @@
     [self.view addGestureRecognizer:aTap];
 
     // Do any additional setup after loading the view.
+    storedHeight = 0.0f;
 
     self.hostNameTextField.text = [UIDevice currentDevice].name;
+    
+    [self configUI];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWasShown:) name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWasHide:) name:UIKeyboardDidHideNotification object:nil];
+}
+
+-(void)configUI{
+    
+    self.hostNameTextField.layer.borderColor = [[UIColor colorWithRed:192.0f/255.0f green:192.0f/255.0f blue:192.0f/255.0f alpha:1.0] CGColor];
+    self.hostNameTextField.layer.borderWidth = 1.0;
+    self.hostNameTextField.layer.cornerRadius = 5;
+    
+//    NSAttributedString *str = [[NSAttributedString alloc] initWithString:@"Some Text" attributes:@{ NSForegroundColorAttributeName : [UIColor redColor] }];
+//    self.hostNameTextField.attributedPlaceholder = str;
+    
+    
+    self.channel_ID_TextField.layer.borderColor = [[UIColor colorWithRed:192.0f/255.0f green:192.0f/255.0f blue:192.0f/255.0f alpha:1.0] CGColor];
+    self.channel_ID_TextField.layer.borderWidth = 1.0;
+    self.channel_ID_TextField.layer.cornerRadius = 5;
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -50,6 +82,41 @@
     [self.view endEditing:YES];
     
 }
+
+-(void)keyboardWasShown:(NSNotification*)notification {
+    
+    CGFloat height = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey ] CGRectValue].size.height;
+    
+    
+    CGFloat bottomHeight = selectedTextField.superview.frame.size.height - (selectedTextField.frame.origin.y + selectedTextField.frame.size.height);
+    
+    if(bottomHeight < height){
+        
+        storedHeight = self.bottomConstraintChannelNum.constant;
+        self.bottomConstraintChannelNum.constant = height + 10;
+        [self.view layoutIfNeeded];
+        heightChanged = true;
+    }
+    
+    
+}
+
+-(void)keyboardWasHide:(NSNotification*)notification {
+    
+    CGFloat height = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey ] CGRectValue].size.height;
+    
+    if(self.bottomConstraintChannelNum.constant == height + 10 && storedHeight != 0.0f){
+        
+        //storedHeight = self.bottomConstraintChannelNum.constant;
+        self.bottomConstraintChannelNum.constant = storedHeight;
+        [self.view layoutIfNeeded];
+    }
+    
+    storedHeight = 0.0f;
+    heightChanged = false;
+}
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -137,6 +204,19 @@
     
     int channelID = [self.channel_ID_TextField.text intValue];
     
+    int digitNumber = floor (log10 (abs (channelID))) + 1;
+    
+    if(digitNumber != 4){
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Enter four digit channel number"
+                                                        message: @""
+                                                       delegate: nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+        return;
+    }
+    
     Channel *channel = [[ChannelManager sharedInstance] getChannel:channelID];
     
     if(channel){
@@ -152,6 +232,11 @@
     }
     
     [self createPersonalChannelWith:channelID];
+}
+
+-(void)textFieldDidBeginEditing:(UITextField *)textField{
+    
+    selectedTextField = textField;
 }
 
 -(BOOL) textFieldShouldReturn:(UITextField *)textField{

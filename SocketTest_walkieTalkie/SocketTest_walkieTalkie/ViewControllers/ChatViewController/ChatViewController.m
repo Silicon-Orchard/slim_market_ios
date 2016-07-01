@@ -17,6 +17,7 @@
 #import "MessageView.h"
 #import "ImageView.h"
 #import "ProgressView.h"
+#import "VoiceView.h"
 
 #import "IPChangeNotifier.h"
 
@@ -297,7 +298,13 @@ typedef void(^myCompletion)(BOOL);
     self.equalizerImage.animationDuration = 0.3;
     // How many times to repeat the animation (0 for indefinitely).
     self.equalizerImage.animationRepeatCount = 0;
+    
+    
+    self.chatTextField.layer.borderColor = [[UIColor colorWithRed:192.0f/255.0f green:192.0f/255.0f blue:192.0f/255.0f alpha:1.0] CGColor];
+    self.chatTextField.layer.borderWidth = 1.0;
+    self.chatTextField.layer.cornerRadius = 5;
 }
+
 
 -(void)setNavigationItemTitle{
     
@@ -471,7 +478,7 @@ typedef void(^myCompletion)(BOOL);
     MessageData * messageData = [[MessageData alloc] initWithSender:@"Me"  type:MESSAGE_TYPE_TEXT message:self.chatTextField.text direction:MESSAGE_DIRECTION_SEND];
     [self updateUIForChatMessage:messageData];
     
-    //self.chatTextField.text = @"";
+    self.chatTextField.text = @"";
 }
 
 
@@ -660,6 +667,26 @@ typedef void(^myCompletion)(BOOL);
 
 - (IBAction)tappedOnStreamBtn:(id)sender {
     
+    if (_isStreaming) {
+        
+        
+        [queueRecorder stopRecording];
+        [[AudioRecorderTest_StreamPlayer sharedHandler] stopMediaPlayer];
+        
+        queueRecorder = nil;
+        _isStreaming = NO;
+        //[self stopImageEqualizer];
+        [self.streamBtn setBackgroundImage:[UIImage imageNamed:@"Record-icon"] forState:UIControlStateNormal];
+    }
+    else{
+        _isStreaming = YES;
+        
+        queueRecorder =  [[AudioRecorderTest alloc] init];
+        [queueRecorder startRecording];
+        
+        //[self startImageEqualizer];
+        [self.streamBtn setBackgroundImage:[UIImage imageNamed:@"Record Stop"] forState:UIControlStateNormal];
+    }
     
 }
 
@@ -1366,6 +1393,8 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
 //            }
 //        }
         
+        cell2.selectionStyle = UITableViewCellSelectionStyleNone;
+        
         return cell2;
         
         
@@ -1376,7 +1405,16 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
         
 
         UITableViewCell *cell;
-        if (messageData.type == kFileTypePhoto) {
+        if (messageData.type == kFileTypeAudio) {
+            
+            cell = [tableView dequeueReusableCellWithIdentifier:@"VoiceCellID" forIndexPath:indexPath];
+            VoiceView *voiceView = (VoiceView *)[cell viewWithTag:VOICE_VIEW_TAG];
+            voiceView.messageData = messageData;
+            
+            voiceView.playBtn.tag = indexPath.row;
+            [voiceView.playBtn addTarget:self action:@selector(playCellButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+        }
+        else if (messageData.type == kFileTypePhoto) {
 
             cell = [tableView dequeueReusableCellWithIdentifier:@"ImageCellID" forIndexPath:indexPath];
             ImageView *imageView = (ImageView *)[cell viewWithTag:IMAGE_VIEW_TAG];
@@ -1394,6 +1432,9 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
             MessageView *messageView = (MessageView *)[cell viewWithTag:MESSAGE_VIEW_TAG];
             messageView.messageData = messageData;
         }
+        
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
         return cell;
         
 //        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:incomingMessageCellIdentifier forIndexPath:indexPath];
@@ -1404,7 +1445,14 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
     
 }
 
-    
+-(void)playCellButtonClicked:(UIButton*)sender
+{
+
+    MessageData *messageData = [messageDataList objectAtIndex:sender.tag];
+    [self playAudioFileName:messageData.message];
+}
+
+
 #pragma mark UITableViewDelegate
 
 //- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -1431,76 +1479,71 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
             return [MessageView viewHeightForTranscript:messageData];
         }
     }
-    
-//    [self configureCell:self.prototypeCell forRowAtIndexPath:indexPath];
-//    self.prototypeCell.bounds = CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.chatTableView.bounds), CGRectGetHeight(self.prototypeCell.bounds));
-//
-//    [self.prototypeCell layoutIfNeeded];
-//
-//    CGSize size = [self.prototypeCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
-//    return size.height+1;
+
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    //NSDictionary * messageDic = messageDataList[indexPath.row];
     
-//    if([messageDic[@"type"] isEqual: MESSAGE_TYPE_TEXT] || [messageDic[@"type"] isEqual: MESSAGE_TYPE_LEFT]) {
-//        
-//
-//        return nil;
-//        
-//    }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_AUDIO]) {
-//        
-//        
-//        
-//    }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_VIDEO]) {
-//        
-//        
-//        
-//    }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_PHOTO]) {
-//        
-//        
-//        
-//    }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_OTHERS]) {
-//        
-//        
-//        
-//    }
+    if (tableView.tag == 102) {
+        
+
+    } else {
+        
+        MessageData *messageData = [messageDataList objectAtIndex:indexPath.row];
+        
+
+        if (messageData.type == kFileTypeAudio) {
+            
+            //[self playAudioFileName:messageData.fileName];
+            //return nil;
+            
+        }else if (messageData.type == kFileTypePhoto) {
+            
+            
+        }
+        else if (messageData.progress != nil) {
+            
+            
+        }
+        else {
+            
+            
+        }
+    }
     
+    //return nil;
     return indexPath;
 }
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    //NSString * audioFileName = [audioFileNamesDic objectForKey:@(indexPath.row)];
-    
-    //MessageData * messageData = messageDataList[indexPath.row];
-    
-//    if([messageDic[@"type"] isEqual: MESSAGE_TYPE_TEXT] || [messageDic[@"type"] isEqual: MESSAGE_TYPE_LEFT]) {
-//        
-//        [tableView deselectRowAtIndexPath:indexPath animated:YES];
-//        return;
-//        
-//    }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_AUDIO]) {
-//        
-//        NSString *audioFileName = messageDic[@"message"];
-//        [self playAudioFileName:audioFileName];
-//        
-//    }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_VIDEO]) {
-//        
-//        
-//        
-//    }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_PHOTO]) {
-//        
-//        
-//        
-//    }else if([messageDic[@"type"] isEqual: MESSAGE_TYPE_OTHERS]) {
-//        
-//        
-//        
-//    }
+    if (tableView.tag == 102) {
+        
+        
+    } else {
+        
+        MessageData *messageData = [messageDataList objectAtIndex:indexPath.row];
+        
+        if (messageData.type == kFileTypeAudio) {
+            
+            [self playAudioFileName:messageData.message];
+            
+            
+        }else if (messageData.type == kFileTypePhoto) {
+            
+            
+        }
+        else if (messageData.progress != nil) {
+            
+            
+        }
+        else {
+            
+            
+        }
+    }
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
@@ -1573,6 +1616,8 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
     self.bottomSpaceForSendContainer.constant = height;
     [self.view layoutIfNeeded];
 }
+
+
 
 -(BOOL) textFieldShouldReturn:(UITextField *)textField{
     
@@ -1691,14 +1736,14 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
         
         dispatch_async(dispatch_get_main_queue(), ^{
             
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Done"
-                                                            message: [NSString stringWithFormat:@"Sent packet count %lu", (unsigned long)chunkStringArray.count] //@"Voice Message Sent to Channel Members!"
-                                                           delegate: nil
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:nil];
-            
-            
-            [alert show];
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Done"
+//                                                            message: [NSString stringWithFormat:@"Sent packet count %lu", (unsigned long)chunkStringArray.count] //@"Voice Message Sent to Channel Members!"
+//                                                           delegate: nil
+//                                                  cancelButtonTitle:@"OK"
+//                                                  otherButtonTitles:nil];
+//            
+//            
+//            [alert show];
             
             completionBlock(YES);
             
