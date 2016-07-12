@@ -373,8 +373,8 @@ enum GCDAsyncUdpSocketConfig
 			#endif
 		}
 		
-		max4ReceiveSize = 65535;
-		max6ReceiveSize = 65535;
+		max4ReceiveSize = 9216;
+		max6ReceiveSize = 9216;
 		
 		socket4FD = SOCKET_NULL;
 		socket6FD = SOCKET_NULL;

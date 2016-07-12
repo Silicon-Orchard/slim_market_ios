@@ -5,7 +5,8 @@ use_frameworks!
 
 target 'SocketTest_walkieTalkie' do
 
-pod 'CocoaAsyncSocket'  
+pod 'CocoaAsyncSocket'
+pod 'SVProgressHUD'
 
 end
 

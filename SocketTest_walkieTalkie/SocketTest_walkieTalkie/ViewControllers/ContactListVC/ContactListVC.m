@@ -32,8 +32,10 @@
     [self.tableView setBackgroundColor:[[UIColor clearColor] colorWithAlphaComponent:0.2f]];
     // This will remove extra separators from tableview
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-
     
+    //self.tableView.backgroundView = [UIView new];
+    //self.tableView.backgroundView.backgroundColor = [UIColor clearColor];
+
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addNewDeviceToNetWorkDeviceList:) name:NEW_DEVICE_CONNECTED_NOTIFICATIONKEY object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userLeftSystem:) name:USER_LEFT_SYSTEM_NOTIFICATIONKEY object:nil];
@@ -99,6 +101,7 @@ static NSString * CellID = @"ContactListCellID";
     
     ContactListTVC *cell =  (ContactListTVC *)[tableView dequeueReusableCellWithIdentifier:CellID forIndexPath:indexPath];
     cell.userName.text = user.deviceName;
+    cell.backgroundColor = cell.contentView.backgroundColor;
     //cell.backgroundColor = [UIColor clearColor];
     
     

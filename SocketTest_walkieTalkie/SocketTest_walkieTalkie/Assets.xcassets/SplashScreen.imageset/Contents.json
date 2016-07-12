@@ -2,11 +2,12 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "SplashScreen.png",
+      "filename" : "WT-UI-bg-sml.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
+      "filename" : "WT-UI-big.png",
       "scale" : "2x"
     },
     {

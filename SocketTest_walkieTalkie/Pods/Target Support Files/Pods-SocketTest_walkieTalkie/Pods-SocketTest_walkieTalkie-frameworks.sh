@@ -85,7 +85,9 @@ strip_invalid_archs() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-SocketTest_walkieTalkie/CocoaAsyncSocket.framework"
+  install_framework "Pods-SocketTest_walkieTalkie/SVProgressHUD.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-SocketTest_walkieTalkie/CocoaAsyncSocket.framework"
+  install_framework "Pods-SocketTest_walkieTalkie/SVProgressHUD.framework"
 fi

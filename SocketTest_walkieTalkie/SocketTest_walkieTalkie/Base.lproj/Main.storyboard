@@ -29,7 +29,7 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo2" translatesAutoresizingMaskIntoConstraints="NO" id="d28-Gj-sUW">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="app logo" translatesAutoresizingMaskIntoConstraints="NO" id="d28-Gj-sUW">
                                 <rect key="frame" x="113" y="120" width="150" height="267"/>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UGM-LD-UGd">
@@ -273,12 +273,17 @@
                                     <outlet property="delegate" destination="WtN-td-Dk4" id="b5a-rz-jcN"/>
                                 </connections>
                             </textField>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="x2t-3Z-RiN" userLabel="CreateBtnView">
+                                <rect key="frame" x="127" y="359" width="120" height="40"/>
+                                <color key="backgroundColor" red="0.90588235289999997" green="0.29803921570000003" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AJS-6Z-GeT">
-                                <rect key="frame" x="140" y="359" width="96" height="40"/>
+                                <rect key="frame" x="127" y="359" width="120" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="AJS-6Z-GeT" secondAttribute="height" multiplier="2.4:1" id="bUC-ym-5qj"/>
+                                    <constraint firstAttribute="width" secondItem="AJS-6Z-GeT" secondAttribute="height" multiplier="3:1" id="bUC-ym-5qj"/>
                                 </constraints>
-                                <state key="normal" image="Create btn"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <state key="normal" title="Create"/>
                                 <connections>
                                     <action selector="createChannelButtonTapped:" destination="WtN-td-Dk4" eventType="touchUpInside" id="HgI-J4-MCN"/>
                                 </connections>
@@ -309,11 +314,15 @@
                             <constraint firstItem="faV-K7-1gk" firstAttribute="top" secondItem="Ez5-11-5Bw" secondAttribute="bottom" constant="17" id="9aE-Uv-fqM"/>
                             <constraint firstItem="WOj-st-haM" firstAttribute="centerX" secondItem="omy-bn-YFA" secondAttribute="centerX" id="Byh-aJ-csw"/>
                             <constraint firstItem="Ez5-11-5Bw" firstAttribute="centerY" secondItem="omy-bn-YFA" secondAttribute="centerY" id="Fan-y6-JLm"/>
+                            <constraint firstItem="x2t-3Z-RiN" firstAttribute="trailing" secondItem="AJS-6Z-GeT" secondAttribute="trailing" id="L4Z-5W-oHO"/>
                             <constraint firstItem="faV-K7-1gk" firstAttribute="width" secondItem="Ez5-11-5Bw" secondAttribute="width" id="Los-m5-ybu"/>
                             <constraint firstItem="faV-K7-1gk" firstAttribute="leading" secondItem="Ez5-11-5Bw" secondAttribute="leading" id="Pj0-UR-zIi"/>
                             <constraint firstAttribute="trailing" secondItem="v6V-aT-nLT" secondAttribute="trailing" id="SXA-16-Qi3"/>
+                            <constraint firstItem="x2t-3Z-RiN" firstAttribute="bottom" secondItem="AJS-6Z-GeT" secondAttribute="bottom" id="Yh9-10-Du8"/>
+                            <constraint firstItem="x2t-3Z-RiN" firstAttribute="top" secondItem="AJS-6Z-GeT" secondAttribute="top" id="dHt-eM-WW2"/>
                             <constraint firstItem="AJS-6Z-GeT" firstAttribute="height" secondItem="faV-K7-1gk" secondAttribute="height" id="dko-39-W3d"/>
                             <constraint firstItem="v6V-aT-nLT" firstAttribute="top" secondItem="omy-bn-YFA" secondAttribute="top" id="e8W-Rz-F1U"/>
+                            <constraint firstItem="x2t-3Z-RiN" firstAttribute="leading" secondItem="AJS-6Z-GeT" secondAttribute="leading" id="feI-bx-MZd"/>
                             <constraint firstItem="AJS-6Z-GeT" firstAttribute="centerX" secondItem="omy-bn-YFA" secondAttribute="centerX" id="gCM-yF-AiS"/>
                             <constraint firstItem="WOj-st-haM" firstAttribute="height" secondItem="v6V-aT-nLT" secondAttribute="height" multiplier="0.2" id="hHL-Bn-VXP"/>
                             <constraint firstItem="faV-K7-1gk" firstAttribute="trailing" secondItem="Ez5-11-5Bw" secondAttribute="trailing" id="jIA-CF-hVy"/>
@@ -339,6 +348,7 @@
                     <connections>
                         <outlet property="bottomConstraintChannelNum" destination="8Eh-su-L47" id="r4C-SI-3An"/>
                         <outlet property="channel_ID_TextField" destination="faV-K7-1gk" id="ATl-aS-Rv1"/>
+                        <outlet property="createbtnView" destination="x2t-3Z-RiN" id="2lz-L4-Olb"/>
                         <outlet property="hostNameTextField" destination="Ez5-11-5Bw" id="sbk-Bj-utd"/>
                         <segue destination="SSg-4l-UjN" kind="show" identifier="hostChannelSegue" id="iZh-cd-HDd"/>
                     </connections>
@@ -364,8 +374,8 @@
                             </imageView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ear-ba-KIC">
                                 <rect key="frame" x="8" y="64" width="359" height="595"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.048195043103448278" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="ContactListCellID" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ContactListCellID" id="sVa-MU-NiP" customClass="ContactListTVC">
                                         <rect key="frame" x="0.0" y="28" width="359" height="44"/>
@@ -395,6 +405,7 @@
                                                     </constraints>
                                                 </imageView>
                                             </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstItem="gWI-rb-okc" firstAttribute="centerY" secondItem="7qC-zN-wCC" secondAttribute="centerY" id="1uv-d1-ZDR"/>
                                                 <constraint firstItem="gWI-rb-okc" firstAttribute="leading" secondItem="7qC-zN-wCC" secondAttribute="trailing" constant="8" id="Nae-yt-RaZ"/>
@@ -497,13 +508,20 @@
                                                     <constraint firstAttribute="bottom" secondItem="zeX-ZG-nJG" secondAttribute="bottom" constant="4" id="S46-SL-J7H"/>
                                                 </constraints>
                                             </view>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Sl-Ly-Vti">
-                                                <rect key="frame" x="136" y="422" width="104" height="40"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sPc-Tf-Zxl" userLabel="JoinBtnView">
+                                                <rect key="frame" x="133" y="422" width="110" height="40"/>
+                                                <color key="backgroundColor" red="0.90588235289999997" green="0.29803921570000003" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
+                                            </view>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Sl-Ly-Vti" userLabel="JoinBtn">
+                                                <rect key="frame" x="133" y="422" width="110" height="40"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="104" id="10A-gA-IX7"/>
+                                                    <constraint firstAttribute="width" constant="110" id="10A-gA-IX7"/>
                                                     <constraint firstAttribute="height" constant="40" id="gMU-hF-Z4L"/>
                                                 </constraints>
-                                                <state key="normal" backgroundImage="join icon"/>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                                <state key="normal" title="Join">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
                                                 <connections>
                                                     <action selector="joinChannelTapped:" destination="iDh-Gf-Pp9" eventType="touchUpInside" id="Eal-X1-bhJ"/>
                                                 </connections>
@@ -534,19 +552,6 @@
                                                     <action selector="joinPublicChannelB:" destination="iDh-Gf-Pp9" eventType="touchUpInside" id="LbH-lf-3Zn"/>
                                                 </connections>
                                             </button>
-                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Your Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TD1-dw-rrG">
-                                                <rect key="frame" x="26" y="315" width="323" height="40"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="40" id="bIn-GI-QF5"/>
-                                                </constraints>
-                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits"/>
-                                                <connections>
-                                                    <outlet property="delegate" destination="iDh-Gf-Pp9" id="4eY-js-stJ"/>
-                                                </connections>
-                                            </textField>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter channel number" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QeL-Pe-MSi">
                                                 <rect key="frame" x="26" y="365" width="323" height="40"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -554,10 +559,23 @@
                                                     <constraint firstAttribute="height" constant="40" id="WpF-K6-2eq"/>
                                                 </constraints>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                                 <connections>
                                                     <outlet property="delegate" destination="iDh-Gf-Pp9" id="RFr-cQ-lhZ"/>
+                                                </connections>
+                                            </textField>
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Your Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TD1-dw-rrG">
+                                                <rect key="frame" x="26" y="315" width="323" height="40"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="40" id="bIn-GI-QF5"/>
+                                                </constraints>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                                <connections>
+                                                    <outlet property="delegate" destination="iDh-Gf-Pp9" id="4eY-js-stJ"/>
                                                 </connections>
                                             </textField>
                                         </subviews>
@@ -566,9 +584,12 @@
                                             <constraint firstItem="eb7-Ie-495" firstAttribute="centerX" secondItem="VuM-vw-wr6" secondAttribute="centerX" id="1cq-5I-BpL"/>
                                             <constraint firstItem="7Sl-Ly-Vti" firstAttribute="centerX" secondItem="QeL-Pe-MSi" secondAttribute="centerX" id="2io-lc-03t"/>
                                             <constraint firstItem="Aer-El-abJ" firstAttribute="top" secondItem="HuC-Cg-AJ0" secondAttribute="top" id="69M-BA-9rr"/>
+                                            <constraint firstItem="sPc-Tf-Zxl" firstAttribute="bottom" secondItem="7Sl-Ly-Vti" secondAttribute="bottom" id="7YZ-SY-7cj"/>
                                             <constraint firstAttribute="trailing" secondItem="VuM-vw-wr6" secondAttribute="trailing" constant="26" id="8mR-Lu-KyC"/>
                                             <constraint firstAttribute="trailing" secondItem="Aer-El-abJ" secondAttribute="trailing" constant="26" id="AuQ-O7-jwH"/>
                                             <constraint firstItem="VuM-vw-wr6" firstAttribute="trailing" secondItem="dYY-ax-myJ" secondAttribute="trailing" id="G64-sw-6mK"/>
+                                            <constraint firstItem="sPc-Tf-Zxl" firstAttribute="top" secondItem="7Sl-Ly-Vti" secondAttribute="top" id="Gs7-yV-avV"/>
+                                            <constraint firstItem="sPc-Tf-Zxl" firstAttribute="leading" secondItem="7Sl-Ly-Vti" secondAttribute="leading" id="H4y-Zh-SS1"/>
                                             <constraint firstItem="VuM-vw-wr6" firstAttribute="top" secondItem="eb7-Ie-495" secondAttribute="bottom" constant="30" id="H7N-C4-CuE"/>
                                             <constraint firstItem="Aer-El-abJ" firstAttribute="top" secondItem="VuM-vw-wr6" secondAttribute="bottom" constant="10" id="Ic7-HP-gA7"/>
                                             <constraint firstItem="eb7-Ie-495" firstAttribute="top" secondItem="mqB-Jd-zGY" secondAttribute="top" constant="20" id="TST-iM-9bE"/>
@@ -584,6 +605,7 @@
                                             <constraint firstItem="VuM-vw-wr6" firstAttribute="bottom" secondItem="dYY-ax-myJ" secondAttribute="bottom" id="ien-qv-bSc"/>
                                             <constraint firstItem="Aer-El-abJ" firstAttribute="bottom" secondItem="HuC-Cg-AJ0" secondAttribute="bottom" id="kh1-D4-bmJ"/>
                                             <constraint firstAttribute="trailing" secondItem="TD1-dw-rrG" secondAttribute="trailing" constant="26" id="mJa-Q4-V3A"/>
+                                            <constraint firstItem="sPc-Tf-Zxl" firstAttribute="trailing" secondItem="7Sl-Ly-Vti" secondAttribute="trailing" id="mRf-JH-9X1"/>
                                             <constraint firstItem="VuM-vw-wr6" firstAttribute="leading" secondItem="dYY-ax-myJ" secondAttribute="leading" id="nV7-Oh-SJ1"/>
                                             <constraint firstItem="QeL-Pe-MSi" firstAttribute="top" secondItem="TD1-dw-rrG" secondAttribute="bottom" constant="10" id="t4s-Fh-4sJ"/>
                                             <constraint firstItem="VuM-vw-wr6" firstAttribute="leading" secondItem="mqB-Jd-zGY" secondAttribute="leading" constant="26" id="ueY-gn-as3"/>
@@ -620,6 +642,7 @@
                         <outlet property="channel_ID_TextField" destination="QeL-Pe-MSi" id="mnH-ls-vXv"/>
                         <outlet property="client_Name_textField" destination="TD1-dw-rrG" id="gyP-Lz-dyK"/>
                         <outlet property="contentView" destination="mqB-Jd-zGY" id="bYe-md-tMB"/>
+                        <outlet property="joinBtnView" destination="sPc-Tf-Zxl" id="Mfz-8R-d8A"/>
                         <outlet property="scrollView" destination="I4j-0a-t7P" id="af4-jj-pkc"/>
                         <segue destination="SSg-4l-UjN" kind="show" identifier="clientChannelSegue" id="cXm-Dy-RIY"/>
                     </connections>
@@ -852,7 +875,7 @@
                                                     <constraint firstAttribute="width" constant="42" id="EYH-d6-PQu"/>
                                                     <constraint firstAttribute="height" constant="42" id="ehM-3W-2os"/>
                                                 </constraints>
-                                                <state key="normal" backgroundImage="Send-icon-1"/>
+                                                <state key="normal" backgroundImage="Send-icon"/>
                                                 <connections>
                                                     <action selector="SendButtonTapped:" destination="SSg-4l-UjN" eventType="touchUpInside" id="cHW-UP-yaj"/>
                                                 </connections>
@@ -1014,7 +1037,7 @@
                                                     <constraint firstAttribute="width" constant="35" id="JeY-HY-xl9"/>
                                                     <constraint firstAttribute="height" constant="35" id="gHC-zP-b6P"/>
                                                 </constraints>
-                                                <state key="normal" backgroundImage="Send-icon-1"/>
+                                                <state key="normal" backgroundImage="Send-icon"/>
                                                 <connections>
                                                     <action selector="sendTapped:" destination="SSg-4l-UjN" eventType="touchUpInside" id="n6h-KE-bpt"/>
                                                 </connections>
@@ -1284,7 +1307,6 @@
         <image name="Attach Icon" width="71" height="71"/>
         <image name="Cancel icon" width="56" height="57"/>
         <image name="Contact List Icon" width="45" height="46"/>
-        <image name="Create btn" width="224" height="103"/>
         <image name="Create new Channel icon" width="193" height="194"/>
         <image name="Create-Channel-bar" width="577" height="1"/>
         <image name="Create-Channel-icon" width="38" height="38"/>
@@ -1295,16 +1317,15 @@
         <image name="Play icon" width="66" height="65"/>
         <image name="Record srt" width="79" height="79"/>
         <image name="Record-icon" width="86" height="87"/>
-        <image name="Send-icon-1" width="65" height="65"/>
+        <image name="Send-icon" width="65" height="65"/>
         <image name="Start Streaming Btn Normal" width="370" height="83"/>
         <image name="Voice Icon" width="71" height="71"/>
+        <image name="app logo" width="321" height="572"/>
         <image name="bg" width="750" height="1334"/>
         <image name="bg_channel" width="750" height="1334"/>
         <image name="file" width="26" height="29"/>
         <image name="ic_public_channel.png" width="50" height="50"/>
-        <image name="join icon" width="224" height="103"/>
         <image name="join-Channel-iocn" width="53" height="52"/>
-        <image name="logo2" width="445" height="847"/>
         <image name="pop-up bg new" width="219" height="233"/>
         <image name="pop-up-bg" width="582" height="649"/>
         <image name="recoring-timeline" width="476" height="82"/>

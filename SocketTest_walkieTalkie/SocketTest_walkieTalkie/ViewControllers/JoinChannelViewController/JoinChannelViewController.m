@@ -9,6 +9,7 @@
 #import "JoinChannelViewController.h"
 #import "ChatViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import <SVProgressHUD/SVProgressHUD.h>
 
 @interface JoinChannelViewController (){
     
@@ -20,6 +21,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *channel_ID_TextField;
 
 @property (weak, nonatomic) IBOutlet UIView *contentView;
+@property (weak, nonatomic) IBOutlet UIView *joinBtnView;
+
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 
@@ -45,8 +48,6 @@
     self.client_Name_textField.layer.borderWidth = 1.0;
     self.client_Name_textField.layer.cornerRadius = 5;
     
-    //    NSAttributedString *str = [[NSAttributedString alloc] initWithString:@"Some Text" attributes:@{ NSForegroundColorAttributeName : [UIColor redColor] }];
-    //    self.hostNameTextField.attributedPlaceholder = str;
     
     
     self.channel_ID_TextField.layer.borderColor = [[UIColor colorWithRed:192.0f/255.0f green:192.0f/255.0f blue:192.0f/255.0f alpha:1.0] CGColor];
@@ -61,6 +62,17 @@
     self.btnBView.layer.borderColor = [[UIColor colorWithRed:192.0f/255.0f green:192.0f/255.0f blue:192.0f/255.0f alpha:1.0] CGColor];
     self.btnBView.layer.borderWidth = 1.0f;
     self.btnBView.layer.cornerRadius = 5;
+    
+    
+    self.joinBtnView.layer.cornerRadius = 5;
+    self.joinBtnView.layer.masksToBounds = YES;
+    
+    
+    NSAttributedString *clientNameText = [[NSAttributedString alloc] initWithString:@"Your name" attributes:@{ NSForegroundColorAttributeName : [[UIColor lightTextColor] colorWithAlphaComponent:0.4f]}];
+    self.client_Name_textField.attributedPlaceholder = clientNameText;
+    
+    NSAttributedString *channelIDText = [[NSAttributedString alloc] initWithString:@"Enter channel number" attributes:@{ NSForegroundColorAttributeName : [[UIColor lightTextColor]colorWithAlphaComponent:0.4f]}];
+    self.channel_ID_TextField.attributedPlaceholder = channelIDText;
     
 }
 
@@ -197,8 +209,8 @@
         [[ChannelManager sharedInstance] setCurrentChannel:personalChannel];
         
 #warning close HUD
+        [SVProgressHUD dismiss];
         [self performSegueWithIdentifier:@"clientChannelSegue" sender:nil];
-        
         
     } else {
         
@@ -329,8 +341,7 @@
 -(void)sendJoiningChannelMessageOf:(int)channelID ofType:(int)type{
     
 #warning show HUD
-    
-    
+    [SVProgressHUD showWithStatus:@"Joining Channel, please wait."];
     
     NSString *channelJoinNotificationMessage = [[MessageHandler sharedHandler] joiningChannelMessageOf:channelID deviceName:self.client_Name_textField.text];
     
@@ -355,11 +366,13 @@
             [[asyncUDPConnectionHandler sharedHandler] sendMessage:channelJoinNotificationMessage toIPAddress:hostIP];
         }else{
             
+            [SVProgressHUD dismiss];
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Not Found"
                                                             message: @"Sorry, the requested channel not found. Please check the channel number and try again."
                                                            delegate: nil
                                                   cancelButtonTitle:@"OK"
                                                   otherButtonTitles:nil];
+            
             [alert show];
         }
         
@@ -392,7 +405,6 @@
 
 - (IBAction)joinPublicChannelA:(id)sender {
     
-    
     Channel *publicChannelA = [[Channel alloc] initChannelWithID:kChannelIDPublicA];
     [[ChannelManager sharedInstance] setCurrentChannel:publicChannelA];
     
@@ -400,10 +412,21 @@
 
     
     self.isChatOpen = YES;
-    [self performSegueWithIdentifier:@"clientChannelSegue" sender:nil];
+    
+    
+    double delayInSeconds = 1;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        // do something
+        [SVProgressHUD dismiss];
+        [self performSegueWithIdentifier:@"clientChannelSegue" sender:nil];
+    });
+    
+
 }
 
 - (IBAction)joinPublicChannelB:(id)sender {
+    
     
     Channel *publicChannelB = [[Channel alloc] initChannelWithID:kChannelIDPublicB];
     [[ChannelManager sharedInstance] setCurrentChannel:publicChannelB];
@@ -411,7 +434,14 @@
     [self sendJoiningChannelMessageOf:kChannelIDPublicB ofType:kChannelTypePublic];
     
     self.isChatOpen = YES;
-    [self performSegueWithIdentifier:@"clientChannelSegue" sender:nil];
+    
+    double delayInSeconds = 1;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        // do something
+        [SVProgressHUD dismiss];
+        [self performSegueWithIdentifier:@"clientChannelSegue" sender:nil];
+    });
 }
 
 

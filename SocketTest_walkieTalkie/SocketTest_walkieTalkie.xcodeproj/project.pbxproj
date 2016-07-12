@@ -869,7 +869,7 @@
 			baseConfigurationReference = FDE5C871A6A380334B15EF9D /* Pods-SocketTest_walkieTalkie.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Abdullah Al Mahmood (3TC5LJ6B2U)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Abdullah Al Mahmood (Z92ZJ7WG7F)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/SocketTest_walkieTalkie/AsyncSocket",
@@ -880,7 +880,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.siliconOrchard.walkieTalkie;
 				PRODUCT_NAME = SILM;
-				PROVISIONING_PROFILE = "f5967791-f572-45d9-97fd-f9a18817c18b";
+				PROVISIONING_PROFILE = "e3253401-c74c-4eeb-8ffd-b091c0b40907";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -890,7 +890,7 @@
 			baseConfigurationReference = C4EFF460277EBE1426537B4F /* Pods-SocketTest_walkieTalkie.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Abdullah Al Mahmood (3TC5LJ6B2U)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Abdullah Al Mahmood (Z92ZJ7WG7F)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/SocketTest_walkieTalkie/AsyncSocket",
@@ -901,7 +901,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.siliconOrchard.walkieTalkie;
 				PRODUCT_NAME = SILM;
-				PROVISIONING_PROFILE = "f5967791-f572-45d9-97fd-f9a18817c18b";
+				PROVISIONING_PROFILE = "e3253401-c74c-4eeb-8ffd-b091c0b40907";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

@@ -9,6 +9,7 @@
 #import "CreateChannelViewController.h"
 #import "ChatViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import <SVProgressHUD/SVProgressHUD.h>
 
 @interface CreateChannelViewController (){
     
@@ -19,6 +20,8 @@
 }
 @property (weak, nonatomic) IBOutlet UITextField *hostNameTextField;
 @property (weak, nonatomic) IBOutlet UITextField *channel_ID_TextField;
+
+@property (weak, nonatomic) IBOutlet UIView *createbtnView;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomConstraintChannelNum;
 
@@ -51,13 +54,20 @@
     self.hostNameTextField.layer.borderWidth = 1.0;
     self.hostNameTextField.layer.cornerRadius = 5;
     
-//    NSAttributedString *str = [[NSAttributedString alloc] initWithString:@"Some Text" attributes:@{ NSForegroundColorAttributeName : [UIColor redColor] }];
-//    self.hostNameTextField.attributedPlaceholder = str;
-    
     
     self.channel_ID_TextField.layer.borderColor = [[UIColor colorWithRed:192.0f/255.0f green:192.0f/255.0f blue:192.0f/255.0f alpha:1.0] CGColor];
     self.channel_ID_TextField.layer.borderWidth = 1.0;
     self.channel_ID_TextField.layer.cornerRadius = 5;
+    
+    self.createbtnView.layer.cornerRadius = 5;
+    self.createbtnView.layer.masksToBounds = YES;
+    
+    
+    NSAttributedString *hostNameText = [[NSAttributedString alloc] initWithString:@"Your display name" attributes:@{ NSForegroundColorAttributeName : [[UIColor lightTextColor] colorWithAlphaComponent:0.4f]}];
+    self.hostNameTextField.attributedPlaceholder = hostNameText;
+    
+    NSAttributedString *channel_ID_Text = [[NSAttributedString alloc] initWithString:@"Enter channel number" attributes:@{ NSForegroundColorAttributeName : [[UIColor lightTextColor] colorWithAlphaComponent:0.4f] }];
+    self.channel_ID_TextField.attributedPlaceholder = channel_ID_Text;
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -141,12 +151,24 @@
     
     for (NSString *ipAdrress in activeAllUserIPs) {
         
-        [[asyncUDPConnectionHandler sharedHandler]sendMessage:channelCreatNotificationMessage toIPAddress:ipAdrress];
+        [[asyncUDPConnectionHandler sharedHandler] sendMessage:channelCreatNotificationMessage toIPAddress:ipAdrress];
     }
     
     //[[asyncUDPConnectionHandler sharedHandler] disableBroadCast];
     
-    [self performSegueWithIdentifier:@"hostChannelSegue" sender:nil];
+    double delayInSeconds = 1.5;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        // do something
+        [SVProgressHUD dismiss];
+        [self performSegueWithIdentifier:@"hostChannelSegue" sender:nil];
+    });
+    
+    
+   // [SVProgressHUD dismiss];
+    //[self performSegueWithIdentifier:@"hostChannelSegue" sender:nil];
+    
+
 }
 
 
@@ -198,9 +220,13 @@
     }
 }
 
+#pragma mark - IBAction
 
 
 - (IBAction)createChannelButtonTapped:(id)sender {
+    
+    [SVProgressHUD showWithStatus:@"Creating Channel, please wait."];
+    //[SVProgressHUD show];
     
     int channelID = [self.channel_ID_TextField.text intValue];
     
@@ -213,6 +239,7 @@
                                                        delegate: nil
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil];
+        [SVProgressHUD dismiss];
         [alert show];
         return;
     }
@@ -226,6 +253,7 @@
                                                        delegate: nil
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil];
+        [SVProgressHUD dismiss];
         [alert show];
         
         return;

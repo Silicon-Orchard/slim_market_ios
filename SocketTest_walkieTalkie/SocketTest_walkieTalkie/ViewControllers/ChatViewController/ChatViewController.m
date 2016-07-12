@@ -1372,6 +1372,8 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
             
             cell2.userName.text = member.deviceName;
             
+            
+            
             if(member.isActive){
                 NSLog(@"active");
                 cell2.presenceImage.image = [UIImage imageNamed:@"Membar active"];
@@ -1394,6 +1396,7 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
 //        }
         
         cell2.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell2.backgroundColor = cell2.contentView.backgroundColor;
         
         return cell2;
         
@@ -1434,6 +1437,7 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
         }
         
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.backgroundColor = cell.contentView.backgroundColor;
         
         return cell;
         
