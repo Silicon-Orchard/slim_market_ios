@@ -29,11 +29,8 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="app logo" translatesAutoresizingMaskIntoConstraints="NO" id="d28-Gj-sUW">
-                                <rect key="frame" x="113" y="120" width="150" height="267"/>
-                            </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UGM-LD-UGd">
-                                <rect key="frame" x="0.0" y="437" width="375" height="30"/>
+                                <rect key="frame" x="0.0" y="379" width="375" height="30"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Create-Channel-icon" translatesAutoresizingMaskIntoConstraints="NO" id="Iib-66-8Lh">
                                         <rect key="frame" x="99" y="5" width="20" height="20"/>
@@ -74,7 +71,7 @@
                                 </variation>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BmL-fC-YOd">
-                                <rect key="frame" x="20" y="437" width="335" height="30"/>
+                                <rect key="frame" x="20" y="379" width="335" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="McF-63-Sel"/>
                                 </constraints>
@@ -83,7 +80,7 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SUg-G8-HfQ" userLabel="Join Btn View">
-                                <rect key="frame" x="103" y="489" width="170" height="50"/>
+                                <rect key="frame" x="103" y="431" width="170" height="50"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="join-Channel-iocn" translatesAutoresizingMaskIntoConstraints="NO" id="F7o-M5-vEB">
                                         <rect key="frame" x="13" y="13" width="24" height="24"/>
@@ -119,7 +116,7 @@
                                 </variation>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Iow-WH-RLI" userLabel="Contact Btn view">
-                                <rect key="frame" x="102" y="551" width="170" height="50"/>
+                                <rect key="frame" x="102" y="493" width="170" height="50"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Contact List Icon" translatesAutoresizingMaskIntoConstraints="NO" id="LMe-dr-WTM">
                                         <rect key="frame" x="13" y="13" width="24" height="24"/>
@@ -155,7 +152,7 @@
                                 </variation>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5dR-ip-wY6">
-                                <rect key="frame" x="103" y="489" width="170" height="50"/>
+                                <rect key="frame" x="103" y="431" width="170" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="170" id="8kN-cJ-SDo"/>
                                     <constraint firstAttribute="height" constant="50" id="cVi-NS-7yR"/>
@@ -165,7 +162,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iTh-vg-3Ao" userLabel="Contact Btn">
-                                <rect key="frame" x="102" y="551" width="170" height="50"/>
+                                <rect key="frame" x="102" y="493" width="170" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="2WM-jo-IDa"/>
                                     <constraint firstAttribute="width" constant="170" id="lqm-AV-AKp"/>
@@ -174,6 +171,12 @@
                                     <segue destination="R89-VL-exT" kind="show" id="QEf-Q1-5fw"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="app logo" translatesAutoresizingMaskIntoConstraints="NO" id="d28-Gj-sUW">
+                                <rect key="frame" x="113" y="179" width="150" height="150"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="d28-Gj-sUW" secondAttribute="height" multiplier="1:1" id="ul3-ar-yLh"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -186,45 +189,32 @@
                             <constraint firstItem="edb-vT-iAO" firstAttribute="top" secondItem="frm-JS-qnH" secondAttribute="top" id="5zy-e8-JBJ"/>
                             <constraint firstItem="BmL-fC-YOd" firstAttribute="top" secondItem="d28-Gj-sUW" secondAttribute="bottom" constant="50" id="6BI-4q-9R1"/>
                             <constraint firstItem="BmL-fC-YOd" firstAttribute="leading" secondItem="frm-JS-qnH" secondAttribute="leading" constant="20" id="7v4-Ua-1dy"/>
-                            <constraint firstItem="UGM-LD-UGd" firstAttribute="leading" secondItem="BmL-fC-YOd" secondAttribute="leading" id="8Vm-Jv-uCw"/>
                             <constraint firstItem="UGM-LD-UGd" firstAttribute="bottom" secondItem="BmL-fC-YOd" secondAttribute="bottom" id="H74-6r-lDT"/>
                             <constraint firstItem="d28-Gj-sUW" firstAttribute="centerY" secondItem="frm-JS-qnH" secondAttribute="centerY" constant="-80" id="HXS-zJ-z9A"/>
-                            <constraint firstItem="BmL-fC-YOd" firstAttribute="centerY" secondItem="frm-JS-qnH" secondAttribute="centerY" id="LDX-qo-a34"/>
-                            <constraint firstItem="BmL-fC-YOd" firstAttribute="leading" secondItem="5dR-ip-wY6" secondAttribute="trailing" constant="-231" id="LyP-7o-nLT"/>
                             <constraint firstItem="iTh-vg-3Ao" firstAttribute="centerX" secondItem="frm-JS-qnH" secondAttribute="centerX" id="M7T-NN-1ai"/>
                             <constraint firstItem="iTh-vg-3Ao" firstAttribute="leading" secondItem="Iow-WH-RLI" secondAttribute="leading" id="QSW-AP-giV"/>
                             <constraint firstItem="iTh-vg-3Ao" firstAttribute="bottom" secondItem="Iow-WH-RLI" secondAttribute="bottom" id="RUQ-88-YcT"/>
                             <constraint firstItem="d28-Gj-sUW" firstAttribute="width" secondItem="frm-JS-qnH" secondAttribute="width" multiplier="0.4" id="Rff-xY-xmH"/>
                             <constraint firstAttribute="trailing" secondItem="pNn-gt-9bR" secondAttribute="trailing" id="RrS-YI-ovv"/>
-                            <constraint firstItem="iTh-vg-3Ao" firstAttribute="top" secondItem="Iow-WH-RLI" secondAttribute="bottom" id="SN4-1E-HTc"/>
                             <constraint firstItem="iTh-vg-3Ao" firstAttribute="trailing" secondItem="Iow-WH-RLI" secondAttribute="trailing" id="Tg2-hj-lAa"/>
                             <constraint firstItem="86d-WN-KDE" firstAttribute="top" secondItem="pNn-gt-9bR" secondAttribute="bottom" id="UT3-AT-O8v"/>
                             <constraint firstItem="SUg-G8-HfQ" firstAttribute="trailing" secondItem="5dR-ip-wY6" secondAttribute="trailing" id="UwJ-tj-xJP"/>
                             <constraint firstItem="5dR-ip-wY6" firstAttribute="top" secondItem="BmL-fC-YOd" secondAttribute="bottom" constant="22" id="XFw-zl-r06"/>
                             <constraint firstItem="SUg-G8-HfQ" firstAttribute="leading" secondItem="5dR-ip-wY6" secondAttribute="leading" id="YLK-tJ-hF4"/>
                             <constraint firstItem="86d-WN-KDE" firstAttribute="top" secondItem="edb-vT-iAO" secondAttribute="bottom" id="bkM-mt-YsI"/>
-                            <constraint firstItem="UGM-LD-UGd" firstAttribute="trailing" secondItem="BmL-fC-YOd" secondAttribute="trailing" id="dVe-m1-pxo"/>
                             <constraint firstItem="UGM-LD-UGd" firstAttribute="centerX" secondItem="BmL-fC-YOd" secondAttribute="centerX" id="ezs-Pz-0OZ"/>
                             <constraint firstItem="UGM-LD-UGd" firstAttribute="top" secondItem="BmL-fC-YOd" secondAttribute="top" id="f1T-gb-H4B"/>
                             <constraint firstItem="SUg-G8-HfQ" firstAttribute="top" secondItem="5dR-ip-wY6" secondAttribute="top" id="fNc-cL-U6D"/>
                             <constraint firstAttribute="trailing" secondItem="edb-vT-iAO" secondAttribute="trailing" id="gdy-dE-qSE"/>
                             <constraint firstItem="iTh-vg-3Ao" firstAttribute="top" secondItem="5dR-ip-wY6" secondAttribute="bottom" constant="12" id="ijT-cW-tuz"/>
-                            <constraint firstItem="UGM-LD-UGd" firstAttribute="width" secondItem="BmL-fC-YOd" secondAttribute="width" id="lID-JL-qwl"/>
                             <constraint firstItem="5dR-ip-wY6" firstAttribute="centerX" secondItem="frm-JS-qnH" secondAttribute="centerX" id="lNW-xn-p4I"/>
-                            <constraint firstItem="Iow-WH-RLI" firstAttribute="leading" secondItem="iTh-vg-3Ao" secondAttribute="trailing" id="nKR-wa-wAs"/>
                             <constraint firstItem="iTh-vg-3Ao" firstAttribute="top" secondItem="Iow-WH-RLI" secondAttribute="top" id="oEa-26-wPl"/>
                             <constraint firstItem="UGM-LD-UGd" firstAttribute="width" secondItem="frm-JS-qnH" secondAttribute="width" id="s2y-ac-icD"/>
                             <constraint firstItem="edb-vT-iAO" firstAttribute="leading" secondItem="frm-JS-qnH" secondAttribute="leading" id="w1g-qu-TYp"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
-                                <exclude reference="8Vm-Jv-uCw"/>
-                                <exclude reference="dVe-m1-pxo"/>
-                                <exclude reference="lID-JL-qwl"/>
-                                <exclude reference="LDX-qo-a34"/>
-                                <exclude reference="LyP-7o-nLT"/>
-                                <exclude reference="nKR-wa-wAs"/>
-                                <exclude reference="SN4-1E-HTc"/>
+                                <exclude reference="5l1-Za-A1D"/>
                             </mask>
                         </variation>
                     </view>
@@ -1320,7 +1310,7 @@
         <image name="Send-icon" width="65" height="65"/>
         <image name="Start Streaming Btn Normal" width="370" height="83"/>
         <image name="Voice Icon" width="71" height="71"/>
-        <image name="app logo" width="321" height="572"/>
+        <image name="app logo" width="786" height="665"/>
         <image name="bg" width="750" height="1334"/>
         <image name="bg_channel" width="750" height="1334"/>
         <image name="file" width="26" height="29"/>

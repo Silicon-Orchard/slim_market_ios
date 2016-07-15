@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -17,16 +18,25 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SplashScreen" translatesAutoresizingMaskIntoConstraints="NO" id="VFz-Ou-YK4">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bg_chat" translatesAutoresizingMaskIntoConstraints="NO" id="pvJ-Z1-G4x">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="app logo" translatesAutoresizingMaskIntoConstraints="NO" id="EuD-io-flA">
+                                <rect key="frame" x="210" y="210" width="180" height="180"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="EuD-io-flA" secondAttribute="height" multiplier="1:1" id="Cie-g6-WJy"/>
+                                </constraints>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="VFz-Ou-YK4" secondAttribute="trailing" id="Lwy-He-jyT"/>
-                            <constraint firstItem="VFz-Ou-YK4" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="Snh-iP-Fk9"/>
-                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="VFz-Ou-YK4" secondAttribute="bottom" id="bsX-kx-Gux"/>
-                            <constraint firstItem="VFz-Ou-YK4" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="hbv-mx-W91"/>
+                            <constraint firstItem="pvJ-Z1-G4x" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="24x-N1-ecU"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="pvJ-Z1-G4x" secondAttribute="bottom" id="2Qw-qH-u4D"/>
+                            <constraint firstItem="EuD-io-flA" firstAttribute="width" secondItem="Ze5-6b-2t3" secondAttribute="height" multiplier="1.5:5" id="SzZ-rC-c2O"/>
+                            <constraint firstItem="EuD-io-flA" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="Xe2-3E-if4"/>
+                            <constraint firstAttribute="trailing" secondItem="pvJ-Z1-G4x" secondAttribute="trailing" id="aro-dj-CHW"/>
+                            <constraint firstItem="EuD-io-flA" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="cpq-hp-p7O"/>
+                            <constraint firstItem="pvJ-Z1-G4x" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="qkr-jg-k7N"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -36,6 +46,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="SplashScreen" width="750" height="1334"/>
+        <image name="app logo" width="786" height="665"/>
+        <image name="bg_chat" width="750" height="1334"/>
     </resources>
 </document>

@@ -128,10 +128,6 @@
             [[asyncUDPConnectionHandler sharedHandler]sendMessage:requestInfoMessage toIPAddress:ipAddressTosendData];
         }
     }
-    
-//    [[asyncUDPConnectionHandler sharedHandler]sendMessage:requestInfoMessage toIPAddress:@"255.255.255.255"];
-//    [[asyncUDPConnectionHandler sharedHandler] disableBroadCast];
-
 }
 
 -(void)ApplicationIsInactive{

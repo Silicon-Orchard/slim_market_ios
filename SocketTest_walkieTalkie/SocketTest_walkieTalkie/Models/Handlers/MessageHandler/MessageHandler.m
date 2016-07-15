@@ -98,6 +98,8 @@
     return resultAsString;
 }
 
+
+
 -(NSString *)acknowledgeDeviceInNetwork{
     
     NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:[[NSUserDefaults standardUserDefaults] objectForKey:DEVICE_UUID_KEY_FORUSERDEFAULTS], [UIDevice currentDevice].name, [self getIPAddress ],[NSNumber numberWithInt:TYPE_RECEIVE_INFO], nil]
@@ -107,8 +109,6 @@
     NSData * jsonData = [NSJSONSerialization dataWithJSONObject:postDictionary options:NSJSONWritingPrettyPrinted error:&error];
     NSString *resultAsString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     return resultAsString;
-    
-    
 }
 
 -(NSString *)leftApplicationMessage {
