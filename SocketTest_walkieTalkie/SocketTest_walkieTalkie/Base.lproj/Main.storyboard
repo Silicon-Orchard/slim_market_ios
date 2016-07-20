@@ -1048,17 +1048,17 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
                                             </imageView>
                                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X8V-YA-7Yn" userLabel="file View">
-                                                <rect key="frame" x="45" y="50" width="110" height="50"/>
+                                                <rect key="frame" x="30" y="52" width="140" height="50"/>
                                                 <subviews>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="file" translatesAutoresizingMaskIntoConstraints="NO" id="RUh-Sf-QIo">
-                                                        <rect key="frame" x="41" y="3" width="28" height="28"/>
+                                                        <rect key="frame" x="56" y="3" width="28" height="28"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="28" id="G1y-oc-SAC"/>
                                                             <constraint firstAttribute="width" constant="28" id="wAG-Ha-v8U"/>
                                                         </constraints>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Attach a file" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lJe-O4-wzm">
-                                                        <rect key="frame" x="0.0" y="32" width="110" height="18"/>
+                                                        <rect key="frame" x="0.0" y="32" width="140" height="18"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <nil key="highlightedColor"/>
@@ -1073,10 +1073,10 @@
                                                 </constraints>
                                             </view>
                                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mjQ-Ps-bUE" userLabel="file Btn">
-                                                <rect key="frame" x="45" y="50" width="110" height="50"/>
+                                                <rect key="frame" x="30" y="52" width="140" height="50"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="bmB-wb-nC2"/>
-                                                    <constraint firstAttribute="width" constant="110" id="fLi-hB-5FJ"/>
+                                                    <constraint firstAttribute="width" constant="140" id="fLi-hB-5FJ"/>
                                                 </constraints>
                                                 <connections>
                                                     <action selector="tappedOnFileBtn:" destination="SSg-4l-UjN" eventType="touchUpInside" id="Saz-MG-unK"/>
@@ -1084,17 +1084,17 @@
                                                 </connections>
                                             </button>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kCe-QR-9kj" userLabel="photo View">
-                                                <rect key="frame" x="45" y="113" width="110" height="50"/>
+                                                <rect key="frame" x="30" y="115" width="140" height="50"/>
                                                 <subviews>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Picture Icon" translatesAutoresizingMaskIntoConstraints="NO" id="kxU-6v-LMC">
-                                                        <rect key="frame" x="41" y="2" width="28" height="28"/>
+                                                        <rect key="frame" x="56" y="2" width="28" height="28"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="28" id="8aT-B6-v7l"/>
                                                             <constraint firstAttribute="width" constant="28" id="Jj0-XW-wkB"/>
                                                         </constraints>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Attach a photo" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="weX-qm-e8s">
-                                                        <rect key="frame" x="0.0" y="32" width="110" height="18"/>
+                                                        <rect key="frame" x="0.0" y="32" width="140" height="18"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <nil key="highlightedColor"/>
@@ -1111,14 +1111,15 @@
                                                 </constraints>
                                                 <variation key="default">
                                                     <mask key="constraints">
+                                                        <exclude reference="ipb-Zx-lc7"/>
                                                         <exclude reference="w10-TC-rQm"/>
                                                     </mask>
                                                 </variation>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xvQ-II-WqN" userLabel="photo Btn">
-                                                <rect key="frame" x="45" y="113" width="110" height="50"/>
+                                                <rect key="frame" x="30" y="115" width="140" height="50"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="110" id="fCh-GM-nUT"/>
+                                                    <constraint firstAttribute="width" constant="140" id="fCh-GM-nUT"/>
                                                     <constraint firstAttribute="height" constant="50" id="taG-ZF-ZFc"/>
                                                 </constraints>
                                                 <connections>
@@ -1133,7 +1134,7 @@
                                             <constraint firstItem="xvQ-II-WqN" firstAttribute="centerX" secondItem="PEf-Es-kQB" secondAttribute="centerX" id="HGY-uu-hMF"/>
                                             <constraint firstItem="mjQ-Ps-bUE" firstAttribute="leading" secondItem="X8V-YA-7Yn" secondAttribute="leading" id="KFI-MK-ncx"/>
                                             <constraint firstAttribute="height" constant="200" id="Ldf-qO-NKM"/>
-                                            <constraint firstAttribute="bottom" secondItem="xvQ-II-WqN" secondAttribute="bottom" constant="37" id="ST9-mx-VAF"/>
+                                            <constraint firstAttribute="bottom" secondItem="xvQ-II-WqN" secondAttribute="bottom" constant="35" id="ST9-mx-VAF"/>
                                             <constraint firstItem="xvQ-II-WqN" firstAttribute="trailing" secondItem="kCe-QR-9kj" secondAttribute="trailing" id="bQg-kk-kMW"/>
                                             <constraint firstItem="xvQ-II-WqN" firstAttribute="top" secondItem="mjQ-Ps-bUE" secondAttribute="bottom" constant="13" id="oIS-YS-mF1"/>
                                             <constraint firstItem="mjQ-Ps-bUE" firstAttribute="centerX" secondItem="PEf-Es-kQB" secondAttribute="centerX" id="p9d-8E-lVG"/>

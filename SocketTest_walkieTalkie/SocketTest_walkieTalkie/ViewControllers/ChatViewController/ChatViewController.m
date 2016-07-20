@@ -67,6 +67,9 @@ typedef void(^myCompletion)(BOOL);
     
     NSMutableData *receivedFileData;
     NSData *finalFileData;
+    
+    UIImageView *fullView;
+    ImageView *temptumb;
 }
 
 
@@ -140,7 +143,7 @@ typedef void(^myCompletion)(BOOL);
 -(void)viewDidAppear:(BOOL)animated{
     
     if(!self.isPrivateChannel){
-        [self.chatTableView setContentOffset:CGPointMake(0, self.chatTableView.frame.size.height)];
+        //[self.chatTableView setContentOffset:CGPointMake(0, self.chatTableView.frame.size.height)];
         //[self.chatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:chatMessageList.count-1] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     }
 }
@@ -303,6 +306,10 @@ typedef void(^myCompletion)(BOOL);
     self.chatTextField.layer.borderColor = [[UIColor colorWithRed:192.0f/255.0f green:192.0f/255.0f blue:192.0f/255.0f alpha:1.0] CGColor];
     self.chatTextField.layer.borderWidth = 1.0;
     self.chatTextField.layer.cornerRadius = 5;
+    
+    self.chatTextField.delegate = self;
+    
+    self.textSendBtn.enabled = NO;
 }
 
 
@@ -479,6 +486,7 @@ typedef void(^myCompletion)(BOOL);
     [self updateUIForChatMessage:messageData];
     
     self.chatTextField.text = @"";
+    self.textSendBtn.enabled = NO;
 }
 
 
@@ -609,7 +617,33 @@ typedef void(^myCompletion)(BOOL);
 
 - (IBAction)tappedOnAttachBtn:(id)sender {
     
-    self.popupFileView.hidden = !self.popupFileView.hidden;
+    if (!self.popupFileView.hidden) {
+        
+        [UIView transitionWithView:self.popupFileView
+                          duration:0.3
+                           options:UIViewAnimationOptionTransitionCrossDissolve
+                        animations:^{
+                            self.popupFileView.hidden = YES;
+                        }
+                        completion:NULL];
+        
+        
+    } else {
+        
+        [UIView transitionWithView:self.popupFileView
+                          duration:0.3
+                           options:UIViewAnimationOptionTransitionCrossDissolve
+                        animations:^{
+                            self.popupFileView.hidden = NO;
+                        }
+                        completion:NULL];
+        
+    }
+    
+    //self.popupFileView.hidden = !self.popupFileView.hidden;
+    
+
+    
     
 }
 
@@ -1422,6 +1456,12 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
             cell = [tableView dequeueReusableCellWithIdentifier:@"ImageCellID" forIndexPath:indexPath];
             ImageView *imageView = (ImageView *)[cell viewWithTag:IMAGE_VIEW_TAG];
             imageView.messageData = messageData;
+            
+            UITapGestureRecognizer *tapped = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cellImageTapped:)];
+            tapped.numberOfTapsRequired = 1;
+            [cell setUserInteractionEnabled:YES];
+            cell.tag = indexPath.row;
+            [cell addGestureRecognizer:tapped];
         }
         else if (messageData.progress != nil) {
 
@@ -1441,10 +1481,6 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
         
         return cell;
         
-//        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:incomingMessageCellIdentifier forIndexPath:indexPath];
-//        [self configureCell:cell forRowAtIndexPath:indexPath];
-//        return cell;
-
     }
     
 }
@@ -1495,7 +1531,6 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
     } else {
         
         MessageData *messageData = [messageDataList objectAtIndex:indexPath.row];
-        
 
         if (messageData.type == kFileTypeAudio) {
             
@@ -1537,6 +1572,13 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
             
         }else if (messageData.type == kFileTypePhoto) {
             
+            
+//            NSString *imageFilePath = [[FileHandler sharedHandler] pathToFileWithFileName:messageData.message OfType:kFileTypePhoto];
+//            UIImage * tappedImage = [UIImage imageWithContentsOfFile:imageFilePath];
+//            
+//            [self addImageView:tappedImage];
+            
+            //imageView.contentMode = UIViewContentModeScaleAspectFit;
             
         }
         else if (messageData.progress != nil) {
@@ -1589,6 +1631,135 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
     return;
 }
 
+/*
+
+//This will create a temporary imaget view and animate it to fullscreen
+- (void)addImageView:(UIImage *)tappedImage {
+    
+   // NSLog(@"%@", [gestureRecognizer view]);
+    //create new image
+    //temptumb=(UIImageView *)gestureRecognizer.view;
+    
+    //fullView is gloabal, So we can acess any time to remove it
+    fullView = [[UIImageView alloc]init];
+    [fullView setContentMode:UIViewContentModeScaleAspectFit];
+    [fullView setBackgroundColor:[UIColor blackColor]];
+    
+    fullView.image = tappedImage;
+    
+    CGFloat height = self.navigationController.navigationBar.frame.size.height;
+    
+    CGRect point = CGRectMake(0, height, 100, 100);
+    //CGRect point=[self.view convertRect:gestureRecognizer.view.bounds fromView:gestureRecognizer.view];
+    
+    [fullView setFrame:point];
+    
+    [self.view addSubview:fullView];
+    [UIView animateWithDuration:0.5
+                     animations:^{
+                         [fullView setFrame:CGRectMake(0,
+                                                       0,
+                                                       self.view.bounds.size.width,
+                                                       self.view.bounds.size.height)];
+                     }];
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fullimagetapped:)];
+    singleTap.numberOfTapsRequired = 1;
+    singleTap.numberOfTouchesRequired = 1;
+    [fullView addGestureRecognizer:singleTap];
+    [fullView setUserInteractionEnabled:YES];
+}
+
+//This will remove the full screen and back to original location.
+
+- (void)fullimagetapped:(UIGestureRecognizer *)gestureRecognizer {
+    
+//    CGRect point = [self.view convertRect:temptumb.bounds fromView:temptumb];
+//    
+//    gestureRecognizer.view.backgroundColor=[UIColor clearColor];
+//    [UIView animateWithDuration:0.5
+//                     animations:^{
+//                         [(UIImageView *)gestureRecognizer.view setFrame:point];
+//                     }];
+    [self performSelector:@selector(animationDone:) withObject:[gestureRecognizer view] afterDelay:0.4];
+    
+}
+
+//Remove view after animation of remove
+-(void)animationDone:(UIView  *)view
+{
+    //view.backgroundColor=[UIColor clearColor];
+    [fullView removeFromSuperview];
+    fullView=nil;
+}
+ 
+ */
+
+//This will create a temporary imaget view and animate it to fullscreen
+- (void)cellImageTapped:(UIGestureRecognizer *)gestureRecognizer {
+    
+    NSLog(@"%@", [gestureRecognizer view]);
+    
+    [[self navigationController] setNavigationBarHidden:YES animated:YES];
+    
+    UITableViewCell *cell= (UITableViewCell *)gestureRecognizer.view;
+    temptumb = (ImageView *)[cell viewWithTag:IMAGE_VIEW_TAG];
+    
+    
+    NSInteger IndexRow = cell.tag;
+    MessageData *messageData = [messageDataList objectAtIndex:IndexRow];
+    NSString *imageFilePath = [[FileHandler sharedHandler] pathToFileWithFileName:messageData.message OfType:kFileTypePhoto];
+    UIImage * tappedImage = [UIImage imageWithContentsOfFile:imageFilePath];
+    
+    
+    
+    //fullView is gloabal, So we can acess any time to remove it
+    fullView = [[UIImageView alloc]init];
+    [fullView setContentMode:UIViewContentModeScaleAspectFit];
+    [fullView setBackgroundColor:[UIColor blackColor]];
+    fullView.image = tappedImage;
+    CGRect point=[self.view convertRect:gestureRecognizer.view.bounds fromView:gestureRecognizer.view];
+    [fullView setFrame:point];
+    
+    [self.view addSubview:fullView];
+    [UIView animateWithDuration:0.5
+                     animations:^{
+                         [fullView setFrame:CGRectMake(0,
+                                                       0,
+                                                       self.view.bounds.size.width,
+                                                       self.view.bounds.size.height)];
+                     }];
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fullimagetapped:)];
+    singleTap.numberOfTapsRequired = 1;
+    singleTap.numberOfTouchesRequired = 1;
+    [fullView addGestureRecognizer:singleTap];
+    [fullView setUserInteractionEnabled:YES];
+}
+
+//This will remove the full screen and back to original location.
+
+- (void)fullimagetapped:(UIGestureRecognizer *)gestureRecognizer {
+    
+    CGRect point=[self.view convertRect:temptumb.bounds fromView:temptumb];
+    
+    gestureRecognizer.view.backgroundColor=[UIColor clearColor];
+    [UIView animateWithDuration:0.5
+                     animations:^{
+                         [(UIImageView *)gestureRecognizer.view setFrame:point];
+                     }];
+    [self performSelector:@selector(animationDone:) withObject:[gestureRecognizer view] afterDelay:0.4];
+    
+}
+
+//Remove view after animation of remove
+-(void)animationDone:(UIView  *)view
+{
+    //view.backgroundColor=[UIColor clearColor];
+    [fullView removeFromSuperview];
+    fullView=nil;
+    
+    [[self navigationController] setNavigationBarHidden:NO animated:YES];
+}
+
 
 #pragma mark - Observer
 
@@ -1621,11 +1792,37 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
     [self.view layoutIfNeeded];
 }
 
+- (void)textFieldDidBeginEditing:(UITextField *)textField{
+    
+    if (textField.text.length > 0)
+    {
+        self.textSendBtn.enabled = YES;
+    }
+    else
+    {
+        self.textSendBtn.enabled = NO;
+    }
+}
 
 
 -(BOOL) textFieldShouldReturn:(UITextField *)textField{
     
     [textField resignFirstResponder];
+    return YES;
+}
+
+
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+
+    if (textField.text.length > 1 || (string.length > 0 && ![string isEqualToString:@""]))
+    {
+        self.textSendBtn.enabled = YES;
+    }
+    else
+    {
+        self.textSendBtn.enabled = NO;
+    }
+    
     return YES;
 }
 
@@ -1663,9 +1860,9 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
 //                                 };
 //    [self updateUIForChatMessage:messageDic];
 
-    NSString *message = [NSString stringWithFormat:@"Sending number of bytes: %lul", (unsigned long)byteCount];
-    MessageData * messageData = [[MessageData alloc] initWithSender:@"Me"  type:MESSAGE_TYPE_TEXT message:message direction:MESSAGE_DIRECTION_SEND];
-    [self updateUIForChatMessage:messageData];
+//    NSString *message = [NSString stringWithFormat:@"Sending number of bytes: %lul", (unsigned long)byteCount];
+//    MessageData * messageData = [[MessageData alloc] initWithSender:@"Me"  type:MESSAGE_TYPE_TEXT message:message direction:MESSAGE_DIRECTION_SEND];
+//    [self updateUIForChatMessage:messageData];
     
     
     [[FileHandler sharedHandler] writeData:imageData toFileName:fileName ofType:kFileTypePhoto];
@@ -1740,20 +1937,10 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
         
         dispatch_async(dispatch_get_main_queue(), ^{
             
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Done"
-//                                                            message: [NSString stringWithFormat:@"Sent packet count %lu", (unsigned long)chunkStringArray.count] //@"Voice Message Sent to Channel Members!"
-//                                                           delegate: nil
-//                                                  cancelButtonTitle:@"OK"
-//                                                  otherButtonTitles:nil];
-//            
-//            
-//            [alert show];
-            
-            completionBlock(YES);
-            
             MessageData * messageData = [[MessageData alloc] initWithSender:@"Me" type:fileType message:fileName direction:MESSAGE_DIRECTION_SEND];
             [self updateUIForChatMessage:messageData];
-
+            
+            completionBlock(YES);
         });
     });
     
