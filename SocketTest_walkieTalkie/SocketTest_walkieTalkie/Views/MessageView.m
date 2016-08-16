@@ -177,6 +177,7 @@
 + (CGFloat)viewHeightForTranscript:(MessageData *)messageData
 {
     CGFloat labelHeight = [MessageView balloonSizeForLabelSize:[MessageView labelSizeForString:messageData.message fontSize:MESSAGE_FONT_SIZE]].height;
+    
     if (MESSAGE_DIRECTION_SEND != messageData.direction) {
         // Need to add extra height for display name
         CGFloat nameHeight = [MessageView labelSizeForString:messageData.senderName fontSize:NAME_FONT_SIZE].height;

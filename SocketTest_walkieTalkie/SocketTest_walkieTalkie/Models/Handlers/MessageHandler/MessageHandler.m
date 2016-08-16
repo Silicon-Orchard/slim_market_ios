@@ -37,7 +37,7 @@
     
     //Simulator
     
-    return @"192.168.1.106";
+    return @"192.168.1.146";
     
 #else
     

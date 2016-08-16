@@ -137,7 +137,6 @@ typedef void(^myCompletion)(BOOL);
     
     //self.navigationController.navigationBar.topItem.title = @"Back";
 
-
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -307,8 +306,13 @@ typedef void(^myCompletion)(BOOL);
     self.chatTextField.layer.borderWidth = 1.0;
     self.chatTextField.layer.cornerRadius = 5;
     
-    self.chatTextField.delegate = self;
     
+    //
+    NSAttributedString *placeHolderStr = [[NSAttributedString alloc] initWithString:@"Write a message..." attributes:@{ NSForegroundColorAttributeName : [[UIColor lightTextColor] colorWithAlphaComponent:0.4f]}];
+    self.chatTextField.attributedPlaceholder = placeHolderStr;
+    
+    
+    self.chatTextField.delegate = self;
     self.textSendBtn.enabled = NO;
 }
 
@@ -361,7 +365,6 @@ typedef void(^myCompletion)(BOOL);
         }
         
     }
-    
 }
 
 #pragma mark - UIHelpers
@@ -1455,7 +1458,10 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
 
             cell = [tableView dequeueReusableCellWithIdentifier:@"ImageCellID" forIndexPath:indexPath];
             ImageView *imageView = (ImageView *)[cell viewWithTag:IMAGE_VIEW_TAG];
+           
+            imageView.parentSelf = self;
             imageView.messageData = messageData;
+           
             
             UITapGestureRecognizer *tapped = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cellImageTapped:)];
             tapped.numberOfTapsRequired = 1;
@@ -1728,6 +1734,7 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
                                                        self.view.bounds.size.width,
                                                        self.view.bounds.size.height)];
                      }];
+    
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fullimagetapped:)];
     singleTap.numberOfTapsRequired = 1;
     singleTap.numberOfTouchesRequired = 1;

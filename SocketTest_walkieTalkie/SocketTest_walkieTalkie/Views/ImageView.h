@@ -58,6 +58,10 @@
 
 @property (nonatomic, assign) MessageData *messageData;
 
+@property (nonatomic, assign) id parentSelf;
+
+
+
 // Class method for computing a view height based on a given message transcript
 + (CGFloat)viewHeightForTranscript:(MessageData *)messageData;
 

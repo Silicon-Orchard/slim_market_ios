@@ -91,6 +91,8 @@
         [self addSubview:_imageView];
         [self addSubview:_nameLabel];
     }
+    
+    
     return self;
 }
 
@@ -138,6 +140,9 @@
     // Set the dynamic frames
     _nameLabel.frame = CGRectMake(0, 1, nameSize.width, nameSize.height);
     _imageView.frame = CGRectMake(xOffsetBalloon, yOffset, width, height);
+    
+    
+    
 }
 
 #pragma - class methods for computing sizes based on strings

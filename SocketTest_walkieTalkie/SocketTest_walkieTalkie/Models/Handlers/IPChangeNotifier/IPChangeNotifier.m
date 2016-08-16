@@ -24,7 +24,7 @@
 }
 
 -(void) checkForChange {
-    NSString *currentIP = [self getIPAddress];
+    NSString *currentIP = [IPChangeNotifier getIPAddress];
     if (![currentIP isEqualToString:prevIP]) {
         
         if (changeDelegate && [changeDelegate respondsToSelector:@selector(IPChangeDetected:previousIP:)]){
@@ -34,7 +34,8 @@
     }
 }
 
-- (NSString *)getIPAddress {
++ (NSString *)getIPAddress {
+    
     struct ifaddrs *interfaces = NULL;
     struct ifaddrs *temp_addr = NULL;
     NSString *wifiAddress = nil;

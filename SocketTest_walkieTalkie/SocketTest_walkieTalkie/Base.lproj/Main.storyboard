@@ -852,7 +852,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UdN-x5-yhB" userLabel="Text View">
                                         <rect key="frame" x="0.0" y="503" width="375" height="50"/>
                                         <subviews>
-                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Nnb-bk-AeB">
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Write a message..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Nnb-bk-AeB">
                                                 <rect key="frame" x="8" y="4" width="309" height="42"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1322,6 +1322,6 @@
         <image name="recoring-timeline" width="476" height="82"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="cXm-Dy-RIY"/>
+        <segue reference="iZh-cd-HDd"/>
     </inferredMetricsTieBreakers>
 </document>

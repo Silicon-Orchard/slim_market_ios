@@ -16,9 +16,12 @@
     NSTimer *changeTimer;
     id changeDelegate;
 }
+
++(NSString*)getIPAddress;
+
 -(id) initWithTimer:(float)time andDelegate:(id)del;
--(NSString*)getIPAddress;
 -(void) checkForChange;
+
 @end
 
 @protocol IPChangeNotifierDelegate <NSObject>
