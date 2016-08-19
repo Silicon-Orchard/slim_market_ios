@@ -16,7 +16,9 @@
 #define WALKIETALKIE_UINT_PORT_sender ((uint16_t) 43324)
 #define WALKIETALKIE_VOICE_LISTENER ((uint16_t) 43322)
 #define WALKIETALKIE_TCP_SENDER ((uint16_t) 43325)
-#define WALKIETALKIE_TCP_LISTENER ((uint16_t) 43326)
+//#define WALKIETALKIE_TCP_LISTENER ((uint16_t) 43326)
+#define WALKIETALKIE_TCP_LISTENER ((uint16_t) 43322)
+
 #define WALKIETALKIE_VOICE_STREAMER_PORT ((uint16_t) 43327)
 
 #define CHUNKSIZE ((int) 3000)
@@ -131,6 +133,8 @@
 #define FILE_RECEIEVED_NOTIFICATIONKEY @"fileReceivedNotification"
 #define FILE_REPEAT_REQUEST_NOTIFICATIONKEY @"fileRepeatRequestNotification"
 
+
+#define FILE_TCP_RECEIEVED_NOTIFICATIONKEY @"fileTCPReceivedNotification"
 
 #define USER_LEFT_SYSTEM_NOTIFICATIONKEY @"userLeftSystemNotification"
 

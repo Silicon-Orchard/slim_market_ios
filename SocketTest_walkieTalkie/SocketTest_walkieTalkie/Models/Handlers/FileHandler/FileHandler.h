@@ -24,6 +24,7 @@
 - (NSString *)writeData:(NSData *)fileData toFileName:(NSString *)fileName ofType:(int)type;
 - (NSData *)dataFromFilePath:(NSString *)filePath;
 
+- (NSArray *)encodedStringWithFile:(NSString *)fileName OfType:(int)type; 
 - (NSArray *)encodedStringChunksWithFile:(NSString *)fileName OfType:(int)type;
 
 

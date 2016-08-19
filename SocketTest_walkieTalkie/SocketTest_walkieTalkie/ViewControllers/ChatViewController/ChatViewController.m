@@ -85,7 +85,7 @@ typedef void(^myCompletion)(BOOL);
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    
+    [[asyncTCPConnectionHandler sharedHandler] createTCPSenderSocket];
     recordedAudioFileNames = [NSMutableArray new];
     
     addingVoiceMessage = NO;
@@ -234,9 +234,11 @@ typedef void(^myCompletion)(BOOL);
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ChannelLeftMessageReceieved:) name:CHANNEL_LEFT_NOTIFICATIONKEY object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(voiceStreamReceivedInChat:) name:VOICE_STREAM_RECEIEVED_NOTIFICATIONKEY object:nil];
     
+    
+    
     //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(voiceMessageReceived:) name:VOICE_MESSAGE_RECEIEVED_NOTIFICATIONKEY object:nil];
     //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(requestForRepeatVoiceMessagereceived:) name:UDP_VOICE_MESSAGE_REPEAR_REQUEST_NOTIFICATIONKEY object:nil];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileReceivedInTCP:) name:FILE_TCP_RECEIEVED_NOTIFICATIONKEY object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileMessageReceived:) name:FILE_RECEIEVED_NOTIFICATIONKEY object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileRepeatRequestReceived:) name:FILE_REPEAT_REQUEST_NOTIFICATIONKEY object:nil];
@@ -1056,6 +1058,58 @@ typedef void(^myCompletion)(BOOL);
 
 #pragma mark File Message Received
 
+- (void)fileReceivedInTCP:(NSNotification *)notification {
+    
+    
+    NSDictionary* userInfo = notification.userInfo;
+    NSData* receivedData = (NSData*)userInfo[@"receievedData"];
+    NSDictionary *jsonDict = [NSJSONSerialization  JSONObjectWithData:receivedData options:0 error:nil];
+    
+    int fileType = [[jsonDict objectForKey:JSON_KEY_FILE_TYPE] intValue];
+    
+    NSString * fileName = [jsonDict objectForKey: JSON_KEY_FILE_NAME];
+    //NSString *senderIP = [jsonDict objectForKey:JSON_KEY_IP_ADDRESS];
+    //int totalChunkCount = [[jsonDict objectForKey:JSON_KEY_FILE_CHUNK_COUNT] intValue];
+    //int currentChunk  = [[jsonDict objectForKey:JSON_KEY_FILE_CURRENT_CHUNK] intValue];
+
+    
+    switch (fileType) {
+        case kFileTypeAudio:
+            
+            //[self voiceFileReceived:jsonDict];
+            break;
+        case kFileTypeVideo:
+            
+            
+            break;
+        case kFileTypePhoto:
+        {
+            NSString *base64EncodedString = [jsonDict objectForKey:JSON_KEY_FILE_MESSAGE];
+            NSData *fileDataFromBase64String = [[NSData alloc] initWithBase64EncodedString:base64EncodedString options:1];
+            
+            [[FileHandler sharedHandler] writeData:fileDataFromBase64String toFileName:fileName ofType:fileType];
+            
+            NSData *imageData = [NSData dataWithContentsOfFile:[[FileHandler sharedHandler] pathToFileWithFileName:fileName OfType:fileType]];
+            NSUInteger byteCount = [imageData length];
+            printf("\nReceving number of bytes: %lu\n", (unsigned long)byteCount);
+            
+            NSString *senderName = [jsonDict objectForKey:JSON_KEY_DEVICE_NAME];
+            MessageData * messageData = [[MessageData alloc] initWithSender:senderName type:fileType message:fileName direction:MESSAGE_DIRECTION_RECEIVE];
+            [self updateUIForChatMessage:messageData];
+        }
+            break;
+        case kFileTypeOthers:
+            
+            
+            break;
+            
+        default:
+            break;
+    }
+    
+}
+
+
 - (void)fileMessageReceived:(NSNotification *)notification {
     
     
@@ -1148,9 +1202,6 @@ typedef void(^myCompletion)(BOOL);
             }
         }
     }
-    
-
-    
 }
 
 - (void)fileRepeatRequestReceived:(NSNotification *)notification {
@@ -1874,7 +1925,14 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
     
     [[FileHandler sharedHandler] writeData:imageData toFileName:fileName ofType:kFileTypePhoto];
     
-    [self sendFile:fileName ofType:kFileTypePhoto andCompletionBlock:^(BOOL finished) {
+//    [self sendFile:fileName ofType:kFileTypePhoto andCompletionBlock:^(BOOL finished) {
+//        
+//        if(finished){
+//        }
+//    }];
+    
+    
+    [self sendFileViaTCP:fileName ofType:kFileTypePhoto andCompletionBlock:^(BOOL finished) {
         
         if(finished){
             
@@ -1950,8 +2008,45 @@ static NSString *chatmemberCellID = @"chatmemberCellID";
             completionBlock(YES);
         });
     });
-    
 }
+
+- (void)sendFileViaTCP:(NSString *)fileName ofType:(int) fileType andCompletionBlock:(myCompletion) completionBlock {
+    
+    //self.sendButton.enabled = NO;
+    
+    int channelID = self.isPrivateChannel ? 0 :self.currentActiveChannel.channelID;
+    NSString *jsonString = [[MessageHandler sharedHandler] jsonStringWithFile:fileName OfType:fileType inChannel:channelID];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+        if (self.isPrivateChannel) {
+
+            [[asyncTCPConnectionHandler sharedHandler] sendFileData:[jsonString dataUsingEncoding:NSUTF8StringEncoding] toHost:self.oponentUser.deviceIP toPort:WALKIETALKIE_TCP_SENDER];
+
+        }else {
+            
+            NSArray *channelMembers = [self.currentActiveChannel getMembers];
+            
+            for (User *member in channelMembers) {
+                //send
+
+                [[asyncTCPConnectionHandler sharedHandler] sendFileData:[jsonString dataUsingEncoding:NSUTF8StringEncoding] toHost:member.deviceIP toPort:WALKIETALKIE_TCP_SENDER];
+            }
+        }
+        
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            MessageData * messageData = [[MessageData alloc] initWithSender:@"Me" type:fileType message:fileName direction:MESSAGE_DIRECTION_SEND];
+            [self updateUIForChatMessage:messageData];
+            
+            completionBlock(YES);
+        });
+    });
+}
+
+
+
 
 #pragma mark - IPChangeNotifier
 -(void) IPChangeDetected:(NSString*)newIP previousIP:(NSString*)oldIP {

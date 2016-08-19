@@ -45,6 +45,8 @@
 
 
 -(NSArray *)jsonStringArrayWithFile:(NSString *)fileName OfType:(int)type inChannel:(int)channelID;
+-(NSString *)jsonStringWithFile:(NSString *)fileName OfType:(int)type inChannel:(int)channelID;
+
 -(NSString *)repeatRequestWithFile:(NSString *)fileName OfType:(int)type;
 
 -(NSString *)oneToOneChatRequestMessage;

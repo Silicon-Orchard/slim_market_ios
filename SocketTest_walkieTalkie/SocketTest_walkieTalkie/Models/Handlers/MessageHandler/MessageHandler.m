@@ -37,7 +37,7 @@
     
     //Simulator
     
-    return @"192.168.1.146";
+    return @"192.168.0.104";
     
 #else
     
@@ -265,6 +265,35 @@
     
     return JSONStringArray;
 }
+
+//For TCP
+- (NSString *)jsonStringWithFile:(NSString *)fileName OfType:(int)type inChannel:(int)channelID{
+    
+    NSMutableArray *JSONStringArray = [[NSMutableArray alloc] init];
+    NSString *encodedString = [[FileHandler sharedHandler] encodedStringWithFile:fileName OfType:type];
+    
+    
+    //NSUInteger chunkCount = encodedStringChunksArray.count;
+    NSString *deviceName = [UIDevice currentDevice].name;
+    NSString *deviceIP = [self getIPAddress];
+    
+    NSError * error = nil;
+    NSDictionary * postDictionary = @{
+                                      JSON_KEY_TYPE : @(TYPE_FILE_MESSAGE),
+                                      JSON_KEY_CHANNEL: @(channelID),
+                                      JSON_KEY_DEVICE_NAME : deviceName,
+                                      JSON_KEY_IP_ADDRESS: deviceIP,
+                                      JSON_KEY_FILE_TYPE: @(type),
+                                      JSON_KEY_FILE_NAME: fileName,
+                                      JSON_KEY_FILE_MESSAGE: encodedString
+                                      };
+    
+    NSData * jsonData = [NSJSONSerialization dataWithJSONObject:postDictionary options:NSJSONWritingPrettyPrinted error:&error];
+    NSString *resultAsString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    
+    return resultAsString;
+}
+
 
 -(NSString *)repeatRequestWithFile:(NSString *)fileName OfType:(int)type {
     

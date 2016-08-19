@@ -172,9 +172,8 @@
 }
 
 
-
--(NSArray *)encodedStringChunksWithFile:(NSString *)fileName OfType:(int)type{
-    
+//For TCP
+-(NSArray *)encodedStringWithFile:(NSString *)fileName OfType:(int)type{
     
     switch (type) {
         case kFileTypeAudio:
@@ -192,6 +191,35 @@
             
         default:
 
+            break;
+    }
+    
+    NSString *filePath = [self pathToFileWithFileName:fileName OfType:type];
+    NSData *fileData = [self dataFromFilePath:filePath];
+
+    NSString *encodedString = [fileData base64EncodedStringWithOptions:0];
+    return encodedString;
+}
+
+-(NSArray *)encodedStringChunksWithFile:(NSString *)fileName OfType:(int)type{
+    
+    
+    switch (type) {
+        case kFileTypeAudio:
+            
+            break;
+        case kFileTypeVideo:
+            
+            break;
+        case kFileTypePhoto:
+            
+            break;
+        case kFileTypeOthers:
+            
+            break;
+            
+        default:
+            
             break;
     }
     

@@ -18,7 +18,11 @@
 @property (nonatomic, strong) NSMutableArray *senderSockets;
 
 +(asyncTCPConnectionHandler*)sharedHandler;
+
 -(void)createTCPSenderSocket;
+
+
+-(void)sendFileData:(NSData *)audioData toHost:(NSString *)hostAddress toPort:( uint16_t)portAddress;
 -(void)sendAudioData:(NSData *)audioData toHost:(NSString *)hostAddress toPort:( uint16_t)portAddress;
 
 
