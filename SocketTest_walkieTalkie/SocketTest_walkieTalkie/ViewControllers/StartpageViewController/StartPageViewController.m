@@ -118,7 +118,7 @@
     
     [[asyncUDPConnectionHandler sharedHandler] enableBroadCast];
     
-    for (int i =1 ; i<=254; i++) {
+    for (int i =0 ; i<=254; i++) {
         
         NSString *ipAddressTosendData = [NSString stringWithFormat:@"%@%d", ipFormat, i];
                                          
